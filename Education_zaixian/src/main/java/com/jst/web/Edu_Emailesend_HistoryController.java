@@ -16,40 +16,46 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.jst.model.Edu_Comment;
 import com.jst.model.Edu_Emailesend_History;
 import com.jst.model.Edu_User;
 import com.jst.myservice.Edu_Emailesend_HistoryService;
 import com.jst.myservice.Edu_Emailesend_HistoryServiceImpl;
 import com.jst.myservice.front.EduUserService;
+import com.jst.myservice.user.Edu_UserService;
 import com.jst.realm.JavaEmailSender;
 import com.jst.utils.MyJob;
 import com.jst.utils.QuartzManager;
 
-
-
 @Controller
 public class Edu_Emailesend_HistoryController {
-	public static String JOB_NAME = "åŠ¨æ€ä»»åŠ¡è°ƒåº¦";  
-	  public static String TRIGGER_NAME = "åŠ¨æ€ä»»åŠ¡è§¦å‘å™¨";  
+	public static String JOB_NAME = "¶¯Ì¬ÈÎÎñµ÷¶È";  
+	  public static String TRIGGER_NAME = "¶¯Ì¬ÈÎÎñ´¥·¢Æ÷";  
 	  public static String JOB_GROUP_NAME = "XLXXCC_JOB_GROUP";  
 	  public static String TRIGGER_GROUP_NAME = "XLXXCC_JOB_GROUP";
 	@Autowired
 	private Edu_Emailesend_HistoryServiceImpl eService;
 	@Autowired
-	private EduUserService userService;
+	private Edu_UserService uService;
 
 	
 	@RequestMapping("/admin/email/sendEmaillist")
-	public ModelAndView list(HttpServletRequest request) {
+	public ModelAndView list(HttpServletRequest request,@RequestParam(required=true,defaultValue="1")Integer page) {
+		PageHelper.startPage(page,5);
 		ModelAndView mv = new ModelAndView();
 		Map map = new HashMap();
 		map = initMap(request, map);
 		List<Edu_Emailesend_History> list = eService.list(map);
+		PageInfo<Edu_Emailesend_History> p = new PageInfo<Edu_Emailesend_History>(list);
 		mv.setViewName("/manager/edu_emailesend_historyList");
 		mv.addObject("list",list);
+		mv.addObject("page",p);
 		return mv;
 	}
 
@@ -77,38 +83,39 @@ public class Edu_Emailesend_HistoryController {
 		}
 		if (status!=null&&status.trim().length()!=0) {
 			int status2 = Integer.parseInt(status);
-			System.out.println("status2"+status2);
 			request.setAttribute("status",status2);
 			map.put("status",status2);
 		}
 		return map;
 	}
 	/**
-	 *  è·³è½¬åˆ°å‘é€é‚®ä»¶ç•Œé¢
+	 *  Ìø×ªµ½·¢ËÍÓÊ¼ş½çÃæ
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/admin/email/toEmailMsg")
-	public ModelAndView add(HttpServletRequest request)throws Exception {
+	public ModelAndView add(HttpServletRequest request,@RequestParam(required=true,defaultValue="1")Integer page)throws Exception {
+		Map map=new HashMap();
+		PageHelper.startPage(page,5);
 		ModelAndView mv = new ModelAndView();
+		List<Edu_User> list = uService.listAll(map);
+		PageInfo<Edu_User> p = new PageInfo<Edu_User>(list);
 		mv.setViewName("/manager/edu_emailesend_historyAdd");
-//		mv.addObject("list",list);
+		mv.addObject("list",list);
+		mv.addObject("page",p);
 		return mv;
 	}
 
 
 	/**
-	 * å‘é€é‚®ä»¶
+	 * ·¢ËÍÓÊ¼ş
 	 * @throws Exception 
 	 */
 	@RequestMapping(value="/admin/email/sendEmail",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String sendEmail(Model model,HttpServletRequest request,Edu_Emailesend_History e) throws Exception {
-
 		int type = Integer.parseInt(request.getParameter("type"));
 		String toEmail = request.getParameter("email");
-		System.out.println(e);
-
 		String emailArray[] = toEmail.split(";");
 		for (int i = 0; i < emailArray.length; i++) {
 			e.setEmail(emailArray[i]);
@@ -133,10 +140,10 @@ public class Edu_Emailesend_HistoryController {
 				QuartzManager.addJob(JOB_NAME, JOB_GROUP_NAME, TRIGGER_NAME, TRIGGER_GROUP_NAME, job,cons);
 			}
 			e.setCreate_time(new Date());
+			e.setSend_time(new Date());
 			eService.save(e);
 		}
-		
-		return "redicet:/admin/email/sendEmaillist";
+		return "redirect:/admin/email/sendEmaillist";
 	}
 
 }

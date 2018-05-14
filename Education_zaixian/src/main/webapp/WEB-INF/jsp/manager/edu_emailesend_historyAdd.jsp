@@ -16,6 +16,8 @@
 	<link rel="stylesheet" type="text/css" href="/common/layui/css/layui.css" media="all">
 	<link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.css" media="all">
 	<link rel="stylesheet" href="/common/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.css"/>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.js"></script>
 	<link rel="stylesheet" type="text/css" href="/common/global.css" media="all">
 	<link rel="stylesheet" type="text/css" href="/css/personal.css" media="all">
 	<link href="/js/utf8-jsp/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
@@ -24,12 +26,22 @@
   <script type="text/javascript" charset="utf-8" src="/js/utf8-jsp/umeditor.min.js"></script>
   <script type="text/javascript" src="/js/utf8-jsp/lang/zh-cn/zh-cn.js"></script>
      
-     <!-- <script type="text/javascript" charset="utf-8" src="/utf8-php/ueditor.config.js"></script>
-     <script type="text/javascript" charset="utf-8" src="/utf8-php/ueditor.all.js"></script> -->
 <script type="text/javascript">
   $(function() {
 		$("#btns").click(function() {
 				var content = UM.getEditor('editor').getContentTxt();
+				if(content==""){
+					alert("内容不能为空!");
+					return false;
+				}
+				if($("#email").val()==""){
+					alert("邮箱不能为空!");
+					return false;
+				}
+				if($("#title").val()==""){
+					alert("标题不能为空!");
+					return false;
+				}
 				$("#in").val(content);
 				$("#form1").submit();
 			});
@@ -44,91 +56,35 @@ function del () {
     }
 }
 
+function fun() {
+	 if($("#email").val()==""){
+   alert("邮箱不能为空");
+   return false;
+  }
+  var email=$("#email").val();
+   var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+  if(!myreg.test(email)){
+   alert("格式不正确！请重新输入");
+    myreg.focus();
+    return false;
+  }else{
+  alert("格式正确");
+  }
+ }
 
-	/* function goSendEmail(){
-	parent.layer.confirm('您确定要发送邮件吗？', {
-        btn: ['确定','取消'], //按钮
-        shade: false //不显示遮罩
-   }, function(){
-    var type = $("#type").val();
-    if (type==1) {
-    	var email = $("#email").val();
-    var title = $("#title").val();
-    var content = UE.getEditor('editor').getContentTxt();
-//  var content =document.getElementsByName("content").values();
-    alert(content);
-        if ($("#email").val()=="") {
-    $("#s1").html("邮箱不能为空！");
-    alert("不能为空");
-    }
-        if ($("#title").val()=="") {
-     $("#s2").html("标题不能为空！");
-     alert("不能为空");
-    }
-       if ($("#content").val()=="") {
-     $("#s3").html("内容不能为空！");
-     alert("不能为空");
-    }
-       alert("1");
-    $.ajax({
-        type: "post",
-        url:"/admin/email/sendEmail",
-        data: {email:"email",title:"title",content:"content"},
-        dataType:"json",
-        cache: false,
-        success: function(data){
-        alert("ok");
-            if("ok" == data.result){
-             alert("发送成功!");
-            }else{
-              alert("发送失败!");
-            }
-        }
-    });
-    } else if (type==2) {
-    var email = $("#email").val();
-    var title = $("#title").val();
-    var content =UE.getEditor('content');
-    var put = $("#put").val();
-    alert(content);
-        if ($("#email").val()=="") {
-    $("#s1").html("邮箱不能为空！");
-    alert("不能为空");
-    }
-        if ($("#title").val()=="") {
-     $("#s2").html("标题不能为空！");
-     alert("不能为空");
-    }
-       if ($("#content").val()=="") {
-     $("#s3").html("内容不能为空！");
-     alert("不能为空");
-    }
-       alert("1");
-    $.ajax({
-        type: "post",
-        url:"",
-        data: {email:"email",title:"title",content:"content",put:"put"},
-        dataType:"json",
-        cache: false,
-        success: function(data){
-        alert("ok");
-            if("ok" == data.result){
-             alert("发送成功!");
-            }else{
-              alert("发送失败!");
-            }
-        }
-    });
-    }
-    }, function(){
-        parent.layer.msg("已取消", {icon: 1});
-        return false;
-    });
-	} */
-	
-	
+function fun2() {
+var title = $("#title").val();
+	if (title=="") {
+		alert("标题不能为空");
+	}
+}
 
-	
+function fun3(){
+	var content = UM.getEditor('editor').getContentTxt();
+	if(content==""){
+		alert("内容不能为空!");
+	}
+}
 	var b;
 	function xianshi() {
 		var emass = $("#eid").val();
@@ -147,16 +103,45 @@ function del () {
 		} else if (type==2) {
 			document.getElementById("div").style.display="";
 		} 
-		
 	}
+	
+	//全选反选
+	function fun1() {
+		var checklist = document.getElementsByName("subcheck");
+		if (document.getElementById("checkbox").checked) {
+			for (var i=0;i<checklist.length;i++) {
+				checklist[i].checked = 1;
+			}
+		} else{
+			for (var j=0;j<checklist.length;j++) {
+				checklist[j].checked = 0;
+			}
+		}
+	}
+	var a=[];
+	$(function(){
+		$("#tton").click(function() {
+			var email = document.getElementsByName("subcheck");
+			for(var i=0;i<email.length;i++) {
+				if (email[i].checked) {
+					a.push(email[i].value);
+				}
+			}
+			var b ="";
+			for(var i =0;i<a.length;i++) {
+				if (b.trim().length==0) {
+					b = a[i]+";";
+				}else{
+				b+=a[i]+";";
+				}
+			}
+			$("#email").text(b);
+		})
+	})
 	
 </script>
 
 <style type="text/css">
-#s1,#s2,#s3{
-font-size: 14px;
-color: red;
-}
 #v{
 	position: absolute;
 	left: 420px;
@@ -167,11 +152,7 @@ width: 100px;
 }
 #tab2{
 font-family: '微软雅黑';
-/* margin-top: 30px; 
-line-height: 50px; 
-text-align: left; 
-*/
-font-size:14px;
+font-size:16px;
 font-weight:bold; 
 color:red; 
 margin-left:30px;
@@ -192,48 +173,27 @@ border: 1px solid black;
 
 </head>
 <body>
+
 	
 			<form action="/admin/email/sendEmail" method="post" id="form1">
 			<div id="d1">
-			<table style="margin-top: 30px;" >
-				<tr>
-					<td>
-					<table  id="tab1" >
+			
+				
+					<table  id="tab1">
 					<tr height="50px">
 						<td id="t1">添加联系人:</td>
 						<td id="t2">
-							<textarea name="email" id="email" rows="8" cols="50" style="width:400px;height:40px;" placeholder="请选输入对方邮箱,多个请用(;)分号隔开" title="请选输入对方邮箱,多个请用(;)分号隔开"></textarea>
+							<textarea onblur="fun()" name="email" id="email" rows="8" cols="50" style="width:400px;height:40px;" placeholder="请选输入对方邮箱,多个请用(;)分号隔开" title="请选输入对方邮箱,多个请用(;)分号隔开"></textarea>
 						</td>
 							<td>
-					
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+导入联系人</button>
+
 						</td>
 					</tr>
 			
 				</table>
-					</td>
 					
-					<td>       
-						
-						<table width="600px" >
-							<tr>
-								<td
-									style="height: 35px; font-family: '微软雅黑'; font-size: 16px; font-weight: bold; text-align: center;">通讯录</td>
-							</tr>
-							<tr>
-								<td
-									style="height: 20px; font-family: '微软雅黑'; font-size: 14px; text-align: center;">
-									<select id="eid" name="eid" onchange="xianshi()">
-										<option value="0">请选择联系人</option>
-										<c:forEach items="${lists}" var="u">
-											<option value="${u.email}">${u.user_name}</option>
-										</c:forEach>
-								</select>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
 
 				<table  id="tab2">
 					<tr >
@@ -262,7 +222,7 @@ border: 1px solid black;
 				<table id="ta1" >
 					<tr>
 						<td>邮箱标题：</td>
-						<td > <input type="text" name="title" id="title" value="" placeholder="请选输入邮件标题" style="width:200px;height:30px" /></td>
+						<td > <input type="text" onblur="fun2()" name="title" id="title" value="" placeholder="请选输入邮件标题" style="width:200px;height:30px" /></td>
 					</tr>
 					<tr>
 						<td>正文内容：</td>
@@ -299,6 +259,52 @@ border: 1px solid black;
 		</div>		
 	</div>
 	
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加联系人</h4>
+      </div>
+      <table class="layui-table table-hover" lay-even="" lay-skin="nob" id="tb">
+      	<tr>
+      	    <td><input type="checkbox" id="checkbox" name="checkbox" onclick="fun1()"></td>
+      		<td>姓名</td>
+      		<td>邮箱</td>
+      	</tr>
+      <c:forEach items="${list}" var="a">
+      <tr>
+      <td><input type="checkbox" name="subcheck" value="${a.email}"></td>
+      <td>${a.user_name}</td>
+      <td>${a.email}</td>
+      </tr>
+      </c:forEach>
+      <tr>
+						<td colspan="2">一共<input type="text"
+										value="${page.pages}" style="width: 25px; text-align: center;" />页
+										<a href="/admin/email/toEmailMsg?page=${page.firstPage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>第一页</a> <a
+										href="/admin/email/toEmailMsg?page=${page.prePage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>上一页</a> <a
+										href="/admin/email/toEmailMsg?page=${page.nextPage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>下一页</a> <a
+										href="/admin/email/toEmailMsg?page=${page.lastPage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>最后页</a></td>
+						</tr>
+      </table>
+     
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="tton">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
 <script type="text/javascript" src="/common/layui/layui.js"></script>
 <script type="text/javascript">
 	layui.use(['form','upload'],function(){
@@ -320,7 +326,8 @@ border: 1px solid black;
         format: 'YYYY-MM-DD', //日期格式
                 festival: true, //显示节日
                 choose: function(datas){ //选择日期完毕的回调
-                   /* alert('得到：'+datas);*/
+              
+                	/* alert('得到：'+datas);*/
                 }
     }); 
 //添加第二个input日期下拉的方法

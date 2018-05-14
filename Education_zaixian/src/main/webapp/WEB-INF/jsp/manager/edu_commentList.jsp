@@ -104,7 +104,7 @@ function batchDeletes() {
 					内容查询:
 						<div class="layui-input-inline">
 							<input value="" placeholder="请输入关键字"
-								class="layui-input search_input" type="text" name="qname">
+								class="layui-input search_input" type="text" name="qname" onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')">
 						</div>
 						邮箱查询:
 						<div class="layui-input-inline">
@@ -165,24 +165,37 @@ function batchDeletes() {
 										<td>${p.praise_count }</td>
 										<td>${p.reply_count }</td>
 										<td><fmt:formatDate value="${p.addtime}" pattern="yyyy-MM-dd" type="both"/></td>
-										<td ><div id="ca" title="${p.content}">${p.content}</div></td>
-										<td><a href="/admin/comment/init/${p. comment_id}"> <button type="button" class="btn btn-success">修改</button></a>
+										<td><div id="ca" title="${p.content}">${p.content}</div></td>
+										<td><%-- <a href="/admin/comment/init/${p. comment_id}"> <button type="button" class="btn btn-success">修改</button></a> --%>
 											<a onclick="javascript:return del()" href="/admin/comment/delete/${p.comment_id}" ><button type="button" class="btn btn-danger" >删除</button></a>
-										<a href=""> <button type="button" class="btn btn-success">回复列表</button></a>
+										<a href="/admin/comment/all/${p.type}"> <button type="button" class="btn btn-success">回复列表</button></a>
 										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
-							<tr>
-						</tr>
+							
 
 						</table>
-						<div class="larry-table-page clearfix">
-							<a href="javascript:;" class="layui-btn layui-btn-small"><i
-								class="iconfont icon-shanchu1"></i>删除</a>
-							<div id="page" class="page"></div>
-						</div>
+						<table>
+						<tr>
+						<td>一共<input type="text"
+										value="${page.pages}" style="width: 25px; text-align: center;" />页
+										<a href="/admin/comment/query/${p.comment_id}?page=${page.firstPage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>第一页</a> <a
+										href="/admin/comment/query/${p.comment_id}?page=${page.prePage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>上一页</a> <a
+										href="/admin/comment/query/${p.comment_id}?page=${page.nextPage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>下一页</a> <a
+										href="/admin/comment/query/${p.comment_id}?page=${page.lastPage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>最后页</a></td>
+						</tr>
+						</table>
 					</div>
+					
 					<!-- 登录日志 -->
 					<div class="layui-tab-item layui-field-box">
 						<table class="layui-table table-hover" lay-even="" lay-skin="nob">

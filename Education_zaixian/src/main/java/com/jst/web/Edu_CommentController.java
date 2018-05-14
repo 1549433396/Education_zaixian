@@ -11,10 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jst.model.Edu_Comment;
+import com.jst.model.Sys_user;
 import com.jst.myservice.Edu_CommentService;
 
 @Controller
@@ -24,14 +28,16 @@ public class Edu_CommentController {
 	private Edu_CommentService commentService;
 	
 	@RequestMapping("/admin/comment/query")
-	public ModelAndView list(HttpServletRequest request) {
+	public ModelAndView list(HttpServletRequest request,@RequestParam(required=true,defaultValue="1")Integer page) {
+		PageHelper.startPage(page,5);
 		ModelAndView mv = new ModelAndView();
 		Map map = new HashMap();
 		map = initMap(request, map);
-		System.out.println("map.values():"+map.values());
-		List<Edu_Comment> list = commentService.list(map);
+		List<Edu_Comment> lists = commentService.list(map);
+		PageInfo<Edu_Comment> p = new PageInfo<Edu_Comment>(lists);
 		mv.setViewName("/manager/edu_commentList");
-		mv.addObject("list",list);
+		mv.addObject("list",lists);
+		mv.addObject("page",p);
 		return mv;
 	}
 	
@@ -62,8 +68,6 @@ public class Edu_CommentController {
 	
 	@RequestMapping("/admin/comment/update")
 	public String update(Edu_Comment edu_Comment) {
-		
-		System.out.println("123"+edu_Comment);
 		commentService.update(edu_Comment);
 		return "redirect:/admin/comment/query";
 	}
@@ -74,8 +78,6 @@ public class Edu_CommentController {
     	String email = request.getParameter("email");
     	String start = request.getParameter("start");
     	String end = request.getParameter("end");
-    	System.out.println("开始时间："+start);
-    	System.out.println("结束时间："+end);
     	if (type!=null&&type.trim().length()!=0) {
 			int type2 = Integer.parseInt(type);
 			request.setAttribute("type",type2);
@@ -98,6 +100,26 @@ public class Edu_CommentController {
 			map.put("end",end);
 		}
 		return map;
-	
     } 
+    
+//    @RequestMapping("/admin/comment/all/{comment_id}")
+//    public ModelAndView All(@PathVariable("comment_id")int comment_id) {
+//    	ModelAndView mv = new ModelAndView();
+//    	Edu_Comment list = commentService.getById(comment_id);
+//        Edu_Comment comment = commentService.selectId(comment_id);
+//    	mv.setViewName("/manager/edu_commentAll");
+//    	mv.addObject("list",list);
+//    	mv.addObject("com",comment);
+//		return mv;
+//	}
+    
+    @RequestMapping("/admin/comment/all/{type}")
+    public ModelAndView All(@PathVariable("type")int type) {
+  	ModelAndView mv = new ModelAndView();
+  	List<Edu_Comment> comment = commentService.selectType(type);
+  	mv.setViewName("/manager/edu_commentAll");
+  	mv.addObject("com",comment);
+		return mv;
+	}
+    
 }

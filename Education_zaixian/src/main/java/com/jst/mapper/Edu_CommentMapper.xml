@@ -54,5 +54,13 @@
   <update id="update" parameterType="Edu_Comment">
   update edu_comment set praise_count=#{praise_count},content=#{content} where comment_id=#{comment_id}
   </update>
+ 
+  <select id="selectId" parameterType="int" resultType="Edu_Comment">
+SELECT * from edu_comment WHERE comment_id= (SELECT P_COMMENT_ID from edu_comment WHERE comment_id =#{comment_id})  
+ </select>
+ 
+ <select id="selectType" parameterType="int" resultType="Edu_Comment">
+ select*from edu_comment where type=#{type}
+ </select>
   
   </mapper>

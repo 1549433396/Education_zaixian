@@ -37,7 +37,7 @@
 						<div class="layui-input-inline">
 							 
 							<input  placeholder="请输入关键字"
-								class="layui-input search_input" type="text" name="email">
+								class="layui-input search_input" type="text" name="email" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
 						</div>
 						类型查找:
 						<div class="layui-input-inline">
@@ -99,13 +99,32 @@
 							</tbody>
 							<tr>
 						</tr>
-
 						</table>
-						<div class="larry-table-page clearfix">
+						
+						<table>
+						<tr>
+						<td >一共<input type="text"
+										value="${page.pages}" style="width: 25px; text-align: center;" />页
+										<a href="/admin/email/sendEmaillist?page=${page.firstPage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>第一页</a> <a
+										href="/admin/email/sendEmaillist?page=${page.prePage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>上一页</a> <a
+										href="/admin/email/sendEmaillist?page=${page.nextPage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>下一页</a> <a
+										href="/admin/email/sendEmaillist?page=${page.lastPage}"
+										class="layui-btn layui-btn-small"><i
+											class="iconfont icon-shanchu1"></i>最后页</a></td>
+						</tr>
+						</table>
+						
+						<!-- <div class="larry-table-page clearfix">
 							<a href="javascript:;" class="layui-btn layui-btn-small"><i
 								class="iconfont icon-shanchu1"></i>删除</a>
 							<div id="page" class="page"></div>
-						</div>
+						</div> -->
 					</div>
 					<!-- 登录日志 -->
 					<div class="layui-tab-item layui-field-box">

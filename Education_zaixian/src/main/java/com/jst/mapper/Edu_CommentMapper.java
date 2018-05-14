@@ -11,5 +11,6 @@ public interface Edu_CommentMapper {
 	public Edu_Comment getById(int comment_id);
 	public void delete(int comment_id);
 	public void update(Edu_Comment edu_Comment);
+	public List<Edu_Comment> selectType(int type);
 
 }

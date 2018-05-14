@@ -37,4 +37,10 @@ public class Edu_CommentServiceImpl implements Edu_CommentService{
 		commentMapper.update(edu_Comment);
 	}
 
+	@Override
+	public List<Edu_Comment> selectType(int type) {
+		List<Edu_Comment> list = commentMapper.selectType(type);
+		return list;
+	}
+
 }
