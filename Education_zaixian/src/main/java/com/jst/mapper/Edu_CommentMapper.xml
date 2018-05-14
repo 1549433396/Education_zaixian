@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.jst.mapper.Edu_CommentMapper">
+  
+  <resultMap type="Edu_Comment" id="CommentMap">
+  <id column="comment_id"   property="comment_id" />
+  <result  column="p_comment_id"  property="p_comment_id" />
+  <result  column="content"  property="content" />
+  <result  column="addtime"  property="addtime" />
+  <result  column="other_id"   property="other_id" />
+  <result  column="praise_count" property="praise_count" />
+ <result  column="reply_count" property="reply_count" />
+ <result  column="type" property="type" />
+ <association property="userId" column="user_id" 
+  select="com.jst.mapper.user.EduUserMapper.getById"></association>
+  </resultMap>
+  
+  <select id="list" resultMap="CommentMap" parameterType="java.util.Map">
+  select * from edu_comment 
+  <where>
+  <if test="qname!=null">
+  and content like '%${qname}%'
+  </if>
+ <if test="type>0">
+ and type = #{type}
+ </if>
+ <if test="email!=null">
+ and user_id in(SELECT user_id FROM edu_user WHERE email LIKE '%${email}%')
+ </if>
+ <if test="start!=null">
+ and addtime &gt; #{start}
+ </if>
+ <if test="end!=null">
+ and addtime &lt; #{end}
+ </if>
+  </where>
+  </select>
+  
+  <insert id="save" parameterType="Edu_Comment">
+  insert into edu_comment(user_id,p_comment_id,content,addtime,other_id,praise_count,reply_count,type)
+  values(#{user_id},#{p_comment_id},#{content},#{addtime},#{other_id},#{praise_count},#{reply_count},#{type})
+  </insert>
+  
+  <delete id="delete" parameterType="int">
+  delete from edu_comment where comment_id=#{comment_id}
+  </delete>
+  
+  <select id="getById" parameterType="int" resultMap="CommentMap" >
+  select * from edu_comment c,edu_user u where comment_id=#{comment_id} and c.USER_ID=u.USER_ID
+  </select>
+  
+  <update id="update" parameterType="Edu_Comment">
+  update edu_comment set praise_count=#{praise_count},content=#{content} where comment_id=#{comment_id}
+  </update>
+  
+  </mapper>

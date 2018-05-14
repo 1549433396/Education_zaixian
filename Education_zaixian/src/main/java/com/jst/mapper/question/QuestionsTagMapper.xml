@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.jst.mapper.question.QuestionsTagMapper">
+    <resultMap type="QuestionsTag" id="QuestionsTagMap">
+      <result column="questions_tag_id" property="questions_tag_id"/>
+      <result column="questions_tag_name" property="questions_tag_name"/>
+      <result column="status" property="status"/>
+      <result column="create_time" property="create_time"/>
+      <result column="parent_id" property="parent_id"/> 
+    </resultMap>
+    <select id="listAll" resultMap="QuestionsTagMap">
+      select * from edu_questions_tag
+    </select>
+    <delete id="delete" parameterType="int">
+     delete from edu_questions_tag where questions_tag_id=#{questions_tag_id}
+    </delete>
+    <!-- <insert id="save" parameterType="QuestionsTag">
+     insert into edu_questions_tag(questions_tag_name)
+    </insert> -->
+  </mapper>

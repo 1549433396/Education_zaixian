@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jst.mapper.course.EduCourseMapper">
+	<resultMap id="BaseResultMap" type="com.jst.model.EduCourse">
+		<id column="COURSE_ID" property="courseId" jdbcType="INTEGER" />
+		<result column="COURSE_NAME" property="courseName" jdbcType="VARCHAR" />
+		<result column="IS_AVALIABLE" property="isAvaliable" jdbcType="INTEGER" />
+		<result column="SUBJECT_ID" property="subjectId" jdbcType="INTEGER" />
+		<result column="SUBJECT_LINK" property="subjectLink" jdbcType="VARCHAR" />
+		<result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+		<result column="SOURCE_PRICE" property="sourcePrice" jdbcType="DECIMAL" />
+		<result column="CURRENT_PRICE" property="currentPrice"
+			jdbcType="DECIMAL" />
+		<result column="TITLE" property="title" jdbcType="VARCHAR" />
+		<result column="LESSION_NUM" property="lessionNum" jdbcType="INTEGER" />
+		<result column="LOGO" property="logo" jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="PAGE_BUYCOUNT" property="pageBuycount"
+			jdbcType="INTEGER" />
+		<result column="PAGE_VIEWCOUNT" property="pageViewcount"
+			jdbcType="INTEGER" />
+		<result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="LOSETYPE" property="losetype" jdbcType="INTEGER" />
+		<result column="LOSE_TIME" property="loseTime" jdbcType="VARCHAR" />
+		<result column="SEQUENCE" property="sequence" jdbcType="INTEGER" />
+		<result column="COURSE_GROSS_INCOME" property="courseGrossIncome"
+			jdbcType="DECIMAL" />
+		<association column="subject_id" property="subject"
+			select="com.jst.mapper.course.SysSubjectMapper.getById">
+		</association>
+	</resultMap>
+
+	<select id="getAllList" resultMap="BaseResultMap" parameterType="map">
+		select * from edu_course e
+		<if test="teacherid != null and teacherid>0">
+			INNER JOIN edu_course_teacher t1 on t1.course_id = e.course_id
+		</if>
+		<where>
+			<if test="qname!=null and qname != '' ">
+				and course_name like '%${qname}%'
+			</if>
+			<if test="teacherid != null and teacherid>0">
+				and t1.TEACHER_ID = #{teacherid}
+			</if>
+			<if test="subjectId != null and subjectId>0">
+				and e.SUBJECT_ID = #{subjectId}
+			</if>
+			<if test="type>0">
+				and IS_AVALIABLE = #{type}
+			</if>
+			<if test="start!=null">
+				and add_time &gt; #{start}
+			</if>
+			<if test="end!=null">
+				and add_time &lt; #{end}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectByCourseId" resultMap="BaseResultMap"
+		parameterType="int">
+		select * from edu_course e,edu_teacher t,edu_course_teacher t1 where
+		t1.course_id = e.course_id and t.id = t1.teacher_id and e.course_id =
+		#{value}
+	</select>
+
+	<insert id="addE_T" parameterType="map">
+		insert into edu_course_teacher (course_id,teacher_id) values (#{cid},#{tid})
+	</insert>
+	<update id="updateTeacher" parameterType="map">
+		update edu_course_teacher set teacher_id=#{tid} where course_id=#{cid}
+	</update>
+
+
+	<insert id="insert" parameterType="EduCourse">
+
+		<selectKey resultType="int" order="AFTER" keyProperty="courseId">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into edu_course ( COURSE_NAME, IS_AVALIABLE,
+		SUBJECT_ID, SUBJECT_LINK, ADD_TIME,
+		SOURCE_PRICE, CURRENT_PRICE, TITLE,
+		LESSION_NUM, LOGO, UPDATE_TIME,
+		PAGE_BUYCOUNT, PAGE_VIEWCOUNT, END_TIME,
+		LOSETYPE, LOSE_TIME, SEQUENCE,
+		COURSE_GROSS_INCOME, CONTEXT)
+		values (#{courseName}, #{isAvaliable},
+		#{subjectId}, #{subjectLink}, #{addTime},
+		#{sourcePrice}, #{currentPrice}, #{title},
+		#{lessionNum}, #{logo}, #{updateTime},
+		#{pageBuycount}, #{pageViewcount}, #{endTime},
+		#{losetype}, #{loseTime}, #{sequence},
+		#{courseGrossIncome}, #{context})
+	</insert>
+	<update id="updateCourse" parameterType="EduCourse">
+		update edu_course set COURSE_NAME =#{courseName},
+		IS_AVALIABLE=#{isAvaliable},
+		SUBJECT_ID=#{subjectId}, SUBJECT_LINK=#{subjectLink}, ADD_TIME=#{addTime},
+		SOURCE_PRICE=#{sourcePrice}, CURRENT_PRICE=#{currentPrice},
+		TITLE=#{title},
+		LESSION_NUM=#{lessionNum}, LOGO=#{logo}, UPDATE_TIME=#{updateTime},
+		PAGE_BUYCOUNT=#{pageBuycount}, PAGE_VIEWCOUNT=#{pageViewcount},
+		END_TIME=#{endTime},
+		LOSETYPE=#{losetype}, LOSE_TIME=#{loseTime}, SEQUENCE=#{sequence},
+		COURSE_GROSS_INCOME=#{courseGrossIncome}, CONTEXT=#{context} where
+		course_id=#{courseId}
+	</update>
+	<delete id="deleteCourse" parameterType="int">
+		delete from edu_course where course_id = #{value}
+	</delete>
+
+	<delete id="deleteE_T" parameterType="int">
+		delete from edu_course_teacher where course_id = #{value}
+	</delete>
+
+	<select id="queryKpoint" parameterType="int" resultType="Edu_course_kpoint">
+
+		select * from edu_course_kpoint where COURSE_ID=#{value}
+	</select>
+	<select id="queryCourseKpoint" parameterType="int" resultType="Edu_course_kpoint">
+		select * from edu_course_kpoint where KPOINT_ID=#{value}
+	</select>
+
+	<!-- 添加笔记 -->
+	<insert id="addNote" parameterType="EduCourseNote">
+		insert into edu_course_note
+		(user_id,course_id,KPOINT_ID,CONTENT,UPDATE_TIME)
+		values (#{user_id},#{course_id},#{kpoint_id},#{content},#{update_time})
+	</insert>
+	<select id="queryNote" parameterType="EduCourseNote" resultType="EduCourseNote">
+		select * from edu_course_note where user_id =#{user_id} and course_id
+		= #{course_id} and kpoint_id = #{kpoint_id}
+	</select>
+	<update id="updateNote" parameterType="EduCourseNote">
+		update edu_course_note set content = #{content} ,update_time =
+		#{update_time} where user_id =#{user_id} and course_id = #{course_id}
+		and kpoint_id = #{kpoint_id}
+	</update>
+
+	<update id="updateKpoint" parameterType="Edu_course_kpoint">
+		update edu_course_kpoint set course_id = #{course_id},name= #{name},
+		sort= #{sort},play_count= #{play_count},is_free= #{is_free},
+		video_url= #{video_url},teacher_id= #{teacher_id},play_time= #{play_time},
+		kpoint_type= #{kpoint_type},video_type= #{video_type},file_type=
+		#{file_type},
+		content= #{content} where kpoint_id = #{kpoint_id}
+	</update>
+
+	<insert id="insertKpoint" parameterType="Edu_course_kpoint">
+		<selectKey resultType="int" order="AFTER" keyProperty="kpoint_id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into edu_course_kpoint (course_id,name,kpoint_type,parent_id)
+		values (#{course_id},#{name},#{kpoint_type},#{parent_id})
+	</insert>
+	
+	<delete id="deleteKpoint" parameterType="string" >
+	DELETE FROM EDU_COURSE_KPOINT where KPOINT_ID IN(${value})
+	</delete>
+	<!-- <resultMap id="ResultMapWithBLOBs" type="com.jst.model.EduCourse" extends="BaseResultMap" 
+		> <result column="CONTEXT" property="context" jdbcType="LONGVARCHAR" /> </resultMap> 
+		<sql id="Example_Where_Clause" > <where > <foreach collection="oredCriteria" 
+		item="criteria" separator="or" > <if test="criteria.valid" > <trim prefix="(" 
+		suffix=")" prefixOverrides="and" > <foreach collection="criteria.criteria" 
+		item="criterion" > <choose > <when test="criterion.noValue" > and ${criterion.condition} 
+		</when> <when test="criterion.singleValue" > and ${criterion.condition} #{criterion.value} 
+		</when> <when test="criterion.betweenValue" > and ${criterion.condition} 
+		#{criterion.value} and #{criterion.secondValue} </when> <when test="criterion.listValue" 
+		> and ${criterion.condition} <foreach collection="criterion.value" item="listItem" 
+		open="(" close=")" separator="," > #{listItem} </foreach> </when> </choose> 
+		</foreach> </trim> </if> </foreach> </where> </sql> <sql id="Update_By_Example_Where_Clause" 
+		> <where > <foreach collection="example.oredCriteria" item="criteria" separator="or" 
+		> <if test="criteria.valid" > <trim prefix="(" suffix=")" prefixOverrides="and" 
+		> <foreach collection="criteria.criteria" item="criterion" > <choose > <when 
+		test="criterion.noValue" > and ${criterion.condition} </when> <when test="criterion.singleValue" 
+		> and ${criterion.condition} #{criterion.value} </when> <when test="criterion.betweenValue" 
+		> and ${criterion.condition} #{criterion.value} and #{criterion.secondValue} 
+		</when> <when test="criterion.listValue" > and ${criterion.condition} <foreach 
+		collection="criterion.value" item="listItem" open="(" close=")" separator="," 
+		> #{listItem} </foreach> </when> </choose> </foreach> </trim> </if> </foreach> 
+		</where> </sql> <sql id="Base_Column_List" > COURSE_ID, COURSE_NAME, IS_AVALIABLE, 
+		SUBJECT_ID, SUBJECT_LINK, ADD_TIME, SOURCE_PRICE, CURRENT_PRICE, TITLE, LESSION_NUM, 
+		LOGO, UPDATE_TIME, PAGE_BUYCOUNT, PAGE_VIEWCOUNT, END_TIME, LOSETYPE, LOSE_TIME, 
+		SEQUENCE, COURSE_GROSS_INCOME </sql> <sql id="Blob_Column_List" > CONTEXT 
+		</sql> <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" 
+		parameterType="com.jst.model.EduCourseExample" > select <if test="distinct" 
+		> distinct </if> <include refid="Base_Column_List" /> , <include refid="Blob_Column_List" 
+		/> from edu_course <if test="_parameter != null" > <include refid="Example_Where_Clause" 
+		/> </if> <if test="orderByClause != null" > order by ${orderByClause} </if> 
+		</select> <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jst.model.EduCourseExample" 
+		> select <if test="distinct" > distinct </if> <include refid="Base_Column_List" 
+		/> from edu_course <if test="_parameter != null" > <include refid="Example_Where_Clause" 
+		/> </if> <if test="orderByClause != null" > order by ${orderByClause} </if> 
+		</select> <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" 
+		parameterType="java.lang.Integer" > select <include refid="Base_Column_List" 
+		/> , <include refid="Blob_Column_List" /> from edu_course where COURSE_ID 
+		= #{courseId,jdbcType=INTEGER} </select> <delete id="deleteByPrimaryKey" 
+		parameterType="java.lang.Integer" > delete from edu_course where COURSE_ID 
+		= #{courseId,jdbcType=INTEGER} </delete> <delete id="deleteByExample" parameterType="com.jst.model.EduCourseExample" 
+		> delete from edu_course <if test="_parameter != null" > <include refid="Example_Where_Clause" 
+		/> </if> </delete> <insert id="insertSelective" parameterType="com.jst.model.EduCourse" 
+		> insert into edu_course <trim prefix="(" suffix=")" suffixOverrides="," 
+		> <if test="courseId != null" > COURSE_ID, </if> <if test="courseName != 
+		null" > COURSE_NAME, </if> <if test="isAvaliable != null" > IS_AVALIABLE, 
+		</if> <if test="subjectId != null" > SUBJECT_ID, </if> <if test="subjectLink 
+		!= null" > SUBJECT_LINK, </if> <if test="addTime != null" > ADD_TIME, </if> 
+		<if test="sourcePrice != null" > SOURCE_PRICE, </if> <if test="currentPrice 
+		!= null" > CURRENT_PRICE, </if> <if test="title != null" > TITLE, </if> <if 
+		test="lessionNum != null" > LESSION_NUM, </if> <if test="logo != null" > 
+		LOGO, </if> <if test="updateTime != null" > UPDATE_TIME, </if> <if test="pageBuycount 
+		!= null" > PAGE_BUYCOUNT, </if> <if test="pageViewcount != null" > PAGE_VIEWCOUNT, 
+		</if> <if test="endTime != null" > END_TIME, </if> <if test="losetype != 
+		null" > LOSETYPE, </if> <if test="loseTime != null" > LOSE_TIME, </if> <if 
+		test="sequence != null" > SEQUENCE, </if> <if test="courseGrossIncome != 
+		null" > COURSE_GROSS_INCOME, </if> <if test="context != null" > CONTEXT, 
+		</if> </trim> <trim prefix="values (" suffix=")" suffixOverrides="," > <if 
+		test="courseId != null" > #{courseId,jdbcType=INTEGER}, </if> <if test="courseName 
+		!= null" > #{courseName,jdbcType=VARCHAR}, </if> <if test="isAvaliable != 
+		null" > #{isAvaliable,jdbcType=INTEGER}, </if> <if test="subjectId != null" 
+		> #{subjectId,jdbcType=INTEGER}, </if> <if test="subjectLink != null" > #{subjectLink,jdbcType=VARCHAR}, 
+		</if> <if test="addTime != null" > #{addTime,jdbcType=TIMESTAMP}, </if> <if 
+		test="sourcePrice != null" > #{sourcePrice,jdbcType=DECIMAL}, </if> <if test="currentPrice 
+		!= null" > #{currentPrice,jdbcType=DECIMAL}, </if> <if test="title != null" 
+		> #{title,jdbcType=VARCHAR}, </if> <if test="lessionNum != null" > #{lessionNum,jdbcType=INTEGER}, 
+		</if> <if test="logo != null" > #{logo,jdbcType=VARCHAR}, </if> <if test="updateTime 
+		!= null" > #{updateTime,jdbcType=TIMESTAMP}, </if> <if test="pageBuycount 
+		!= null" > #{pageBuycount,jdbcType=INTEGER}, </if> <if test="pageViewcount 
+		!= null" > #{pageViewcount,jdbcType=INTEGER}, </if> <if test="endTime != 
+		null" > #{endTime,jdbcType=TIMESTAMP}, </if> <if test="losetype != null" 
+		> #{losetype,jdbcType=INTEGER}, </if> <if test="loseTime != null" > #{loseTime,jdbcType=VARCHAR}, 
+		</if> <if test="sequence != null" > #{sequence,jdbcType=INTEGER}, </if> <if 
+		test="courseGrossIncome != null" > #{courseGrossIncome,jdbcType=DECIMAL}, 
+		</if> <if test="context != null" > #{context,jdbcType=LONGVARCHAR}, </if> 
+		</trim> </insert> <select id="countByExample" parameterType="com.jst.model.EduCourseExample" 
+		resultType="java.lang.Integer" > select count(*) from edu_course <if test="_parameter 
+		!= null" > <include refid="Example_Where_Clause" /> </if> </select> <update 
+		id="updateByExampleSelective" parameterType="map" > update edu_course <set 
+		> <if test="record.courseId != null" > COURSE_ID = #{record.courseId,jdbcType=INTEGER}, 
+		</if> <if test="record.courseName != null" > COURSE_NAME = #{record.courseName,jdbcType=VARCHAR}, 
+		</if> <if test="record.isAvaliable != null" > IS_AVALIABLE = #{record.isAvaliable,jdbcType=INTEGER}, 
+		</if> <if test="record.subjectId != null" > SUBJECT_ID = #{record.subjectId,jdbcType=INTEGER}, 
+		</if> <if test="record.subjectLink != null" > SUBJECT_LINK = #{record.subjectLink,jdbcType=VARCHAR}, 
+		</if> <if test="record.addTime != null" > ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP}, 
+		</if> <if test="record.sourcePrice != null" > SOURCE_PRICE = #{record.sourcePrice,jdbcType=DECIMAL}, 
+		</if> <if test="record.currentPrice != null" > CURRENT_PRICE = #{record.currentPrice,jdbcType=DECIMAL}, 
+		</if> <if test="record.title != null" > TITLE = #{record.title,jdbcType=VARCHAR}, 
+		</if> <if test="record.lessionNum != null" > LESSION_NUM = #{record.lessionNum,jdbcType=INTEGER}, 
+		</if> <if test="record.logo != null" > LOGO = #{record.logo,jdbcType=VARCHAR}, 
+		</if> <if test="record.updateTime != null" > UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
+		</if> <if test="record.pageBuycount != null" > PAGE_BUYCOUNT = #{record.pageBuycount,jdbcType=INTEGER}, 
+		</if> <if test="record.pageViewcount != null" > PAGE_VIEWCOUNT = #{record.pageViewcount,jdbcType=INTEGER}, 
+		</if> <if test="record.endTime != null" > END_TIME = #{record.endTime,jdbcType=TIMESTAMP}, 
+		</if> <if test="record.losetype != null" > LOSETYPE = #{record.losetype,jdbcType=INTEGER}, 
+		</if> <if test="record.loseTime != null" > LOSE_TIME = #{record.loseTime,jdbcType=VARCHAR}, 
+		</if> <if test="record.sequence != null" > SEQUENCE = #{record.sequence,jdbcType=INTEGER}, 
+		</if> <if test="record.courseGrossIncome != null" > COURSE_GROSS_INCOME = 
+		#{record.courseGrossIncome,jdbcType=DECIMAL}, </if> <if test="record.context 
+		!= null" > CONTEXT = #{record.context,jdbcType=LONGVARCHAR}, </if> </set> 
+		<if test="_parameter != null" > <include refid="Update_By_Example_Where_Clause" 
+		/> </if> </update> <update id="updateByExampleWithBLOBs" parameterType="map" 
+		> update edu_course set COURSE_ID = #{record.courseId,jdbcType=INTEGER}, 
+		COURSE_NAME = #{record.courseName,jdbcType=VARCHAR}, IS_AVALIABLE = #{record.isAvaliable,jdbcType=INTEGER}, 
+		SUBJECT_ID = #{record.subjectId,jdbcType=INTEGER}, SUBJECT_LINK = #{record.subjectLink,jdbcType=VARCHAR}, 
+		ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP}, SOURCE_PRICE = #{record.sourcePrice,jdbcType=DECIMAL}, 
+		CURRENT_PRICE = #{record.currentPrice,jdbcType=DECIMAL}, TITLE = #{record.title,jdbcType=VARCHAR}, 
+		LESSION_NUM = #{record.lessionNum,jdbcType=INTEGER}, LOGO = #{record.logo,jdbcType=VARCHAR}, 
+		UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, PAGE_BUYCOUNT = #{record.pageBuycount,jdbcType=INTEGER}, 
+		PAGE_VIEWCOUNT = #{record.pageViewcount,jdbcType=INTEGER}, END_TIME = #{record.endTime,jdbcType=TIMESTAMP}, 
+		LOSETYPE = #{record.losetype,jdbcType=INTEGER}, LOSE_TIME = #{record.loseTime,jdbcType=VARCHAR}, 
+		SEQUENCE = #{record.sequence,jdbcType=INTEGER}, COURSE_GROSS_INCOME = #{record.courseGrossIncome,jdbcType=DECIMAL}, 
+		CONTEXT = #{record.context,jdbcType=LONGVARCHAR} <if test="_parameter != 
+		null" > <include refid="Update_By_Example_Where_Clause" /> </if> </update> 
+		<update id="updateByExample" parameterType="map" > update edu_course set 
+		COURSE_ID = #{record.courseId,jdbcType=INTEGER}, COURSE_NAME = #{record.courseName,jdbcType=VARCHAR}, 
+		IS_AVALIABLE = #{record.isAvaliable,jdbcType=INTEGER}, SUBJECT_ID = #{record.subjectId,jdbcType=INTEGER}, 
+		SUBJECT_LINK = #{record.subjectLink,jdbcType=VARCHAR}, ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP}, 
+		SOURCE_PRICE = #{record.sourcePrice,jdbcType=DECIMAL}, CURRENT_PRICE = #{record.currentPrice,jdbcType=DECIMAL}, 
+		TITLE = #{record.title,jdbcType=VARCHAR}, LESSION_NUM = #{record.lessionNum,jdbcType=INTEGER}, 
+		LOGO = #{record.logo,jdbcType=VARCHAR}, UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
+		PAGE_BUYCOUNT = #{record.pageBuycount,jdbcType=INTEGER}, PAGE_VIEWCOUNT = 
+		#{record.pageViewcount,jdbcType=INTEGER}, END_TIME = #{record.endTime,jdbcType=TIMESTAMP}, 
+		LOSETYPE = #{record.losetype,jdbcType=INTEGER}, LOSE_TIME = #{record.loseTime,jdbcType=VARCHAR}, 
+		SEQUENCE = #{record.sequence,jdbcType=INTEGER}, COURSE_GROSS_INCOME = #{record.courseGrossIncome,jdbcType=DECIMAL} 
+		<if test="_parameter != null" > <include refid="Update_By_Example_Where_Clause" 
+		/> </if> </update> <update id="updateByPrimaryKeySelective" parameterType="com.jst.model.EduCourse" 
+		> update edu_course <set > <if test="courseName != null" > COURSE_NAME = 
+		#{courseName,jdbcType=VARCHAR}, </if> <if test="isAvaliable != null" > IS_AVALIABLE 
+		= #{isAvaliable,jdbcType=INTEGER}, </if> <if test="subjectId != null" > SUBJECT_ID 
+		= #{subjectId,jdbcType=INTEGER}, </if> <if test="subjectLink != null" > SUBJECT_LINK 
+		= #{subjectLink,jdbcType=VARCHAR}, </if> <if test="addTime != null" > ADD_TIME 
+		= #{addTime,jdbcType=TIMESTAMP}, </if> <if test="sourcePrice != null" > SOURCE_PRICE 
+		= #{sourcePrice,jdbcType=DECIMAL}, </if> <if test="currentPrice != null" 
+		> CURRENT_PRICE = #{currentPrice,jdbcType=DECIMAL}, </if> <if test="title 
+		!= null" > TITLE = #{title,jdbcType=VARCHAR}, </if> <if test="lessionNum 
+		!= null" > LESSION_NUM = #{lessionNum,jdbcType=INTEGER}, </if> <if test="logo 
+		!= null" > LOGO = #{logo,jdbcType=VARCHAR}, </if> <if test="updateTime != 
+		null" > UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if> <if test="pageBuycount 
+		!= null" > PAGE_BUYCOUNT = #{pageBuycount,jdbcType=INTEGER}, </if> <if test="pageViewcount 
+		!= null" > PAGE_VIEWCOUNT = #{pageViewcount,jdbcType=INTEGER}, </if> <if 
+		test="endTime != null" > END_TIME = #{endTime,jdbcType=TIMESTAMP}, </if> 
+		<if test="losetype != null" > LOSETYPE = #{losetype,jdbcType=INTEGER}, </if> 
+		<if test="loseTime != null" > LOSE_TIME = #{loseTime,jdbcType=VARCHAR}, </if> 
+		<if test="sequence != null" > SEQUENCE = #{sequence,jdbcType=INTEGER}, </if> 
+		<if test="courseGrossIncome != null" > COURSE_GROSS_INCOME = #{courseGrossIncome,jdbcType=DECIMAL}, 
+		</if> <if test="context != null" > CONTEXT = #{context,jdbcType=LONGVARCHAR}, 
+		</if> </set> where COURSE_ID = #{courseId,jdbcType=INTEGER} </update> <update 
+		id="updateByPrimaryKeyWithBLOBs" parameterType="com.jst.model.EduCourse" 
+		> update edu_course set COURSE_NAME = #{courseName,jdbcType=VARCHAR}, IS_AVALIABLE 
+		= #{isAvaliable,jdbcType=INTEGER}, SUBJECT_ID = #{subjectId,jdbcType=INTEGER}, 
+		SUBJECT_LINK = #{subjectLink,jdbcType=VARCHAR}, ADD_TIME = #{addTime,jdbcType=TIMESTAMP}, 
+		SOURCE_PRICE = #{sourcePrice,jdbcType=DECIMAL}, CURRENT_PRICE = #{currentPrice,jdbcType=DECIMAL}, 
+		TITLE = #{title,jdbcType=VARCHAR}, LESSION_NUM = #{lessionNum,jdbcType=INTEGER}, 
+		LOGO = #{logo,jdbcType=VARCHAR}, UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, 
+		PAGE_BUYCOUNT = #{pageBuycount,jdbcType=INTEGER}, PAGE_VIEWCOUNT = #{pageViewcount,jdbcType=INTEGER}, 
+		END_TIME = #{endTime,jdbcType=TIMESTAMP}, LOSETYPE = #{losetype,jdbcType=INTEGER}, 
+		LOSE_TIME = #{loseTime,jdbcType=VARCHAR}, SEQUENCE = #{sequence,jdbcType=INTEGER}, 
+		COURSE_GROSS_INCOME = #{courseGrossIncome,jdbcType=DECIMAL}, CONTEXT = #{context,jdbcType=LONGVARCHAR} 
+		where COURSE_ID = #{courseId,jdbcType=INTEGER} </update> <update id="updateByPrimaryKey" 
+		parameterType="com.jst.model.EduCourse" > update edu_course set COURSE_NAME 
+		= #{courseName,jdbcType=VARCHAR}, IS_AVALIABLE = #{isAvaliable,jdbcType=INTEGER}, 
+		SUBJECT_ID = #{subjectId,jdbcType=INTEGER}, SUBJECT_LINK = #{subjectLink,jdbcType=VARCHAR}, 
+		ADD_TIME = #{addTime,jdbcType=TIMESTAMP}, SOURCE_PRICE = #{sourcePrice,jdbcType=DECIMAL}, 
+		CURRENT_PRICE = #{currentPrice,jdbcType=DECIMAL}, TITLE = #{title,jdbcType=VARCHAR}, 
+		LESSION_NUM = #{lessionNum,jdbcType=INTEGER}, LOGO = #{logo,jdbcType=VARCHAR}, 
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, PAGE_BUYCOUNT = #{pageBuycount,jdbcType=INTEGER}, 
+		PAGE_VIEWCOUNT = #{pageViewcount,jdbcType=INTEGER}, END_TIME = #{endTime,jdbcType=TIMESTAMP}, 
+		LOSETYPE = #{losetype,jdbcType=INTEGER}, LOSE_TIME = #{loseTime,jdbcType=VARCHAR}, 
+		SEQUENCE = #{sequence,jdbcType=INTEGER}, COURSE_GROSS_INCOME = #{courseGrossIncome,jdbcType=DECIMAL} 
+		where COURSE_ID = #{courseId,jdbcType=INTEGER} </update> -->
+</mapper>

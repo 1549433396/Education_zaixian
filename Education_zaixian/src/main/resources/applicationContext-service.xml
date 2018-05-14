@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<!-- 配置Service扫描 -->
+	<context:component-scan base-package="com.jst.myservice" />
+	<!-- 自定义Realm -->
+	<bean id="myRealm" class="com.jst.realm.MyRealm" />
+
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="myRealm" />
+	</bean>
+
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/admin/index" /><!-- 访问需要认证的地址时，没有认证跳转的地址，默认为login.jsp -->
+		<property name="successUrl" value="/role"></property>
+		<property name="unauthorizedUrl" value="404.jsp" /> <!-- 登录后，没有访问权限将跳转到404.jsp -->
+		<property name="filterChainDefinitions">
+			<!-- **表示匹配0个或多个路径 ,*表示匹配0个或多个字符串，?表示匹配一个字符 -->
+			<value>
+				/js/** = anon
+				/css/** = anon
+				/images/** = anon
+				/common/** = anon
+				/jsplug/** = anon
+				/inc/** = anon
+				/kindeditor/** = anon
+				/skins/** = anon
+				/static/** = anon
+				/front/** = anon
+				/admin/login=anon
+				/admin/role = anon
+				/admin/index=anon
+			</value>
+		</property>
+	</bean>
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	<!-- 开启Shiro注解 -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor" />
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod"
+			value="org.apache.shiro.SecurityUtils.setSecurityManager" />
+		<property name="arguments" ref="securityManager" />
+	</bean>
+
+	<!-- 配置单机版的连接 -->
+
+	<bean id="jedisClientPool" class="com.jst.utils.redis.JedisClientPool" />
+
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<!-- <constructor-arg name="host" value="192.168.43.226"></constructor-arg> 
+			<constructor-arg name="port" value="6379"></constructor-arg> <constructor-arg 
+			name="password" value="jstroot"/> -->
+
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1" value="192.168.43.226"
+			type="String" />
+		<constructor-arg index="2" value="6379" type="int" />
+		<constructor-arg index="3" value="2000" type="int" />
+		<constructor-arg index="4" value="jstroot" />
+	</bean>
+
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<!--最大连接数 -->
+		<property name="maxTotal" value="30" />
+
+	</bean>
+
+</beans>

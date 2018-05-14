@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.question.QuestionsCommentMapper">
+   <resultMap type="QuestionsComment" id="QuestionsCommentMap">
+    <result column="id" property="id"/>
+    <result column="content" property="content"/>
+    <result column="is_best" property="is_best"/>
+    <result column="reply_count" property="reply_count"/>
+    <result column="praise_count" property="praise_count"/>
+    <result column="add_time" property="add_time"/>
+    <result column="comment_id" property="comment_id"/>
+    <association column="cus_id" property="eduUser" select="com.jst.mapper.user.EduUserMapper.getById"></association>
+    <association column="question_id" property="questions" select="com.jst.mapper.question.QuestionsMapper.getById"></association>
+   </resultMap>
+    <select id="listAll" resultMap="QuestionsCommentMap" parameterType="java.util.Map">
+       select * from edu_questions_comment  
+      <where>
+        <if test="qcid!=null">
+          and id=#{qcid}
+        </if>
+       <if test="qtitle!=null">
+          and question_id in (select id from edu_questions where title like '%${qtitle}%')
+       </if>
+        <if test="isbest!=null">
+          and is_best=#{isbest}
+        </if>
+       </where>
+    </select>
+    <delete id="delete" parameterType="int">
+      delete from edu_questions_comment where id=#{id}
+    </delete>
+    <update id="update" parameterType="questionsComment">
+      update edu_questions_comment set content=#{content},praise_count=#{praise_count}  where id=#{qcid}
+    </update>
+</mapper>

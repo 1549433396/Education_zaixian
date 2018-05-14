@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.Sys_UsersMapper">
+	<!--
+		注释部分是通过用户名查询所有权限，这个查询暂时不需要 
+		<resultMap type="Sys_user" id="userMaps">
+		<result property="user_id" column="user_id" />
+		<result property="login_name" column="login_name" />
+		<result property="login_pwd" column="login_pwd" />
+		<result property="user_name" column="user_name" />
+		<result property="status" column="status" />
+		<result property="last_login_time" column="last_login_time" />
+		<result property="last_login_ip" column="last_login_ip" />
+		<result property="create_time" column="create_time" />
+		<result property="email" column="email" />
+		<result property="tel" column="tel" />
+		<result property="role_id" column="role_id" />
+		<association property="role" column="rid"
+			select="com.jst.mapper.RoleMapper.selectById"></association>
+	</resultMap>
+	 
+	<select id="getPermission" parameterType="int" resultMap="userMaps">
+		select
+		* from Sys_user where uid = #{value}
+	</select>-->
+	
+	<select id="selectUserById" parameterType="int" resultType="Sys_user">
+		select *from Sys_user where user_id = #{value}
+	</select>
+
+	<resultMap type="Sys_user" id="userMapCaiDan">
+		<result property="user_id" column="user_id" />
+		<result property="login_name" column="login_name" />
+		<result property="login_pwd" column="login_pwd" />
+		<result property="user_name" column="user_name" />
+		<result property="status" column="status" />
+		<result property="last_login_time" column="last_login_time" />
+		<result property="last_login_ip" column="last_login_ip" />
+		<result property="create_time" column="create_time" />
+		<result property="email" column="email" />
+		<result property="tel" column="tel" />
+		<result property="role_id" column="role_id" />
+		<association property="sRole" column="role_id"
+			select="com.jst.mapper.Sys_RoleMapper.queryByIds"></association>
+	</resultMap>
+	 
+	<resultMap type="Sys_user" id="userMap">
+		<result property="user_id" column="user_id" />
+		<result property="login_name" column="login_name" />
+		<result property="login_pwd" column="login_pwd" />
+		<result property="user_name" column="user_name" />
+		<result property="status" column="status" />
+		<result property="last_login_time" column="last_login_time" />
+		<result property="last_login_ip" column="last_login_ip" />
+		<result property="create_time" column="create_time" />
+		<result property="email" column="email" />
+		<result property="tel" column="tel" />
+		<result property="role_id" column="role_id" />
+		<association property="sRole" column="role_id"
+			select="com.jst.mapper.Sys_RoleMapper.queryById"></association>
+	</resultMap>
+
+	<select id="getPwd" parameterType="String" resultType="Sys_user">
+		select *
+		from Sys_user where LOGIN_NAME = #{value}
+	</select>
+	 <select id="listAll" resultMap="userMap" parameterType="map">
+		select * from Sys_user
+	</select>
+	<!--
+	<select id="listAllRows" resultType="int" >
+		select count(*) from Sys_user
+	</select> -->
+	
+	<insert id="addUser" parameterType="Sys_user">
+		 insert into Sys_user
+		(login_name,login_pwd,user_name,create_time,email,tel,role_id) values(#{login_name},#{login_pwd},#{user_name},#{create_time},#{email},#{tel},#{role_id}) 
+	</insert>
+	
+	<select id="getPermissionCaiDan" parameterType="int" resultMap="userMapCaiDan">
+		select * from Sys_user where user_id = #{value}
+	</select>
+	
+	<delete id="deleteById" parameterType="int" >
+		delete from Sys_user where user_id = #{value}
+	</delete>
+	
+	<update id="updateUser" parameterType="Sys_user" >
+		update Sys_user set login_name=#{login_name},login_pwd=#{login_pwd},role_id=#{role_id},email=#{email},tel=#{tel},user_name=#{user_name} where user_id = #{user_id}
+	</update> 
+</mapper>

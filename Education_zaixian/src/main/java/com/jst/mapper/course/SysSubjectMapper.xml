@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jst.mapper.course.SysSubjectMapper">
+	<resultMap type="SysSubject" id="SysSubjects">
+		<result column="subject_id" property="subjectId" />
+		<result column="subject_name" property="subjectName" />
+		<result column="status" property="status" />
+		<result column="parent_id" property="parentId" />
+		<result column="create_time" property="createTime" />
+		<result column="sort" property="sort" />
+	</resultMap>
+
+
+	<select id="getById" parameterType="int" resultMap="SysSubjects">
+		select * from
+		sys_subject where subject_id = #{value}
+	</select>
+
+	<select id="getAllSubect" resultMap="SysSubjects">
+		select * from sys_subject where parent_id = 0
+	</select>
+
+	<select id="getAllList" resultType="EduTeacher" >
+		select * from edu_teacher
+	</select>
+	
+	<select id="getALLSubject" resultMap="SysSubjects" >
+		select * from sys_subject
+	</select>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.question.QuestionsMapper">
+	<!--type传的类型 id随便起的名字 -->
+	<resultMap type="Questions" id="QuestionsMap">
+		<!-- column 对的是数据库里的 列名 property 对的是 bean里的方法的属性 -->
+		<result column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="type" property="type" />
+		<result column="status" property="status" />
+		<result column="reply_count" property="reply_count" />
+		<result column="browse_count" property="browse_count" />
+		<result column="praise_count" property="praise_count" />
+		<result column="add_time" property="add_time" />
+		<!-- 这里的property跟model或bean里的属性名字一样 column跟数据库列的名字一样 必须一样 是edu_questions表里的 不是edu_user表里的 
+			select 跳到EduUserMapper里查一遍找到这个属性 -->
+		<association column="cus_id" property="eduUser"
+			select="com.jst.mapper.user.EduUserMapper.getById"></association>
+			<!--根据问答id查询标签集合  -->
+	   <!--  <association column="questions_id" property="listtag"></association> -->
+	</resultMap>
+	<!-- id是mapper接口的名字 必须一样 resultMap跟resultMap里id的名字一样 就是再查一遍 -->
+	<select id="listAll" resultMap="QuestionsMap" resultType="Questions" parameterType="java.util.Map">
+		select * from edu_questions 
+		<where>
+		  <if test="title!=null">
+		    and title like '%${title}%'
+		  </if>
+		  <if test="type>0">
+		    and type=#{type}
+		  </if>
+		  
+		  <if test="start!=null">
+		   and add_time &gt; #{start}
+		  </if>
+		  <if test="end!=null">
+		   and add_time &lt; #{end}
+		  </if> 
+		</where>
+	</select>
+	<!-- <select id="listType" resultMap="QuestionsMap">
+	select * from edu_questions
+	</select> -->
+	
+	<!-- id是mapper接口的名字 必须一样 resultMap跟resultMap里id的名字一样 就是再查一遍 parameterType 
+		传的类型int -->
+	<select id="getById" resultMap="QuestionsMap" parameterType="int">
+		select * from edu_questions where id=#{id}
+	</select>
+	<!-- id是mapper接口的名字 必须一样 parameterType 传的类型int -->
+	<delete id="delete" parameterType="int">
+		delete from edu_questions
+		where id=#{id}
+	</delete>
+	<!-- id是mapper接口的名字 必须一样 parameterType 传的对象 questions -->
+	<update id="update" parameterType="questions">
+		update edu_questions set cus_id=#{eduUser.email},
+		title=#{title},content=#{content},type=#{type},status=#{status},reply_count=#{reply_count},
+		browse_count=#{browse_count},praise_count=#{praise_count},add_time=#{add_time}
+		where id=#{id}
+	</update>
+</mapper>

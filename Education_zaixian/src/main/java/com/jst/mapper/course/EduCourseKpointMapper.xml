@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jst.mapper.course.EduCourseKpointMapper" >
+  <!-- <resultMap id="BaseResultMap" type="com.jst.model.EduCourseKpoint" >
+    <id column="KPOINT_ID" property="kpointId" jdbcType="INTEGER" />
+    <result column="COURSE_ID" property="courseId" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="SORT" property="sort" jdbcType="INTEGER" />
+    <result column="PLAY_COUNT" property="playCount" jdbcType="INTEGER" />
+    <result column="IS_FREE" property="isFree" jdbcType="BIT" />
+    <result column="VIDEO_URL" property="videoUrl" jdbcType="VARCHAR" />
+    <result column="TEACHER_ID" property="teacherId" jdbcType="INTEGER" />
+    <result column="play_time" property="playTime" jdbcType="VARCHAR" />
+    <result column="KPOINT_TYPE" property="kpointType" jdbcType="INTEGER" />
+    <result column="VIDEO_TYPE" property="videoType" jdbcType="VARCHAR" />
+    <result column="FILE_TYPE" property="fileType" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jst.model.EduCourseKpoint" extends="BaseResultMap" >
+    <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    KPOINT_ID, COURSE_ID, NAME, PARENT_ID, ADD_TIME, SORT, PLAY_COUNT, IS_FREE, VIDEO_URL, 
+    TEACHER_ID, play_time, KPOINT_TYPE, VIDEO_TYPE, FILE_TYPE
+  </sql>
+  <sql id="Blob_Column_List" >
+    CONTENT
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.jst.model.EduCourseKpointExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from edu_course_kpoint
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jst.model.EduCourseKpointExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from edu_course_kpoint
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from edu_course_kpoint
+    where KPOINT_ID = #{kpointId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from edu_course_kpoint
+    where KPOINT_ID = #{kpointId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jst.model.EduCourseKpointExample" >
+    delete from edu_course_kpoint
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jst.model.EduCourseKpoint" >
+    insert into edu_course_kpoint (KPOINT_ID, COURSE_ID, NAME, 
+      PARENT_ID, ADD_TIME, SORT, 
+      PLAY_COUNT, IS_FREE, VIDEO_URL, 
+      TEACHER_ID, play_time, KPOINT_TYPE, 
+      VIDEO_TYPE, FILE_TYPE, CONTENT
+      )
+    values (#{kpointId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, 
+      #{playCount,jdbcType=INTEGER}, #{isFree,jdbcType=BIT}, #{videoUrl,jdbcType=VARCHAR}, 
+      #{teacherId,jdbcType=INTEGER}, #{playTime,jdbcType=VARCHAR}, #{kpointType,jdbcType=INTEGER}, 
+      #{videoType,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jst.model.EduCourseKpoint" >
+    insert into edu_course_kpoint
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="kpointId != null" >
+        KPOINT_ID,
+      </if>
+      <if test="courseId != null" >
+        COURSE_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="sort != null" >
+        SORT,
+      </if>
+      <if test="playCount != null" >
+        PLAY_COUNT,
+      </if>
+      <if test="isFree != null" >
+        IS_FREE,
+      </if>
+      <if test="videoUrl != null" >
+        VIDEO_URL,
+      </if>
+      <if test="teacherId != null" >
+        TEACHER_ID,
+      </if>
+      <if test="playTime != null" >
+        play_time,
+      </if>
+      <if test="kpointType != null" >
+        KPOINT_TYPE,
+      </if>
+      <if test="videoType != null" >
+        VIDEO_TYPE,
+      </if>
+      <if test="fileType != null" >
+        FILE_TYPE,
+      </if>
+      <if test="content != null" >
+        CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="kpointId != null" >
+        #{kpointId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="playCount != null" >
+        #{playCount,jdbcType=INTEGER},
+      </if>
+      <if test="isFree != null" >
+        #{isFree,jdbcType=BIT},
+      </if>
+      <if test="videoUrl != null" >
+        #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null" >
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="playTime != null" >
+        #{playTime,jdbcType=VARCHAR},
+      </if>
+      <if test="kpointType != null" >
+        #{kpointType,jdbcType=INTEGER},
+      </if>
+      <if test="videoType != null" >
+        #{videoType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jst.model.EduCourseKpointExample" resultType="java.lang.Integer" >
+    select count(*) from edu_course_kpoint
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update edu_course_kpoint
+    <set >
+      <if test="record.kpointId != null" >
+        KPOINT_ID = #{record.kpointId,jdbcType=INTEGER},
+      </if>
+      <if test="record.courseId != null" >
+        COURSE_ID = #{record.courseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null" >
+        PARENT_ID = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sort != null" >
+        SORT = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.playCount != null" >
+        PLAY_COUNT = #{record.playCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.isFree != null" >
+        IS_FREE = #{record.isFree,jdbcType=BIT},
+      </if>
+      <if test="record.videoUrl != null" >
+        VIDEO_URL = #{record.videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherId != null" >
+        TEACHER_ID = #{record.teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="record.playTime != null" >
+        play_time = #{record.playTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.kpointType != null" >
+        KPOINT_TYPE = #{record.kpointType,jdbcType=INTEGER},
+      </if>
+      <if test="record.videoType != null" >
+        VIDEO_TYPE = #{record.videoType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileType != null" >
+        FILE_TYPE = #{record.fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        CONTENT = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update edu_course_kpoint
+    set KPOINT_ID = #{record.kpointId,jdbcType=INTEGER},
+      COURSE_ID = #{record.courseId,jdbcType=INTEGER},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      PARENT_ID = #{record.parentId,jdbcType=INTEGER},
+      ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP},
+      SORT = #{record.sort,jdbcType=INTEGER},
+      PLAY_COUNT = #{record.playCount,jdbcType=INTEGER},
+      IS_FREE = #{record.isFree,jdbcType=BIT},
+      VIDEO_URL = #{record.videoUrl,jdbcType=VARCHAR},
+      TEACHER_ID = #{record.teacherId,jdbcType=INTEGER},
+      play_time = #{record.playTime,jdbcType=VARCHAR},
+      KPOINT_TYPE = #{record.kpointType,jdbcType=INTEGER},
+      VIDEO_TYPE = #{record.videoType,jdbcType=VARCHAR},
+      FILE_TYPE = #{record.fileType,jdbcType=VARCHAR},
+      CONTENT = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update edu_course_kpoint
+    set KPOINT_ID = #{record.kpointId,jdbcType=INTEGER},
+      COURSE_ID = #{record.courseId,jdbcType=INTEGER},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      PARENT_ID = #{record.parentId,jdbcType=INTEGER},
+      ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP},
+      SORT = #{record.sort,jdbcType=INTEGER},
+      PLAY_COUNT = #{record.playCount,jdbcType=INTEGER},
+      IS_FREE = #{record.isFree,jdbcType=BIT},
+      VIDEO_URL = #{record.videoUrl,jdbcType=VARCHAR},
+      TEACHER_ID = #{record.teacherId,jdbcType=INTEGER},
+      play_time = #{record.playTime,jdbcType=VARCHAR},
+      KPOINT_TYPE = #{record.kpointType,jdbcType=INTEGER},
+      VIDEO_TYPE = #{record.videoType,jdbcType=VARCHAR},
+      FILE_TYPE = #{record.fileType,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jst.model.EduCourseKpoint" >
+    update edu_course_kpoint
+    <set >
+      <if test="courseId != null" >
+        COURSE_ID = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="playCount != null" >
+        PLAY_COUNT = #{playCount,jdbcType=INTEGER},
+      </if>
+      <if test="isFree != null" >
+        IS_FREE = #{isFree,jdbcType=BIT},
+      </if>
+      <if test="videoUrl != null" >
+        VIDEO_URL = #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null" >
+        TEACHER_ID = #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="playTime != null" >
+        play_time = #{playTime,jdbcType=VARCHAR},
+      </if>
+      <if test="kpointType != null" >
+        KPOINT_TYPE = #{kpointType,jdbcType=INTEGER},
+      </if>
+      <if test="videoType != null" >
+        VIDEO_TYPE = #{videoType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+        FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        CONTENT = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where KPOINT_ID = #{kpointId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jst.model.EduCourseKpoint" >
+    update edu_course_kpoint
+    set COURSE_ID = #{courseId,jdbcType=INTEGER},
+      NAME = #{name,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=INTEGER},
+      ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      SORT = #{sort,jdbcType=INTEGER},
+      PLAY_COUNT = #{playCount,jdbcType=INTEGER},
+      IS_FREE = #{isFree,jdbcType=BIT},
+      VIDEO_URL = #{videoUrl,jdbcType=VARCHAR},
+      TEACHER_ID = #{teacherId,jdbcType=INTEGER},
+      play_time = #{playTime,jdbcType=VARCHAR},
+      KPOINT_TYPE = #{kpointType,jdbcType=INTEGER},
+      VIDEO_TYPE = #{videoType,jdbcType=VARCHAR},
+      FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      CONTENT = #{content,jdbcType=LONGVARCHAR}
+    where KPOINT_ID = #{kpointId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jst.model.EduCourseKpoint" >
+    update edu_course_kpoint
+    set COURSE_ID = #{courseId,jdbcType=INTEGER},
+      NAME = #{name,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=INTEGER},
+      ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      SORT = #{sort,jdbcType=INTEGER},
+      PLAY_COUNT = #{playCount,jdbcType=INTEGER},
+      IS_FREE = #{isFree,jdbcType=BIT},
+      VIDEO_URL = #{videoUrl,jdbcType=VARCHAR},
+      TEACHER_ID = #{teacherId,jdbcType=INTEGER},
+      play_time = #{playTime,jdbcType=VARCHAR},
+      KPOINT_TYPE = #{kpointType,jdbcType=INTEGER},
+      VIDEO_TYPE = #{videoType,jdbcType=VARCHAR},
+      FILE_TYPE = #{fileType,jdbcType=VARCHAR}
+    where KPOINT_ID = #{kpointId,jdbcType=INTEGER}
+  </update> -->
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.fornt.FrontUserMapper">
+	<select id="getPwd" resultType="Edu_User" parameterType="String">
+		select * from edu_user WHERE email =#{value}
+	</select>
+	
+	<insert id="addUser" parameterType="Edu_User">
+		insert into edu_user (mobile,email,password) values (#{mobile},#{email},#{password}) 
+	</insert>
+	
+	
+</mapper>

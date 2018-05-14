@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.Sys_RoleMapper">
+	 <resultMap type="Sys_role" id="roles">
+		<result property="role_id" column="role_id" />
+		<result property="role_name" column="role_name" />
+		<result property="create_time" column="create_time" />
+		<association property="list" column="role_id"
+			select="com.jst.mapper.Sys_PermissionMapper.selectById" />
+	</resultMap> 
+	<resultMap type="Sys_role" id="rolesCaiDan">
+		<result property="role_id" column="role_id" />
+		<result property="role_name" column="role_name" />
+		<result property="create_time" column="create_time" />
+		<association property="list" column="role_id"
+			select="com.jst.mapper.Sys_PermissionMapper.queryById" />
+	</resultMap>
+	
+	<select id="selectById" parameterType="int" resultMap="roles">
+		select *
+		from Sys_role where role_id = #{value}
+	</select>
+	<select id="queryByIds" parameterType="int" resultMap="rolesCaiDan">
+		select *
+		from Sys_role where role_id = #{value}
+	</select>
+	 
+	<select id="allRole" resultType="Sys_role">
+		select * from Sys_role
+	</select>
+	
+	<delete id="deleteById" parameterType="int">
+		delete from Sys_role where role_id = #{value}
+	</delete>
+	<insert id="role_Add" parameterType="Sys_role">
+		<selectKey resultType="int" order="AFTER" keyProperty="role_id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into sys_role (role_name,create_time) values (#{role_name},#{create_time})
+	</insert>
+	<insert id="r_p_Add" parameterType="sys_role">
+		insert into sys_role_function values
+		(#{role_id},#{function_id})
+	</insert>
+	<select id="queryById" parameterType="int" resultType="sys_role">
+		select * from sys_role where role_id = #{value}
+	</select>
+	
+	<update id="updateUserRid" parameterType="map" >
+		update sys_user set role_id = #{new_rid} where role_id = #{old_rid}
+	</update> 
+</mapper>

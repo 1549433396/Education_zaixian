@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.jst.mapper.user.EduCommentMapper">
+   <resultMap type="EduComment" id="EduCommentMap">
+    <result column="comment_id" property="comment_id"/>
+    <!-- <result column="user_id" property="user_id"/> -->
+    <result column="p_comment_id" property="p_comment_id"/>
+    <result column="content" property="content"/>
+    <result column="addtime" property="addtime"/>
+    <result column="other_id" property="other_id"/>
+    <result column="praise_count" property="praise_count"/>
+    <result column="perply_count" property="perply_count"/>
+    <result column="type" property="type"/>
+    <association property="eduUser" column="user_id" select="com.jst.mapper.user.EduUserMapper.getById"></association>
+   </resultMap>
+    <select id="listAll" resultMap="EduCommentMap">
+      select * from edu_comment where p_comment_id=#{edqcid}
+    </select>
+    <delete id="delete" parameterType="int">
+      delete from edu_comment where comment_id=#{ecid}
+    </delete>
+  </mapper>
