@@ -48,7 +48,7 @@ function addCommentReply(commentId) {
 		return;
 	}
 	$.ajax({
-		url : baselocation + '/web/comment/ajax/addcomment',
+		url : baselocation + '/web/comment/ajax/addChildComment',
 		type : 'post',
 		data : {
 			"pCommentId" : commentId,
