@@ -43,12 +43,12 @@ public class EduUserController {
 	
 	@Autowired
 	private EduCourseService eduCourseService;
-	private static final String getKopintHtml = "/web/course/videocode";// �γ̲���
+	private static final String getKopintHtml = "/web/course/videocode";// 锟轿程诧拷锟斤拷
 	/**
 	 * @param request
 	 * @param response
 	 * @param session
-	 * �û���¼��֤
+	 * 用户登录验证
 	 * @return
 	 */
 	@RequestMapping("/front/login")
@@ -60,34 +60,30 @@ public class EduUserController {
 		String pwd = request.getParameter("password");
 		Result result = new Result();
 		if (pwd == null && "".equals(pwd)) {
-			result.setMessage("û�и��û�");
+			result.setMessage("没有该用户");
 			result.setSuccess(false);
 			return result;
 		}
 		pwd = MD5Utils.md5(pwd);
 		String ipForget = request.getParameter("ipForget");
 		Edu_User edu_User = eduUserService.getPwd(userName);
-		System.out.println(edu_User+"tryuioo");
 		if (edu_User.getPassword().equals(pwd)) {
-			result.setMessage("��¼�ɹ���");
-			String user_id = edu_User.getUser_id()+"";
-			Set<String> set = jedisClientPool.hkeys(user_id);
-			if (!set.isEmpty()) {
-				for (String string : set) {
-					Cookie cookie = new Cookie(string,jedisClientPool.hget(user_id,string));
-					cookie.setMaxAge(30 * 60);// ����Ϊ30min  
-		            cookie.setPath("/");  
-		            response.addCookie(cookie); 
-				}
-			}
-			
-//            cookie.setMaxAge(30 * 60);// ����Ϊ30min  
-//            cookie.setPath("/");  
-//            response.addCookie(cookie); 
+			result.setMessage("登录成功！");
+//			String user_id = edu_User.getUser_id()+"";
+//			Set<String> set = jedisClientPool.hkeys(user_id);
+			Map map = new HashMap<>();
+//			if (!set.isEmpty()) {
+//				for (String string : set) {
+//					System.out.println(string+","+jedisClientPool.hget(user_id,string));
+//					map.put(string, jedisClientPool.hget(user_id,string));
+//					Cookie cookie = new Cookie(string,jedisClientPool.hget(user_id,string));
+//					cookie.setMaxAge(30 * 60);// 设置为30min 
+//				}
+//			}
 			result.setSuccess(true);
 			session.setAttribute("login_success", edu_User);
-			Edu_User user=(Edu_User)session.getAttribute("login_success");
-			System.out.println("login:"+user);
+//			result.setMap(map);
+//			System.out.println(map);
 			return result;
 		}
 		return result;
@@ -95,7 +91,7 @@ public class EduUserController {
 	
 	/**
 	 * @param session
-	 * ��ȡ�û���¼��Ϣ
+	 * 锟斤拷取锟矫伙拷锟斤拷录锟斤拷息
 	 * @param response
 	 * @return
 	 */
@@ -112,7 +108,7 @@ public class EduUserController {
 	
 	
 	/**
-	 * �˳���¼
+	 * 锟剿筹拷锟斤拷录
 	 * @param session
 	 * @return
 	 */
@@ -121,9 +117,9 @@ public class EduUserController {
 	public Result exitUser(HttpSession session,HttpServletRequest request) {
 		Edu_User user = (Edu_User) session.getAttribute("login_success");
 		int id = user.getUser_id();
-		 Cookie[] cookies = request.getCookies();//��������Ի�ȡһ��cookie����  
+		 Cookie[] cookies = request.getCookies();//锟斤拷锟斤拷锟斤拷锟斤拷曰锟饺∫伙拷锟絚ookie锟斤拷锟斤拷  
          if (null==cookies) {  
-             System.out.println("û��cookie=========");  
+             System.out.println("没锟斤拷cookie=========");  
          } else {  
              for(Cookie cookie : cookies){
             	 jedisClientPool.hset(id+"", cookie.getName(), cookie.getValue());
@@ -151,11 +147,11 @@ public class EduUserController {
 	
 	
 	/**
-	 * ���벥��ҳ��
+	 * 锟斤拷锟诫播锟斤拷页锟斤拷
 	 * 
 	 * @param request
 	 * @param courseId
-	 *            �γ�ID
+	 *            锟轿筹拷ID
 	 * @return ModelAndView
 	 */
 	@RequestMapping("/uc/play/{courseId}")
@@ -163,27 +159,27 @@ public class EduUserController {
 		ModelAndView model = new ModelAndView();
 		try {
 			model.setViewName("/web/ucenter/player-video");
-			// ��ȡ�γ�
+			// 锟斤拷取锟轿筹拷
 			EduCourse course = eduCourseService.selectById(courseId);
 			if (course != null) {
 				model.addObject("course", course);
 //				int userId = SingletonLoginUtils.getLoginUserId(request);
-//				// ��ѯ�Ƿ��Ѿ��ղ�
+//				// 锟斤拷询锟角凤拷锟窖撅拷锟秸诧拷
 //				boolean isFavorites = courseFavoritesService.checkFavorites(userId, courseId);
 //				model.addObject("isFavorites", isFavorites);
 
-				// ��ѯ�γ�Ŀ¼
+				// 锟斤拷询锟轿筹拷目录
 				List<Edu_course_kpoint> parentKpointList = new ArrayList<Edu_course_kpoint>();
 				List<Edu_course_kpoint> kpointList = eduCourseService.queryCourseKpointByCourseId(courseId);
 				if (kpointList != null && kpointList.size() > 0) {
-					// ���� һ��Ŀ¼
+					// 锟斤拷锟斤拷 一锟斤拷目录
 					for (Edu_course_kpoint temp : kpointList) {
 						if (temp.getParent_id() == 0) {
 							parentKpointList.add(temp);
 						}
 					}
 
-					// ���� ��ȡ����Ŀ¼
+					// 锟斤拷锟斤拷 锟斤拷取锟斤拷锟斤拷目录
 					for (Edu_course_kpoint tempParent : parentKpointList) {
 						for (Edu_course_kpoint temp : kpointList) {
 							if (temp.getParent_id() == tempParent.getKpoint_id()) {
@@ -194,7 +190,7 @@ public class EduUserController {
 					model.addObject("parentKpointList", parentKpointList);
 				}
 
-//				 ��ؿγ�
+//				 锟斤拷乜纬锟�
 //				List<CourseDto> courseList = courseService.queryInterfixCourseLis(course.getSubjectId(), 5,
 //						course.getCourseId());
 //				for (CourseDto tempCoursedto : courseList) {
@@ -207,18 +203,18 @@ public class EduUserController {
 //				CourseStudyhistory courseStudyhistory = new CourseStudyhistory();
 //				courseStudyhistory.setUserId(Long.valueOf(userId));
 //				courseStudyhistory.setCourseId(Long.valueOf(String.valueOf(courseId)));
-//				// �ҵĿγ�ѧϰ��¼
+//				// 锟揭的课筹拷学习锟斤拷录
 //				List<CourseStudyhistory> couStudyhistorysLearned = courseStudyhistoryService
 //						.getCourseStudyhistoryList(courseStudyhistory);
 //				int courseHistorySize = 0;
 //				if (couStudyhistorysLearned != null && couStudyhistorysLearned.size() > 0) {
 //					courseHistorySize = couStudyhistorysLearned.size();
 //				}
-//				// ������Ƶ�ڵ�� ����
+//				// 锟斤拷锟斤拷锟斤拷频锟节碉拷锟� 锟斤拷锟斤拷
 //				int sonKpointCount = courseKpointService.getSecondLevelKpointCount(Long.valueOf(courseId));
 //				NumberFormat numberFormat = NumberFormat.getInstance();
-//				// �ҵ�ѧϰ���Ȱٷֱ�
-//				// ���þ�ȷ��С�����0λ
+//				// 锟揭碉拷学习锟斤拷锟饺百分憋拷
+//				// 锟斤拷锟矫撅拷确锟斤拷小锟斤拷锟斤拷锟�0位
 //				numberFormat.setMaximumFractionDigits(0);
 //				String studyPercent = numberFormat.format((float) courseHistorySize / (float) sonKpointCount * 100);
 //				if (sonKpointCount == 0) {
@@ -237,7 +233,7 @@ public class EduUserController {
 
 	
 	/**
-	 * �����Ƶ���ŵ�html
+	 * 锟斤拷锟斤拷锟狡碉拷锟斤拷诺锟絟tml
 	 * 
 	 * @return
 	 */
@@ -248,13 +244,13 @@ public class EduUserController {
 		try {
 			PrintWriter out = response.getWriter();
 			Edu_course_kpoint courseKpoint = eduCourseService.queryCourseKpointById(kpointId);
-			// ���������ݲ���ȷʱֱ�ӷ���
+			// 锟斤拷锟斤拷锟斤拷锟斤拷锟捷诧拷锟斤拷确时直锟接凤拷锟斤拷
 			if (courseKpoint == null) {
-				out.println("<script>var noCover=true; dialog dialog('��ʾ','��������',1);</script>");
+				out.println("<script>var noCover=true; dialog dialog('锟斤拷示','锟斤拷锟斤拷锟斤拷锟斤拷',1);</script>");
 				return null;
 			}
 
-			// ��ȡ�γ�
+			// 锟斤拷取锟轿筹拷
 			EduCourse course = eduCourseService.selectById(courseKpoint.getCourse_id());
 			if (course == null) {
 //				logger.info("++isok:" + false);
@@ -264,9 +260,9 @@ public class EduUserController {
 			model.addAttribute("course", course);
 			model.addAttribute("kpointId", kpointId);
 			/*
-			 * //��Ƶ if("VIDEO".equals(courseKpoint.getFileType())){ // ��Ƶurl
-			 * String videourl = courseKpoint.getVideoUrl(); // �������� String
-			 * videotype = courseKpoint.getVideoType(); //��ѯinxeduVideo��key
+			 * //锟斤拷频 if("VIDEO".equals(courseKpoint.getFileType())){ // 锟斤拷频url
+			 * String videourl = courseKpoint.getVideoUrl(); // 锟斤拷锟斤拷锟斤拷锟斤拷 String
+			 * videotype = courseKpoint.getVideoType(); //锟斤拷询inxeduVideo锟斤拷key
 			 * if(courseKpoint.getVideoType().equalsIgnoreCase(
 			 * WebSiteProfileType.inxeduVideo.toString())){ Map<String,Object>
 			 * map=(Map<String,Object>)websiteProfileService.
@@ -275,30 +271,30 @@ public class EduUserController {
 			 * = "http://vod.baofengcloud.com/" + map.get("UserId") +
 			 * "/player/cloud.swf"; String url =
 			 * "servicetype=1&uid="+map.get("UserId")+"&fid="+videourl; play_url
-			 * += "?" + url; //�������Ƶ�key��Ϊ���򰴼��ܲ������Ϊ���򲻼���
+			 * += "?" + url; //锟斤拷锟斤拷锟斤拷锟狡碉拷key锟斤拷为锟斤拷锟津按硷拷锟杰诧拷锟斤拷锟斤拷锟轿拷锟斤拷虿患锟斤拷锟�
 			 * if(StringUtils.isNotEmpty(map.get("SecretKey").toString())&&
 			 * StringUtils.isNotEmpty(map.get("AccessKey").toString())){ String
 			 * token =
 			 * InxeduVideo.createPlayToken(videourl,map.get("SecretKey").
 			 * toString(),map.get("AccessKey").toString()); play_url += "&tk=" +
 			 * token; } play_url += "&auto=" + 1; videourl=play_url; }
-			 * //��ѯcc��appId key if(courseKpoint.getVideoType().equalsIgnoreCase(
-			 * WebSiteProfileType.cc.toString())){//���cc Map<String,Object>
+			 * //锟斤拷询cc锟斤拷appId key if(courseKpoint.getVideoType().equalsIgnoreCase(
+			 * WebSiteProfileType.cc.toString())){//锟斤拷锟絚c Map<String,Object>
 			 * map=websiteProfileService.getWebsiteProfileByType(
 			 * WebSiteProfileType.cc.toString());
 			 * model.addAttribute("ccwebsitemap", map); } }
 			 */
-			// ��������
+			// 锟斤拷锟斤拷锟斤拷锟斤拷
 			model.addAttribute("videourl", courseKpoint.getVideo_url());
 			model.addAttribute("videotype", courseKpoint.getVideo_type());
 			return getKopintHtml;
 			/*
-			 * //�ı� if("TXT".equals(courseKpoint.getFileType())){ return
+			 * //锟侥憋拷 if("TXT".equals(courseKpoint.getFileType())){ return
 			 * playTxtAjax; }
 			 */
 
 			/*
-			 * //�ж��Ƿ�Ϊ�ֻ������ boolean isMoblie = JudgeIsMoblie(request);
+			 * //锟叫讹拷锟角凤拷为锟街伙拷锟斤拷锟斤拷锟� boolean isMoblie = JudgeIsMoblie(request);
 			 * model.addAttribute("isMoblie", isMoblie);
 			 * 
 			 * return getKopintHtml;
