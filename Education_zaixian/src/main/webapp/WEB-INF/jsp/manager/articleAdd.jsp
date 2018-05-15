@@ -71,7 +71,7 @@
 		var author = $("#author").val();
 		var source = $("#source").val();
 		var sorts = $("#sort").val();
-		var content = UM.getEditor('content').getContentTxt();
+		var content = UE.getEditor('content').getContentTxt();
 		if (s1 == "" && s2 == "" && s3 == "" && s4 == "" && title != ""
 				&& summary != "" && author != "" && source != "" && sorts != ""
 				&& content != "" && imgInp != "") {
