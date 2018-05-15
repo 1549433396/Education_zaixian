@@ -1,15 +1,19 @@
 package com.jst.mapper.fornt;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jst.model.Edu_User;
 import com.jst.model.SysSubject;
 
 public interface FrontUserMapper {
-	//Í¨¹ıÓÃ»§Ãû»ñÈ¡ÃÜÂë
+	//Í¨ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 	public Edu_User getPwd(String userName);
-	//×¢²áÓÃ»§	
+	//×¢ï¿½ï¿½ï¿½Ã»ï¿½	
 	public void addUser(Edu_User user);
 	
+	public Edu_User getById(int user_id);
+	
+	public List<Edu_User> shows(Map map);
 	
 }

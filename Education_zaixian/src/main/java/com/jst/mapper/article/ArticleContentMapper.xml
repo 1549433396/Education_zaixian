@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.article.ArticleContentMapper"> 
+  <select id="getById" parameterType="int" resultType="Edu_Article_Content">
+  select * from edu_article_content where article_id=#{value}
+  </select>
+  <select id="listAll" resultType="Edu_Article_Content">
+  select * from edu_article_content
+  </select>
+  </mapper> 

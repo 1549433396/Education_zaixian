@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.images.EduWebsiteImagesTypeMapper">
+	<select id="listAll" resultType="Edu_Website_Images_Type">
+		select * from edu_website_images_type
+	</select>
+	<select id="getById" resultType="Edu_Website_Images_Type"
+		parameterType="int">
+		select * from edu_website_images_type where type_id=#{value}
+	</select>
+	<delete id="delete" parameterType="int">
+		delete from edu_website_images_type where type_id=#{value}
+	</delete>
+	<update id="update" parameterType="Edu_Website_Images_Type">
+		update edu_website_images_type set type_name=#{type_name} where
+		type_id=#{type_id}
+	</update>
+	<insert id="save" parameterType="Edu_Website_Images_Type">
+		insert into edu_website_images_type(type_name)values(#{type_name})
+	</insert>
+</mapper> 

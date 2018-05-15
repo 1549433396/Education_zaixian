@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.article.ArticleMapper">
+	<resultMap type="Edu_Article" id="ArticleMap">
+		<result column="article_id" property="article_id" />
+		<result column="title" property="title" />
+		<result column="summary" property="summary" />
+		<result column="key_word" property="key_word" />
+		<result column="image_url" property="image_url" />
+		<result column="source" property="source" />
+		<result column="author" property="author" />
+		<result column="create_time" property="create_time" />
+		<result column="publish_time" property="publish_time" />
+		<result column="link" property="link" />
+		<result column="article_type" property="article_type" />
+		<result column="click_num" property="click_num" />
+		<result column="praise_count" property="praise_count" />
+		<result column="comment_num" property="comment_num" />
+		<result column="sort" property="sort" />
+		<result column="releases" property="releases" />
+		<association property="acontent" column="article_id"
+			select="com.jst.mapper.article.ArticleContentMapper.getById"></association>
+	</resultMap>
+	<select id="listAll" resultMap="ArticleMap" parameterType="java.util.Map">
+		select * from edu_article
+		<where>
+			<if test="title!=null and title!=''">
+				and title like '%${title}%' or author like '%${title}%'
+				or source like '%${title}%'
+			</if>
+			<if test="start!=null and start!=''">
+				and create_time &gt;#{start}
+			</if>
+			<if test="end!=null and end!=''">
+				and create_time &lt;#{end}
+			</if>
+		</where>
+	</select>
+	<select id="alistAll" resultMap="ArticleMap">
+		select * from edu_article where releases=0 order by sort desc
+	</select>
+	<delete id="delete" parameterType="int">
+		delete from edu_article where
+		article_id=#{value}
+	</delete>
+	<select id="getById" resultMap="ArticleMap" parameterType="int">
+		select * from edu_article where article_id=#{value}
+	</select>
+	<update id="edit" parameterType="Edu_Article">
+		<selectKey resultType="int" order="AFTER" keyProperty="article_id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		update edu_article set
+		title=#{title},summary=#{summary},author=#{author},source=#{source},image_url=#{image_url},create_time=#{create_time},sort=#{sort}
+		where article_id=#{article_id}
+	</update>
+	<update id="updateContent" parameterType="Edu_Article">
+		update
+		edu_article_content set content=#{acontent.content} where
+		article_id=#{acontent.article_id}
+	</update>
+	<insert id="save" parameterType="Edu_Article">
+		<selectKey resultType="int" order="AFTER" keyProperty="article_id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into
+		edu_article(title,summary,author,source,image_url,create_time,sort)
+		values
+		(#{title},#{summary},#{author},#{source},#{image_url},#{create_time},#{sort})
+	</insert>
+	<insert id="addContent" parameterType="Edu_Article">
+		insert into
+		edu_article_content (article_id,content) values
+		(#{article_id},#{acontent.content})
+	</insert>
+	<update id="praiseEdit" parameterType="EduComment">
+		update edu_comment set
+		praise_count=praise_count+1 where
+		comment_id=#{comment_id} and type=#{type}
+	</update>
+	<delete id="deleteAll" parameterType="Integer">
+		delete from edu_article where
+		<foreach item="chk_value" collection="array" open="article_id in ("
+			separator="," close=")">
+			#{chk_value}
+		</foreach>
+	</delete>
+	<update id="releaseEdit" parameterType="Edu_Article">
+		update edu_article set releases=#{releases},publish_time=#{publish_time} where article_id=#{article_id}
+	</update>
+	<update id="click_numEdit" parameterType="int">
+	update edu_article set click_num=click_num+1 where article_id=#{article_id}
+	</update>
+</mapper>
