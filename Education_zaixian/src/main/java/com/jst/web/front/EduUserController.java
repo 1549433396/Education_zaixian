@@ -1,8 +1,12 @@
 package com.jst.web.front;
 
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.Cookie;
@@ -24,11 +28,10 @@ import com.jst.model.Edu_User;
 import com.jst.model.Edu_course_kpoint;
 import com.jst.myservice.course.EduCourseService;
 import com.jst.myservice.front.EduUserService;
+import com.jst.utils.JsonUtils;
 import com.jst.utils.MD5Utils;
 import com.jst.utils.Result;
 import com.jst.utils.redis.JedisClientPool;
-
-import redis.clients.jedis.JedisCluster;
 
 @Controller
 public class EduUserController {
@@ -40,12 +43,12 @@ public class EduUserController {
 	
 	@Autowired
 	private EduCourseService eduCourseService;
-	private static final String getKopintHtml = "/web/course/videocode";// ¿Î³Ì²¥·Å
+	private static final String getKopintHtml = "/web/course/videocode";// ï¿½Î³Ì²ï¿½ï¿½ï¿½
 	/**
 	 * @param request
 	 * @param response
 	 * @param session
-	 * ÓÃ»§µÇÂ¼ÑéÖ¤
+	 * ï¿½Ã»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ö¤
 	 * @return
 	 */
 	@RequestMapping("/front/login")
@@ -57,7 +60,7 @@ public class EduUserController {
 		String pwd = request.getParameter("password");
 		Result result = new Result();
 		if (pwd == null && "".equals(pwd)) {
-			result.setMessage("Ã»ÓÐ¸ÃÓÃ»§");
+			result.setMessage("Ã»ï¿½Ð¸ï¿½ï¿½Ã»ï¿½");
 			result.setSuccess(false);
 			return result;
 		}
@@ -66,19 +69,19 @@ public class EduUserController {
 		Edu_User edu_User = eduUserService.getPwd(userName);
 		System.out.println(edu_User+"tryuioo");
 		if (edu_User.getPassword().equals(pwd)) {
-			result.setMessage("µÇÂ¼³É¹¦£¡");
+			result.setMessage("ï¿½ï¿½Â¼ï¿½É¹ï¿½ï¿½ï¿½");
 			String user_id = edu_User.getUser_id()+"";
 			Set<String> set = jedisClientPool.hkeys(user_id);
 			if (!set.isEmpty()) {
 				for (String string : set) {
 					Cookie cookie = new Cookie(string,jedisClientPool.hget(user_id,string));
-					cookie.setMaxAge(30 * 60);// ÉèÖÃÎª30min  
+					cookie.setMaxAge(30 * 60);// ï¿½ï¿½ï¿½ï¿½Îª30min  
 		            cookie.setPath("/");  
 		            response.addCookie(cookie); 
 				}
 			}
 			
-//            cookie.setMaxAge(30 * 60);// ÉèÖÃÎª30min  
+//            cookie.setMaxAge(30 * 60);// ï¿½ï¿½ï¿½ï¿½Îª30min  
 //            cookie.setPath("/");  
 //            response.addCookie(cookie); 
 			result.setSuccess(true);
@@ -92,7 +95,7 @@ public class EduUserController {
 	
 	/**
 	 * @param session
-	 * »ñÈ¡ÓÃ»§µÇÂ¼ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ï¢
 	 * @param response
 	 * @return
 	 */
@@ -109,7 +112,7 @@ public class EduUserController {
 	
 	
 	/**
-	 * ÍË³öµÇÂ¼
+	 * ï¿½Ë³ï¿½ï¿½ï¿½Â¼
 	 * @param session
 	 * @return
 	 */
@@ -118,9 +121,9 @@ public class EduUserController {
 	public Result exitUser(HttpSession session,HttpServletRequest request) {
 		Edu_User user = (Edu_User) session.getAttribute("login_success");
 		int id = user.getUser_id();
-		 Cookie[] cookies = request.getCookies();//ÕâÑù±ã¿ÉÒÔ»ñÈ¡Ò»¸öcookieÊý×é  
+		 Cookie[] cookies = request.getCookies();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½È¡Ò»ï¿½ï¿½cookieï¿½ï¿½ï¿½ï¿½  
          if (null==cookies) {  
-             System.out.println("Ã»ÓÐcookie=========");  
+             System.out.println("Ã»ï¿½ï¿½cookie=========");  
          } else {  
              for(Cookie cookie : cookies){
             	 jedisClientPool.hset(id+"", cookie.getName(), cookie.getValue());
@@ -148,11 +151,11 @@ public class EduUserController {
 	
 	
 	/**
-	 * ½øÈë²¥·ÅÒ³Ãæ
+	 * ï¿½ï¿½ï¿½ë²¥ï¿½ï¿½Ò³ï¿½ï¿½
 	 * 
 	 * @param request
 	 * @param courseId
-	 *            ¿Î³ÌID
+	 *            ï¿½Î³ï¿½ID
 	 * @return ModelAndView
 	 */
 	@RequestMapping("/uc/play/{courseId}")
@@ -160,27 +163,27 @@ public class EduUserController {
 		ModelAndView model = new ModelAndView();
 		try {
 			model.setViewName("/web/ucenter/player-video");
-			// »ñÈ¡¿Î³Ì
+			// ï¿½ï¿½È¡ï¿½Î³ï¿½
 			EduCourse course = eduCourseService.selectById(courseId);
 			if (course != null) {
 				model.addObject("course", course);
 //				int userId = SingletonLoginUtils.getLoginUserId(request);
-//				// ²éÑ¯ÊÇ·ñÒÑ¾­ÊÕ²Ø
+//				// ï¿½ï¿½Ñ¯ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½Õ²ï¿½
 //				boolean isFavorites = courseFavoritesService.checkFavorites(userId, courseId);
 //				model.addObject("isFavorites", isFavorites);
 
-				// ²éÑ¯¿Î³ÌÄ¿Â¼
+				// ï¿½ï¿½Ñ¯ï¿½Î³ï¿½Ä¿Â¼
 				List<Edu_course_kpoint> parentKpointList = new ArrayList<Edu_course_kpoint>();
 				List<Edu_course_kpoint> kpointList = eduCourseService.queryCourseKpointByCourseId(courseId);
 				if (kpointList != null && kpointList.size() > 0) {
-					// ±éÀú Ò»¼¶Ä¿Â¼
+					// ï¿½ï¿½ï¿½ï¿½ Ò»ï¿½ï¿½Ä¿Â¼
 					for (Edu_course_kpoint temp : kpointList) {
 						if (temp.getParent_id() == 0) {
 							parentKpointList.add(temp);
 						}
 					}
 
-					// ±éÀú »ñÈ¡¶þ¼¶Ä¿Â¼
+					// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ä¿Â¼
 					for (Edu_course_kpoint tempParent : parentKpointList) {
 						for (Edu_course_kpoint temp : kpointList) {
 							if (temp.getParent_id() == tempParent.getKpoint_id()) {
@@ -191,7 +194,7 @@ public class EduUserController {
 					model.addObject("parentKpointList", parentKpointList);
 				}
 
-//				 Ïà¹Ø¿Î³Ì
+//				 ï¿½ï¿½Ø¿Î³ï¿½
 //				List<CourseDto> courseList = courseService.queryInterfixCourseLis(course.getSubjectId(), 5,
 //						course.getCourseId());
 //				for (CourseDto tempCoursedto : courseList) {
@@ -204,18 +207,18 @@ public class EduUserController {
 //				CourseStudyhistory courseStudyhistory = new CourseStudyhistory();
 //				courseStudyhistory.setUserId(Long.valueOf(userId));
 //				courseStudyhistory.setCourseId(Long.valueOf(String.valueOf(courseId)));
-//				// ÎÒµÄ¿Î³ÌÑ§Ï°¼ÇÂ¼
+//				// ï¿½ÒµÄ¿Î³ï¿½Ñ§Ï°ï¿½ï¿½Â¼
 //				List<CourseStudyhistory> couStudyhistorysLearned = courseStudyhistoryService
 //						.getCourseStudyhistoryList(courseStudyhistory);
 //				int courseHistorySize = 0;
 //				if (couStudyhistorysLearned != null && couStudyhistorysLearned.size() > 0) {
 //					courseHistorySize = couStudyhistorysLearned.size();
 //				}
-//				// ¶þ¼¶ÊÓÆµ½ÚµãµÄ ×ÜÊý
+//				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½Úµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 //				int sonKpointCount = courseKpointService.getSecondLevelKpointCount(Long.valueOf(courseId));
 //				NumberFormat numberFormat = NumberFormat.getInstance();
-//				// ÎÒµÄÑ§Ï°½ø¶È°Ù·Ö±È
-//				// ÉèÖÃ¾«È·µ½Ð¡Êýµãºó0Î»
+//				// ï¿½Òµï¿½Ñ§Ï°ï¿½ï¿½ï¿½È°Ù·Ö±ï¿½
+//				// ï¿½ï¿½ï¿½Ã¾ï¿½È·ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½0Î»
 //				numberFormat.setMaximumFractionDigits(0);
 //				String studyPercent = numberFormat.format((float) courseHistorySize / (float) sonKpointCount * 100);
 //				if (sonKpointCount == 0) {
@@ -234,7 +237,7 @@ public class EduUserController {
 
 	
 	/**
-	 * »ñµÃÊÓÆµ²¥·ÅµÄhtml
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½Åµï¿½html
 	 * 
 	 * @return
 	 */
@@ -245,13 +248,13 @@ public class EduUserController {
 		try {
 			PrintWriter out = response.getWriter();
 			Edu_course_kpoint courseKpoint = eduCourseService.queryCourseKpointById(kpointId);
-			// µ±´«ÈëÊý¾Ý²»ÕýÈ·Ê±Ö±½Ó·µ»Ø
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½È·Ê±Ö±ï¿½Ó·ï¿½ï¿½ï¿½
 			if (courseKpoint == null) {
-				out.println("<script>var noCover=true; dialog dialog('ÌáÊ¾','²ÎÊý´íÎó£¡',1);</script>");
+				out.println("<script>var noCover=true; dialog dialog('ï¿½ï¿½Ê¾','ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',1);</script>");
 				return null;
 			}
 
-			// »ñÈ¡¿Î³Ì
+			// ï¿½ï¿½È¡ï¿½Î³ï¿½
 			EduCourse course = eduCourseService.selectById(courseKpoint.getCourse_id());
 			if (course == null) {
 //				logger.info("++isok:" + false);
@@ -261,9 +264,9 @@ public class EduUserController {
 			model.addAttribute("course", course);
 			model.addAttribute("kpointId", kpointId);
 			/*
-			 * //ÊÓÆµ if("VIDEO".equals(courseKpoint.getFileType())){ // ÊÓÆµurl
-			 * String videourl = courseKpoint.getVideoUrl(); // ²¥·ÅÀàÐÍ String
-			 * videotype = courseKpoint.getVideoType(); //²éÑ¯inxeduVideoµÄkey
+			 * //ï¿½ï¿½Æµ if("VIDEO".equals(courseKpoint.getFileType())){ // ï¿½ï¿½Æµurl
+			 * String videourl = courseKpoint.getVideoUrl(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ String
+			 * videotype = courseKpoint.getVideoType(); //ï¿½ï¿½Ñ¯inxeduVideoï¿½ï¿½key
 			 * if(courseKpoint.getVideoType().equalsIgnoreCase(
 			 * WebSiteProfileType.inxeduVideo.toString())){ Map<String,Object>
 			 * map=(Map<String,Object>)websiteProfileService.
@@ -272,30 +275,30 @@ public class EduUserController {
 			 * = "http://vod.baofengcloud.com/" + map.get("UserId") +
 			 * "/player/cloud.swf"; String url =
 			 * "servicetype=1&uid="+map.get("UserId")+"&fid="+videourl; play_url
-			 * += "?" + url; //Èç¹ûÒò¿áÔÆµÄkey²»Îª¿ÕÔò°´¼ÓÃÜ²¥·ÅÈç¹ûÎª¿ÕÔò²»¼ÓÃÜ
+			 * += "?" + url; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½keyï¿½ï¿½Îªï¿½ï¿½ï¿½ò°´¼ï¿½ï¿½Ü²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ò²»¼ï¿½ï¿½ï¿½
 			 * if(StringUtils.isNotEmpty(map.get("SecretKey").toString())&&
 			 * StringUtils.isNotEmpty(map.get("AccessKey").toString())){ String
 			 * token =
 			 * InxeduVideo.createPlayToken(videourl,map.get("SecretKey").
 			 * toString(),map.get("AccessKey").toString()); play_url += "&tk=" +
 			 * token; } play_url += "&auto=" + 1; videourl=play_url; }
-			 * //²éÑ¯ccµÄappId key if(courseKpoint.getVideoType().equalsIgnoreCase(
-			 * WebSiteProfileType.cc.toString())){//Èç¹ûcc Map<String,Object>
+			 * //ï¿½ï¿½Ñ¯ccï¿½ï¿½appId key if(courseKpoint.getVideoType().equalsIgnoreCase(
+			 * WebSiteProfileType.cc.toString())){//ï¿½ï¿½ï¿½cc Map<String,Object>
 			 * map=websiteProfileService.getWebsiteProfileByType(
 			 * WebSiteProfileType.cc.toString());
 			 * model.addAttribute("ccwebsitemap", map); } }
 			 */
-			// ·ÅÈëÊý¾Ý
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			model.addAttribute("videourl", courseKpoint.getVideo_url());
 			model.addAttribute("videotype", courseKpoint.getVideo_type());
 			return getKopintHtml;
 			/*
-			 * //ÎÄ±¾ if("TXT".equals(courseKpoint.getFileType())){ return
+			 * //ï¿½Ä±ï¿½ if("TXT".equals(courseKpoint.getFileType())){ return
 			 * playTxtAjax; }
 			 */
 
 			/*
-			 * //ÅÐ¶ÏÊÇ·ñÎªÊÖ»úä¯ÀÀÆ÷ boolean isMoblie = JudgeIsMoblie(request);
+			 * //ï¿½Ð¶ï¿½ï¿½Ç·ï¿½Îªï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ boolean isMoblie = JudgeIsMoblie(request);
 			 * model.addAttribute("isMoblie", isMoblie);
 			 * 
 			 * return getKopintHtml;
@@ -305,5 +308,44 @@ public class EduUserController {
 			return null;
 		}
 	}
+	
+	@RequestMapping("/admin/statisticsPage/registered")
+	public ModelAndView initial() {
+		ModelAndView mView=new ModelAndView();
+		mView.setViewName("/manager/statisticalFigure");
+		return mView;
+	}
+	
+	@RequestMapping("/admin/statisticalFigure/shows")
+	public ModelAndView shows(HttpServletRequest request) throws Exception {
+		String start=request.getParameter("start");
+		System.out.println(start);
+		String end=request.getParameter("end");
+		System.err.println(end);
+		Map map=new HashMap<>();
+		map.put("start", start);
+		map.put("end", end);
+		ModelAndView mView=new ModelAndView();
+		List<Edu_User> listAll = eduUserService.shows(map);
+		request.setAttribute("start", start);
+		request.setAttribute("end", end);
+		List<String> list1 = new ArrayList<>();
+		List<String> list2 = new ArrayList<>();
+		SimpleDateFormat sdf1= new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+		SimpleDateFormat sdf2= new SimpleDateFormat("yyyy-MM-dd");
+		for (Edu_User edu_User : listAll) {
+			list1.add(sdf2.format(sdf1.parse(edu_User.getCreate_time()+"")));
+//			list1.add(edu_User.getCreate_time()+"");
+			list2.add(edu_User.getNum()+"");
+			System.out.println(edu_User.getNum()+"edu_User.getNum()");
+		}
+		mView.addObject("create_time",JsonUtils.objectToJson(list1));
+		System.out.println("json1:"+JsonUtils.objectToJson(list1));
+		mView.addObject("num", JsonUtils.objectToJson(list2));
+		System.out.println("json2:"+JsonUtils.objectToJson(list2));
+		mView.setViewName("/manager/statisticalFigure");
+		return mView;
+	}
+
 
 }

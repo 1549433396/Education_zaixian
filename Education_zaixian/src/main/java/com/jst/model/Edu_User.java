@@ -21,6 +21,14 @@ public class Edu_User {
 	private  Date  last_system_time; //上传统计系统消息时间
 	private String start;
 	private String end;
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	private int num;
+
 	public int getUser_id() {
 		return user_id;
 	}
