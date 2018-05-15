@@ -1,5 +1,8 @@
 package com.jst.myservice.front;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +25,12 @@ public class EduUserServiceImpl implements EduUserService {
 		
 	}
 
-	
+	@Override
+	public List<Edu_User> shows(Map map) {
+		List<Edu_User> list=frontUserMapper.shows(map);
+		return list;
+	}
+
 	
 	
 }
