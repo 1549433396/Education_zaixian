@@ -25,6 +25,7 @@ function submitForm(keyWord,type){
 			$("input[name='questions.orderFalg']").val(keyWord);
 		}
 	}else if(type=="type"){
+		/*alert(keyWord);alert(type);*/
 		$("input[name='questions.type']").val(keyWord);
 	}else if(type=="questionsTagId"){
 		$("input[name='questions.questionsTagId']").val(keyWord);
@@ -38,9 +39,8 @@ function submitForm(keyWord,type){
  */
 function hotQuestions(){
 	$.ajax({
-		url:baselocation + "/questions/ajax/hotRecommend",
-		data:{
-		},
+		url:baselocation + "/front/questions/ajax/hotRecommend",
+		data:{},
 		type:"post",
 		dataType:"json",
 		async:true,
@@ -52,7 +52,7 @@ function hotQuestions(){
 					str+='<li>'
 						+'	<aside class="q-r-r-num">'
 						+'		<div class="replyNum">'
-						+'			<span class="r-b-num">'+resultList[i].replyCount+'</span>'
+						+'			<span class="r-b-num">'+resultList[i].reply_count+'</span>'
 						+'			<p class="hLh20">'
 						+'				<span class="c-999 f-fA">回答数</span>'
 						+'			</p>'
@@ -60,7 +60,7 @@ function hotQuestions(){
 						+'	</aside>'
 						+'	<h4 class="hLh30 txtOf">'
 						+'		<em class="icon16 q-tw">&nbsp;</em>'
-						+'		<a href="/questions/info/'+resultList[i].id+'" title="" class="fsize14 c-333 ml5">'+resultList[i].title+'</a>'
+						+'		<a href="/front/questions/info/'+resultList[i].id+'" title="" class="fsize14 c-333 ml5">'+resultList[i].title+'</a>'
 						+'	</h4>'
 						+'</li>';
 				}

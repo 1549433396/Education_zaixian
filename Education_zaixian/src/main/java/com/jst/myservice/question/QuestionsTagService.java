@@ -7,8 +7,6 @@ import com.jst.ztree.ZtreeNode;
 
 public interface QuestionsTagService {
 	//    查询
-//	public List<QuestionsTag> listAll();
-	
 	public List<ZtreeNode> listAll();
 	//      添加
 	public void save(QuestionsTag questionsTag);
@@ -18,4 +16,6 @@ public interface QuestionsTagService {
 	public QuestionsTag getById(int qtid);
 	//      修改
 	public void update(QuestionsTag questionsTag);
+	
+	public List<QuestionsTag> getlistById(int qtid);
 }

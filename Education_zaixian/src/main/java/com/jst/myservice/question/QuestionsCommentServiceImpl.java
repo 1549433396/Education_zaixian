@@ -45,4 +45,23 @@ public class QuestionsCommentServiceImpl implements QuestionsCommentService{
 		
 	}
 
+	@Override
+	public List<QuestionsComment> getqId(int qid) {
+		List<QuestionsComment> list=questionsCommentMapper.getqId(qid);
+		return list;
+	}
+	
+	@Override
+	public void updateIsBest(int qcid) {
+		questionsCommentMapper.updateIsBest(qcid);
+	}
+
+	@Override
+	public void updatepraise(int id) {
+		questionsCommentMapper.updatepraise(id);
+		
+	}
+
+	
+
 }

@@ -97,6 +97,15 @@ img {
 		document.forms[0].action = "/admin/questionscomment/list";
 		document.forms[0].submit();
 	}
+	function updateIsbest(qcid,is_best){
+		if(is_best==0){
+			location.href = "/admin/questionscomment/updateIs_Best/"+qcid;
+		}else{
+			alert("已经采纳为最佳!");
+		}
+	    
+	} 
+
 </script>
 </head>
 <body>
@@ -196,19 +205,31 @@ img {
 											class="layui-icon">&#xe640;</i> 删 除</a> <a
 										class="layui-btn layui-btn-normal layui-btn-mini"
 										href="/admin/EduComment/EduCommentList?edqcid=${qc.id }"><i
-											class="layui-icon">&#xe63a;</i> 查看评论</a></td>
+											class="layui-icon">&#xe63a;</i> 查看评论</a>
+											<c:if test="${qc.reply_count==0 }">
+											<a class="layui-btn layui-btn-normal layui-btn-mini" href="#" onclick="updateIsbest(${qc.id },${qc.is_best })" style="display:none;"><i	class="layui-icon">&#xe63a;</i> 采纳为最佳</a>
+								            </c:if>
+								            <c:if test="${qc.reply_count>0 }">
+											<a class="layui-btn layui-btn-normal layui-btn-mini" href="#" onclick="updateIsbest(${qc.id },${qc.is_best })"><i	class="layui-icon">&#xe63a;</i> 采纳为最佳</a>
+								            </c:if>
+											</td>
 								</tr>
 							</c:forEach>
 							<tr>
-								<td align="center" colspan="10">一共${page.pages}页 <a
-									href="/coupons/listcoupons?page=${page.firstPage}"
-									class="layui-btn layui-btn-mini">第一页</a> <a
-									href="/coupons/listcoupons?page=${page.prePage}"
-									class="layui-btn layui-btn-normal layui-btn-mini">上一页</a> <a
-									href="/coupons/listcoupons?page=${page.nextPage}"
-									class="layui-btn layui-btn-danger layui-btn-mini">下一页</a> <a
-									href="/coupons/listcoupons?page=${page.lastPage}"
-									class="layui-btn layui-btn-danger layui-btn-mini">最后页</a></td>
+								<td align="center" colspan="10">
+								一共<input type="text" value="${page.pages}" style="width: 25px;text-align: center;" /> 页
+								<%-- 一共${page.pages}页 --%> <a
+									href="/admin/questionscomment/list?page=${page.firstPage}"
+									class="layui-btn layui-btn-normal layui-btn-small"><i class="iconfont icon-shanchu1"></i>第一页</a>&nbsp;&nbsp;<a
+									href="/admin/questionscomment/list?page=${page.prePage}"
+									class="layui-btn layui-btn-danger layui-btn-small"><i class="iconfont icon-shanchu1"></i>上一页</a>&nbsp;&nbsp;<a
+									href="/admin/questionscomment/list?page=${page.nextPage}"
+									class="layui-btn layui-btn-danger layui-btn-small"><i class="iconfont icon-shanchu1"></i>下一页</a>&nbsp;&nbsp;<a
+									href="/admin/questionscomment/list?page=${page.lastPage}"
+									class="layui-btn layui-btn-normal layui-btn-small"><i class="iconfont icon-shanchu1"></i>最后页</a>
+									每页共<input type="text" value="${page.pageSize }" style="width: 25px;text-align: center;" /> 条
+									<%-- 每页${page.pageSize }条 --%>
+									</td>
 							</tr> 
 						</tbody>
 					</table>

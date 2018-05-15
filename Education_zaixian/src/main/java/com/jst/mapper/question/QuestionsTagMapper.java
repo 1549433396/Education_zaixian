@@ -15,4 +15,6 @@ public interface QuestionsTagMapper {
 	public QuestionsTag getById(int qtid);
 	//      修改
 	public void update(QuestionsTag questionsTag);
+
+	public List<QuestionsTag> getlistById(int qtid);
 }

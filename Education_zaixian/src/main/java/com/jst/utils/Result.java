@@ -33,6 +33,7 @@ public class Result {
 	public void setEntity(Object entity) {
 		this.entity = entity;
 	}
+	
 	@Override
 	public String toString() {
 		return "Result [success=" + success + ", message=" + message + ", entity=" + entity + "]";

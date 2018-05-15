@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ include file="/base.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +15,7 @@
 						<section class="path-wrap txtOf hLh30">
 							<a href="${ctx }" title="" class="c-999 fsize14">首页</a>
 							\
-							<a href="${ctx }/questions/list" title="" class="c-999 fsize14">全部问答</a>
+							<a href="${ctx }/front/questions/list/0" title="" class="c-999 fsize14">全部问答</a>
 							\ <span class="c-333 fsize14">${questions.title }</span>
 						</section>
 						<!-- /问题详情 开始 -->
@@ -23,8 +24,8 @@
 								<div class="pr">
 									<aside class="q-head-pic">
 										<c:choose>
-											<c:when test="${not empty questions.picImg }">
-												<img src="<%=staticImage %>${questions.picImg }" alt="">
+											<c:when test="${not empty questiones.eduUser.pic_img }">
+												<img src="<%=staticImage %>${questiones.eduUser.pic_img }" alt="">
 											</c:when>
 											<c:otherwise>
 												<img src="${ctx }/static/inxweb/img/avatar-boy.gif" alt="">
@@ -47,7 +48,7 @@
 											<div class="clear"></div>
 										</aside>
 										<h3 class="hLh30 txtOf">
-											<em class="icon16 q-tw">&nbsp;</em> <span class="c-blue fsize14"> <c:if test="${empty questions.showName }">${questions.email }</c:if> <c:if test="${not empty questions.showName }">${questions.showName }</c:if>
+											<em class="icon16 q-tw">&nbsp;</em> <span class="c-blue fsize14"> <c:if test="${empty questions.eduUser.show_name }">${questions.eduUser.email }</c:if> <c:if test="${not empty questions.eduUser.show_name }">${questions.eduUser.show_name }</c:if>
 											</span> <span class="c-999 fsize14"> <c:if test="${questions.type==1 }">课程提问</c:if> <c:if test="${questions.type==2 }">学习分享</c:if>
 											</span>
 										</h3>
@@ -66,20 +67,22 @@
 										<div class="mt20 pr10">
 											<section class="fr">
 												<span> <a href="#i-art-comment" title="评论" class="noter-dy vam">
-														<em class="icon18">&nbsp;</em>(<span id="questionsReplyCount">${questions.replyCount }</span>)
+														<em class="icon18">&nbsp;</em>(<span id="questionsReplyCount">${questions.reply_count }</span>)
 													</a> <tt class="noter-zan vam ml10 f-fM" title="赞一下" onclick="addPraise(${questions.id },1,this)">
-														<em class="icon18">&nbsp;</em>(<span>${questions.praiseCount }</span>)
+														<em class="icon18">&nbsp;</em>(<span>${questions.praise_count }</span>)
 													</tt>
 												</span>
 											</section>
-											<span class="c-ccc fl vam">${questions.modelTime }</span>
-											<section class="fl ml20 pt10">
+											<span class="c-ccc fl vam">
+											<fmt:formatDate value="${questions.add_time }" type="date" pattern="yyyy-MM-dd HH:mm:ss"/>
+											</span>
+											<%-- <section class="fl ml20 pt10">
 												<div class="taglist clearfix">
 													<c:forEach items="${questions.questionsTagRelationList }" var="questionsTag">
 														<a title="${questionsTag.tagName }" data-id="${questionsTag.questionsTagId }" onclick="submitForm('${questionsTag.questionsTagId }','questionsTagId')" class="list-tag" href="javascript:;">${questionsTag.tagName }</a>
 													</c:forEach>
 												</div>
-											</section>
+											</section> --%>
 											<div class="clear"></div>
 										</div>
 									</section>
@@ -97,16 +100,16 @@
 						</section>
 						<section class="pt20">
 							<div class="taglist clearfix">
-								<form action="${ctx}/questions/list" id="searchForm" method="post">
+								<%-- <form action="${ctx}/questions/list" id="searchForm" method="post">
 									<input type="hidden" id="pageCurrentPage" name="page.currentPage" value="1" />
 									<input type="hidden" name="questions.orderFalg" value="${questions.orderFalg}" />
 									<input type="hidden" name="questions.type" value="${questions.type}" />
 									<input type="hidden" name="questions.status" value="${questions.status}" />
 									<input type="hidden" name="questions.questionsTagId" value="${questions.questionsTagId}" />
-								</form>
-								<c:forEach items="${questionsTagList }" var="questionsTag">
+								</form> --%>
+								<%-- <c:forEach items="${questionsTagList }" var="questionsTag">
 									<a title="${questionsTag.questionsTagName }" data-id="${questionsTag.questionsTagId }" class="list-tag" href="javascript:;" onclick="submitForm('${questionsTag.questionsTagId }','questionsTagId')">${questionsTag.questionsTagName }</a>
-								</c:forEach>
+								</c:forEach> --%>
 							</div>
 						</section>
 						<!-- /标签云 -->

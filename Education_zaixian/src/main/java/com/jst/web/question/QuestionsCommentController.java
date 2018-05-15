@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,7 +39,7 @@ public class QuestionsCommentController {
 		PageInfo<QuestionsComment> p = new PageInfo<QuestionsComment>(listQc);
 		mv.addObject("page", p);
 		mv.addObject("listQc", listQc);
-		mv.setViewName("QuestionsCommentList");
+		mv.setViewName("/manager/QuestionsCommentList");
 		return mv;
 	}
 	 
@@ -50,25 +51,63 @@ public class QuestionsCommentController {
 		String end=request.getParameter("end");
 		/*System.out.println(isbest);
 		System.out.println(qcid);*/
-		if (qcid!=null&&qcid.length()>0) {
+		if (qcid!=null&&qcid.trim().length()>0) {
 			map.put("qcid",qcid);
 		}
-		if (isbest!=null&&!isbest.equals("-1")&&isbest.length()>0) {
+		if (isbest!=null&&!isbest.equals("-1")&&isbest.trim().length()>0) {
 			map.put("isbest",isbest);
 		}
-		if (qtitle!=null&&qtitle.length()>0) {
+		if (qtitle!=null&&qtitle.trim().length()>0) {
 			map.put("qtitle", qtitle);
 		}
-		if (start!=null&&start.length()>0) {
+		if (start!=null&&start.trim().length()>0) {
 			map.put("start", start);
 		}
-		if (end!=null&&end.length()>0) {
+		if (end!=null&&end.trim().length()>0) {
 			map.put("end", end);
 		}
 		return map;
 	}
 	 
 	 
+	@RequestMapping("/getbyqid/{qid}")
+	public ModelAndView getById(@RequestParam(required=true,defaultValue="1")Integer page,HttpServletRequest request,@PathVariable int qid) {
+		ModelAndView mv=new ModelAndView();
+		PageHelper.startPage(page,5);
+		List<QuestionsComment> list=questionsCommentService. getqId(qid);
+		PageInfo<QuestionsComment> p = new PageInfo<QuestionsComment>(list);
+		mv.addObject("page", p);
+		mv.addObject("list", list);
+		mv.setViewName("/manager/CommentList");
+		return mv;
+	}
+	
+	 /*
+	  * 查看回复删除
+	  */
+	 @RequestMapping("/del/{qcid}/{qid}")
+	 public String deleteComment(@PathVariable int qcid,@PathVariable int qid) {
+		 System.out.println(qcid+"==="+qid);
+		 questionsCommentService.delete(qcid);
+		return "redirect:/admin/questionscomment/getbyqid/"+qid;
+	}
+	/*
+	  * 查看回复采纳最佳
+	  */
+	@RequestMapping("/updateIsBest/{qcid}/{qid}")
+	public String updateIsBest(@PathVariable int qcid,@PathVariable int qid) {
+		questionsCommentService.updateIsBest(qcid);
+		return "redirect:/admin/questionscomment/getbyqid/"+qid;
+	}
+	
+	/*
+	  * 问答回复采纳最佳
+	  */
+	@RequestMapping("/updateIs_Best/{qcid}")
+	public String updateIs_Best(@PathVariable int qcid) {
+		questionsCommentService.updateIsBest(qcid);
+		return "redirect:/admin/questionscomment/list";
+	}
 	 /*
 	  * 删除
 	  */
@@ -77,6 +116,7 @@ public class QuestionsCommentController {
 		questionsCommentService.delete(qcid);
 		return "redirect:/admin/questionscomment/list";
 	}
+	 
 	 /*
 	  * 修改赋值
 	  */

@@ -24,7 +24,7 @@ public class EduCommentController {
     	 ModelAndView mv=new ModelAndView();
     	 List<EduComment> listeduComment=eduCommentService.listAll(edqcid);
     	 mv.addObject("listeduComment", listeduComment);
-    	 mv.setViewName("EduCommentList");
+    	 mv.setViewName("/manager/EduCommentList");
 		 return mv;
 	}
        /*

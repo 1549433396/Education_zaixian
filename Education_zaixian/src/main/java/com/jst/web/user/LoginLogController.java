@@ -31,7 +31,7 @@ public class LoginLogController {
 		mv.addObject("page", p);
 //		System.out.println(listLogin);
 		mv.addObject("listLogin", listLogin);
-		mv.setViewName("EdUserJournal");
+		mv.setViewName("/manager/EdUserJournal");
 		return mv;
 	}
 }

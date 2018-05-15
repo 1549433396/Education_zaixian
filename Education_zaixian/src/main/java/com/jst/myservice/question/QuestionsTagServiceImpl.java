@@ -55,4 +55,11 @@ public class QuestionsTagServiceImpl implements QuestionsTagService{
 		
 	}
 
+	@Override
+	public List<QuestionsTag> getlistById(int qtid) {
+		List<QuestionsTag> list=questionsTagMapper.getlistById(qtid);
+		return list;
+	}
+
+	
 }

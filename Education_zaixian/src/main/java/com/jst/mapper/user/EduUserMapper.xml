@@ -20,7 +20,7 @@
        <result column="msg_num" property="msg_num"/>
        <result column="sys_msg_num" property="sys_msg_num"/>
        <result column="last_system_time" property="last_system_time"/>
-	</resultMap>
+	</resultMap>       
 	<select id="listAll" resultMap="EduUserMap" parameterType="java.util.Map">
 	   select * from  edu_user
 	    <where>
@@ -52,4 +52,8 @@
 	  update edu_user set is_avalible=#{is_avalible} 
 	  where user_id=#{user_id}
 	</update>
+	<insert id="save" parameterType="Edu_User">
+	insert into edu_user(mobile,email,password,user_name,show_name,sex,age,create_time,is_avalible,pic_img,banner_url,last_system_time) 
+	values(#{mobile},#{email},#{password},#{user_name},#{show_name},#{sex},#{age},#{create_time},#{is_avalible},#{pic_img},#{banner_url},#{last_system_time})
+	</insert>
 </mapper>

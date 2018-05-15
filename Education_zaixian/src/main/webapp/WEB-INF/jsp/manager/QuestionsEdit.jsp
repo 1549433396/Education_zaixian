@@ -155,7 +155,7 @@
 					<div class="layui-input-block">
 					     <!-- <a class="layui-btn layui-btn-normal newsAdd_btn" href="#">编辑</a>  -->
 						<button type="button" class="layui-btn" onclick="updateQue()">编辑</button>
-						<a class="layui-btn layui-btn-normal newsAdd_btn" href="/admin/Questions/listAllQuestions">返回列表</a> 
+						<a class="layui-btn layui-btn-normal newsAdd_btn" href="/admin/questions/list">返回列表</a> 
 				</div>
 				
 				</div>

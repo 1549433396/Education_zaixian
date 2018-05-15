@@ -50,7 +50,8 @@ public class Edu_UserController {
 		List<Edu_User> listEduUser=eduUserService.listAll(map);
 		PageInfo<Edu_User> p = new PageInfo<Edu_User>(listEduUser);
 		mv.addObject("listEduUser", listEduUser);
-		mv.setViewName("EduUserList");
+		mv.addObject("page", p);
+		mv.setViewName("/manager/EduUserList");
 		return mv;
 	}
 
@@ -117,7 +118,7 @@ public class Edu_UserController {
 	
 	@RequestMapping("/toBatchOpen")
 	public String toExcel(){
-		return "EduOpenUp";
+		return "/manager/EduOpenUp";
 	}
 
 	@RequestMapping("/parseExcel")
@@ -205,9 +206,6 @@ public class Edu_UserController {
 					eduUser.setBanner_url(str[j]);
 				}
 			}
-			/*Date date=new Date();
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String lasttime=sdf1.format(date);*/
 			eduUser.setLast_system_time(new Date());
 //			System.out.println("===eduUser"+eduUser);
 			eduUserService.save(eduUser);

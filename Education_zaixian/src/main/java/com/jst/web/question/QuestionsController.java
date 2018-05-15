@@ -1,7 +1,6 @@
 package com.jst.web.question;
 
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jst.mapper.question.QuestionsTagMapper;
 import com.jst.model.Questions;
+import com.jst.model.QuestionsTag;
 import com.jst.myservice.question.QuestionsService;
+import com.jst.myservice.question.QuestionsTagService;
 
 @Controller
 @RequestMapping("/admin/questions")
@@ -24,7 +26,10 @@ public class QuestionsController {
 
 	@Autowired
 	private QuestionsService questionsService;
-
+	@Autowired
+    private QuestionsTagMapper questionsTagMapper;
+	@Autowired
+    private QuestionsTagService questionsTagService;
 	/*
 	 * 查询
 	 */
@@ -35,13 +40,16 @@ public class QuestionsController {
 		Map map=new HashMap<>();
 		map=initMap(request, map);
 		List<Questions> listQuestions=questionsService.listAll(map);
+//		问答标签查询
+		List< QuestionsTag> listTag=questionsTagMapper.listAll();
+		mv.addObject("listTag", listTag);
 		PageInfo<Questions> p = new PageInfo<Questions>(listQuestions);
 		mv.addObject("page", p);
 //		问答类型查询
 		/*List<Questions> listType=questionsService.listType();*/
 		mv.addObject("listQuestions", listQuestions);
 		/*mv.addObject("listType", listType);*/
-		mv.setViewName("QuestionsList");
+		mv.setViewName("/manager/QuestionsList");
 		return mv;
 	}
     
@@ -51,10 +59,14 @@ public class QuestionsController {
 	public Map initMap(HttpServletRequest request,Map map) {
 		String title=request.getParameter("title");
 		String type=request.getParameter("type");
+		String tag=request.getParameter("tag");
 		String start=request.getParameter("start");
 		String end=request.getParameter("end");
 		if (type!=null&&!type.equals("-1")&&type.length()>0) {
 			map.put("type", type);
+		}
+		if (tag!=null&&!tag.equals("-1")&&tag.length()>0) {
+			map.put("tag", tag);
 		}
 		if (start!=null&&start.length()>0) {
 			map.put("start", start);
@@ -83,7 +95,7 @@ public class QuestionsController {
 		ModelAndView mv=new ModelAndView();
 		Questions questions=questionsService.getById(qid);
 		mv.addObject("questions", questions);
-		mv.setViewName("QuestionsEdit");
+		mv.setViewName("/manager/QuestionsEdit");
 		return mv;
 	}
 	/*

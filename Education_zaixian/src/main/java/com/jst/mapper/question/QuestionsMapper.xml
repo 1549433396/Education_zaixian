@@ -20,10 +20,10 @@
 		<association column="cus_id" property="eduUser"
 			select="com.jst.mapper.user.EduUserMapper.getById"></association>
 			<!--根据问答id查询标签集合  -->
-	   <!--  <association column="questions_id" property="listtag"></association> -->
+     <association column="questions_id" property="listtag" select="com.jst.mapper.question.QuestionsTagMapper.getlistById"></association> 
 	</resultMap>
 	<!-- id是mapper接口的名字 必须一样 resultMap跟resultMap里id的名字一样 就是再查一遍 -->
-	<select id="listAll" resultMap="QuestionsMap" resultType="Questions" parameterType="java.util.Map">
+	<select id="listAll" resultMap="QuestionsMap" parameterType="java.util.Map">
 		select * from edu_questions 
 		<where>
 		  <if test="title!=null">
@@ -33,22 +33,47 @@
 		    and type=#{type}
 		  </if>
 		  
-		  <if test="start!=null">
+		  <if test="start!=null and start!=''">
 		   and add_time &gt; #{start}
 		  </if>
-		  <if test="end!=null">
+		  <if test="end!=null and end!=''">
 		   and add_time &lt; #{end}
 		  </if> 
+		  
+		  <if test="typeid==1">
+	       and type=1
+	      </if>
+	      <if test="typeid==2">
+	       and type=2
+	      </if>
+	      <if test="typeid==5">
+	       and status=0
+	      </if>
 		</where>
+		<if test="typeid==3">
+			order by add_time desc
+		</if>
+		<!-- <if test="typeid==4">
+			order by BROWSE_COUNT desc
+		</if> -->
+		
 	</select>
 	<!-- <select id="listType" resultMap="QuestionsMap">
 	select * from edu_questions
 	</select> -->
-	
+	<!-- <select id="getlistAll" resultMap="QuestionsMap" resultType="int">
+	  select * from edu_questions where 0=0
+	  <if test="type==1">
+	   and type=#{value}
+	  </if>
+	  <if test="type==2">
+	   and type=#{value}
+	  </if>
+	</select> -->
 	<!-- id是mapper接口的名字 必须一样 resultMap跟resultMap里id的名字一样 就是再查一遍 parameterType 
 		传的类型int -->
 	<select id="getById" resultMap="QuestionsMap" parameterType="int">
-		select * from edu_questions where id=#{id}
+		select * from edu_questions where id=#{value}
 	</select>
 	<!-- id是mapper接口的名字 必须一样 parameterType 传的类型int -->
 	<delete id="delete" parameterType="int">
@@ -56,10 +81,25 @@
 		where id=#{id}
 	</delete>
 	<!-- id是mapper接口的名字 必须一样 parameterType 传的对象 questions -->
-	<update id="update" parameterType="questions">
+	<update id="update" parameterType="Questions">
 		update edu_questions set cus_id=#{eduUser.email},
 		title=#{title},content=#{content},type=#{type},status=#{status},reply_count=#{reply_count},
 		browse_count=#{browse_count},praise_count=#{praise_count},add_time=#{add_time}
 		where id=#{id}
+	</update>
+	
+	<insert id="save" parameterType="Questions">
+	  insert into edu_questions(title,content,type) values(#{title},#{content},#{type})
+	</insert> 
+	
+	<select id="getlistById" resultMap="QuestionsMap" parameterType="int">
+		select * from edu_questions where id=#{value}
+	</select>
+	
+	<select id="list" resultMap="QuestionsMap" resultType="Questions">
+	  select * from edu_questions order by BROWSE_COUNT desc
+	</select>
+	<update id="updatePraise" parameterType="int">
+	  update edu_questions set praise_count=praise_count+1 where id=#{value}
 	</update>
 </mapper>

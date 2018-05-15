@@ -46,8 +46,7 @@
 			  elem: '#test5',type: 'datetime'
 			});
 	});  
-	
-  
+
 </script>
 </head>
 <body>
@@ -75,9 +74,11 @@
 						</div>
 						<label class="layui-inline">问答标签:</label>
 						<div class="layui-input-inline">
-							<select class="layui-input" name="" id="">
-								<option>--请选择--</option>
-								<option>1</option>
+							<select class="layui-input" name="tag" id="tag">
+								<option value="-1">--请选择--</option>
+								<c:forEach items="${listTag }" var="t">
+								<option value="${t.questions_tag_id }">${t.questions_tag_name }</option>
+								</c:forEach>
 							</select>
 						</div>
 						<label class="layui-inline">添加时间:</label>
@@ -155,20 +156,25 @@
 									<td>
 									    <a class="layui-btn layui-btn-mini" href="/admin/questions/toupdate?qid=${q.id }"><i	class="iconfont icon-edit"></i> 编辑</a> 
 										<a	class="layui-btn layui-btn-danger layui-btn-mini" data-id="1" href="/admin/questions/delQuestions?qid=${q.id }"><i class="layui-icon">&#xe640;</i> 删 除</a> 
-										<a class="layui-btn layui-btn-normal layui-btn-mini" href="/admin/questionscomment/list"><i	class="layui-icon">&#xe63a;</i> 查看回复</a>
+										<a class="layui-btn layui-btn-normal layui-btn-mini" href="/admin/questionscomment/getbyqid/${q.id }"><i	class="layui-icon">&#xe63a;</i> 查看回复</a>
 									</td>
 								</tr>
 							</c:forEach>
 							<tr>
-								<td align="center" colspan="10">一共${page.pages}页 <a
-									href="/coupons/listcoupons?page=${page.firstPage}"
-									class="layui-btn layui-btn-mini">第一页</a> <a
-									href="/coupons/listcoupons?page=${page.prePage}"
-									class="layui-btn layui-btn-normal layui-btn-mini">上一页</a> <a
-									href="/coupons/listcoupons?page=${page.nextPage}"
-									class="layui-btn layui-btn-danger layui-btn-mini">下一页</a> <a
-									href="/coupons/listcoupons?page=${page.lastPage}"
-									class="layui-btn layui-btn-danger layui-btn-mini">最后页</a></td>
+								<td align="center" colspan="10">
+								一共<input type="text" value="${page.pages}" style="width: 25px;text-align: center;" /> 页
+								<%-- 一共${page.pages}页 --%> <a
+									href="/admin/questions/list?page=${page.firstPage}"
+									class="layui-btn layui-btn-small"><i class="iconfont icon-shanchu1"></i>第一页</a>&nbsp;&nbsp;<a
+									href="/admin/questions/list?page=${page.prePage}"
+									class="layui-btn layui-btn-normal layui-btn-small"><i class="iconfont icon-shanchu1"></i>上一页</a>&nbsp;&nbsp;<a
+									href="/admin/questions/list?page=${page.nextPage}"
+									class="layui-btn layui-btn-normal layui-btn-small"><i class="iconfont icon-shanchu1"></i>下一页</a>&nbsp;&nbsp;<a
+									href="/admin/questions/list?page=${page.lastPage}"
+									class="layui-btn layui-btn-small"><i class="iconfont icon-shanchu1"></i>最后页</a>
+									每页共<input type="text" value="${page.pageSize }" style="width: 25px;text-align: center;" /> 条
+									<%-- 每页${page.pageSize }条 --%>
+									</td>
 							</tr> 
 						</tbody>
 					</table>

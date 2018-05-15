@@ -19,7 +19,7 @@
 					<c:if test="${indexNavigate.newPage==0}">target="_blank"</c:if>>名师</a></li>
 				<li><a href="/article" title="文章"
 					<c:if test="${indexNavigate.newPage==0}">target="_blank"</c:if>>文章</a></li>
-				<li><a href="question" title="问答"
+				<li><a href="/front/questions/list/0" title="问答"
 					<c:if test="${indexNavigate.newPage==0}">target="_blank"</c:if>>问答</a></li>
 				<%-- 				<c:forEach items="${navigatemap.INDEX}" var="indexNavigate"> --%>
 				<%-- 					<li><a href="${ctx}${indexNavigate.url}" title="${indexNavigate.name}" <c:if test="${indexNavigate.newPage==0}">target="_blank"</c:if>>${indexNavigate.name}</a></li> --%>

@@ -16,7 +16,7 @@
    </resultMap>
     <select id="listAll" resultMap="QuestionsCommentMap" parameterType="java.util.Map">
        select * from edu_questions_comment  
-      <where>
+      <where>    
         <if test="qcid!=null">
           and id=#{qcid}
         </if>
@@ -29,9 +29,19 @@
        </where>
     </select>
     <delete id="delete" parameterType="int">
-      delete from edu_questions_comment where id=#{id}
+      delete from edu_questions_comment where id=#{value}
     </delete>
     <update id="update" parameterType="questionsComment">
-      update edu_questions_comment set content=#{content},praise_count=#{praise_count}  where id=#{qcid}
+      update edu_questions_comment set content=#{content},praise_count=#{praise_count}  where id=#{value}
     </update>
+    <!-- 采纳为最佳 -->
+    <update id="updateIsBest" parameterType="int">
+      update edu_questions_comment set is_best=1  where id=#{value}
+    </update>
+    <select id="getqId" resultType="int" resultMap="QuestionsCommentMap">
+       select * from edu_questions_comment  where question_id=#{value} 
+    </select>
+    <update id="updatepraise" parameterType="int">
+	  update edu_questions_comment set praise_count=praise_count+1 where id=#{id}
+	</update>
 </mapper>

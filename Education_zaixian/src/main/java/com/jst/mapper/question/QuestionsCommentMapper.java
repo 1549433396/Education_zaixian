@@ -17,4 +17,10 @@ public interface QuestionsCommentMapper {
 	public QuestionsComment getById(int qcid);
 	//        修改
 	public void update(QuestionsComment questionsComment);
+//	查看回复
+	public List<QuestionsComment> getqId(int qid);
+//	采纳为最佳
+	public void updateIsBest(int qcid);
+	 //点赞
+	 public void updatepraise(int id);
 }

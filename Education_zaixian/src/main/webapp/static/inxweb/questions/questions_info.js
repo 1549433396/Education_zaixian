@@ -21,7 +21,7 @@ function commentCallBack(result){
 /* 添加回答评论 */
 function addComment(obj){
 	if(isLogin()){
-		//$(".n-reply-wrap .c-red").html("");
+		$(".n-reply-wrap .c-red").html("");
 		var questionsCommentContent=$("textarea[name='questionsComment.content']").val();
 		if(questionsCommentContent.trim()==""){
 			$(obj).parent().find("tt").html("回复内容不能为空");

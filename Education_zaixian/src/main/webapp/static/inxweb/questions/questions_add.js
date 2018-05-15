@@ -105,7 +105,7 @@ function addQuestions(){
 	
 	
 	$.ajax({
-		url:baselocation + "/questions/ajax/add",
+		url:baselocation + "/front/questions/ajax/add",
 		data:{
 			"questions.title":title,
 			"questions.content":questionsContent,
