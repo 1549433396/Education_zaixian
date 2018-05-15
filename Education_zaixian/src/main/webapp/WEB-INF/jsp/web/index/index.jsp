@@ -18,10 +18,10 @@
 			<!-- 图片位置 -->
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
-					<c:forEach var="image" items="${websiteImagesList}" varStatus="status">
+					<c:forEach var="image" items="${listAll}" varStatus="status">
 						<div class="swiper-slide" style="background: <c:if test="${empty image.color}">#EF550F;</c:if><c:if test="${!empty image.color}">${image.color}</c:if>;">
-							<a target="_blank" href="<c:if test='${image.linkAddress!=null&&image.linkAddress!=""}'>${image.linkAddress}</c:if>">
-								<img class="imgload" src="${image.imagesUrl}" alt="${image.title}">
+							<a target="_blank" href="<c:if test='${image.link_address!=null&&image.link_address!=""}'>${image.link_address}</c:if>">
+								<img class="imgload" src="${image.image_url}" alt="${image.title}">
 							</a>
 						</div>
 					</c:forEach>
