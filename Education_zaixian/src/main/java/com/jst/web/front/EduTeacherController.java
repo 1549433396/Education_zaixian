@@ -1,6 +1,7 @@
 package com.jst.web.front;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,10 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jst.model.Subject;
 import com.jst.model.Teacher;
 import com.jst.myservice.teacher.CourseService;
@@ -36,12 +41,15 @@ public class EduTeacherController {
 	}
 
 	@RequestMapping("/front/teacher")
-	public ModelAndView teacher(){
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/web/teacher/teacher_list");
-		mav.addObject("teacherList", EduTeacherService.listAll());
-		mav.addObject("subjectList", SysSubjectService.listAllParent());
-		return mav;
+	public String teacher(@RequestParam(required=true,defaultValue="1")Integer page,Model model){
+//		PageHelper.startPage(page, 4);
+		List<Teacher> list = EduTeacherService.listAll();
+//		PageInfo<Teacher> p = new PageInfo<Teacher>(list);
+//		model.addAttribute("page", p);
+		model.addAttribute("teacherList", list);
+		System.out.println(list);
+		model.addAttribute("subjectList", SysSubjectService.listAllParent());
+		return "/web/teacher/teacher_list";
 	}
 	
 	@RequestMapping("/front/teacher/getById/{id}")

@@ -35,19 +35,10 @@ public class TeacherController {
 	private SubjectService subjectService;
 
 	@RequestMapping("/admin/teacher/list")
-	public String listAllTM(@RequestParam(required=true,defaultValue="1")Integer page,Model model,HttpServletRequest request) throws ParseException {
-		PageHelper.startPage(page, 5);
-		List<Teacher> list = teacherService.listAllTS(new HashMap<>());
-		PageInfo<Teacher> p = new PageInfo<Teacher>(list);
-		model.addAttribute("page", p);
-		model.addAttribute("teas", list);
-		return "/manager/teacherList";
-	}
-
-	@RequestMapping("/admin/teacher/list/getById")
 	public String listAll(@RequestParam(required=true,defaultValue="1")Integer page,Model model,HttpServletRequest request) throws ParseException {
-		PageHelper.startPage(page, 5);
+		PageHelper.startPage(page, 10);
 		Map map = new HashMap<>();
+		System.out.println(page);
 		String qname = request.getParameter("qname");
 		String is_star = request.getParameter("is_star");
 		String create_time = request.getParameter("create_time");
@@ -72,7 +63,9 @@ public class TeacherController {
 		}
 		List<Teacher> list = list = teacherService.listAllTS(map);
 		p = new PageInfo<Teacher>(list);
+		System.out.println(p.getPages());
 		model.addAttribute("page", p);
+		model.addAttribute("pageNum", page);
 		model.addAttribute("teas", list);
 		return "/manager/teacherList";
 	}
