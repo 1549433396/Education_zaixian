@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.teacher.TeacherMapper">
+	<resultMap type="Teacher" id="TeacherMap">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="th_name" property="th_name" />
+		<result column="th_pw" property="th_pw" />
+		<result column="education" property="education" />
+		<result column="career" property="career" />
+		<result column="is_star" property="is_star" />
+		<result column="pic_path" property="pic_path" />
+		<result column="status" property="status" />
+		<result column="create_time" property="create_time" />
+		<result column="update_time" property="update_time" />
+		<result column="sort" property="sort" />
+		<association column="subject_id" property="subject_id"
+			select="com.jst.mapper.teacher.SubjectMapper.getIdBySM"></association>
+	</resultMap>
+	<select id="listAllTM" resultMap="TeacherMap" parameterType="java.util.Map">
+		select * from edu_teacher
+		<where>
+			<if test="create_time != null and create_time != '' and create_times != null and create_times != ''  ">
+				and create_time between #{create_time} and #{create_times}
+			</if>
+			<if test="qname != null">
+				and name like '%${qname}%'
+			</if>
+			<if test="is_star > 0">
+				and is_star=#{is_star}
+			</if>
+		</where>
+	</select>
+	<select id="getIdByTM" parameterType="int" resultMap="TeacherMap">
+		select *
+		from edu_teacher where id=#{value}
+	</select>
+	<update id="updateTM" parameterType="Teacher">
+		update edu_teacher set
+		name=#{name},th_name=#{th_name},th_pw=#{th_pw},education=#{education},career=#{career},is_star=#{is_star},
+		pic_path=#{pic_path},update_time=#{update_time},subject_id=#{subject_id.subject_id},sort=#{sort}
+		where id=#{id}
+	</update>
+	<insert id="insertTM" parameterType="Teacher">
+		insert into edu_teacher
+		values(null,#{name},#{th_name},#{th_pw},#{education},#{career},#{is_star},
+		#{pic_path},#{status},#{create_time},null,#{subject_id.subject_id},#{sort})
+	</insert>
+	<delete id="deleteTM" parameterType="int">
+		delete from edu_teacher
+		where id=#{value}
+	</delete>
+</mapper>

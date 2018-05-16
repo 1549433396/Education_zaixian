@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.teacher.SysTeacherSubjectMapper">
+	<select id="listSM" resultType="Subject">
+		select * from sys_subject
+	</select>
+	<select id="getById" parameterType="int" resultType="Subject">
+		select * from sys_subject where subject_id=#{value}
+	</select>
+	<select id="listAllParent" resultType="Subject">
+		select * from sys_subject where parent_id='' or parent_id is NULL
+	</select>
+	<select id="getParBySub" parameterType="int" resultType="Subject">
+		SELECT * FROM sys_subject WHERE parent_id =#{value} or subject_id=#{value}
+	</select>
+</mapper>

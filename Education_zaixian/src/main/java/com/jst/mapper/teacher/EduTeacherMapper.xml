@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.teacher.EduTeacherMapper">
+	<resultMap type="Teacher" id="TeacherMap">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="th_name" column="th_name" />
+		<result property="th_pw" column="th_pw" />
+		<result property="education" column="education" />
+		<result property="career" column="career" />
+		<result property="is_star" column="is_star" />
+		<result property="pic_path" column="pic_path" />
+		<result property="status" column="status" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+		<result property="sort" column="sort" />
+		<association property="subject_id" column="SUBJECT_ID"
+			select="com.jst.mapper.teacher.SysTeacherSubjectMapper.getById"></association>
+		<association property="courses" column="id"
+			select="com.jst.mapper.teacher.CourseMapper.listCou"></association>
+	</resultMap>
+	<select id="listAll" resultMap="TeacherMap">
+		select * from edu_teacher
+	</select>
+	<select id="getById" parameterType="int" resultMap="TeacherMap">
+		select * from edu_teacher where id=#{value}
+	</select>
+	<select id="listById" parameterType="int" resultMap="TeacherMap">
+		select * from edu_teacher where subject_id=#{value}
+	</select>
+	<select id="listTea" parameterType="int" resultMap="TeacherMap">
+		select * from edu_teacher where id in (select teacher_id from edu_course_teacher where subject_id=#{value})
+	</select>
+</mapper>
