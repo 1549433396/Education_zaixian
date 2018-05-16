@@ -29,8 +29,8 @@
 					<div class="mt20 ml20">
 						<section class="t-infor-pic">
 							<c:choose>
-								<c:when test="${not empty teacher.picPath }">
-									<img src="${ctx }/static/inxweb/img/default-tea-img.gif" xsrc="<%=staticImage %>${teacher.picPath}" alt="">
+								<c:when test="${not empty teacher.pic_path }">
+									<img src="${ctx }/static/inxweb/img/default-tea-img.gif" xsrc="<%=staticImage %>${teacher.pic_path}" alt="">
 								</c:when>
 								<c:otherwise>
 									<img xSrc="${ctx }/static/inxweb/img/default-tea-img.gif" src="${ctx }/static/inxweb/img/default-tea-img.gif" class="img-responsive" alt="">
@@ -38,7 +38,7 @@
 							</c:choose>
 						</section>
 						<h3 class="hLh30">
-							<span class="fsize24 c-333">${teacher.name } <c:if test="${teacher.isStar ==1}">&nbsp;高级讲师</c:if> <c:if test="${teacher.isStar ==2}">&nbsp;首席讲师</c:if></span>
+							<span class="fsize24 c-333">${teacher.name } <c:if test="${teacher.is_star ==1}">&nbsp;高级讲师</c:if> <c:if test="${teacher.is_star ==2}">&nbsp;首席讲师</c:if></span>
 						</h3>
 						<section class="mt10">
 							<span class="t-tag-bg">${teacher.education }</span>
@@ -84,11 +84,11 @@
 													</c:otherwise>
 												</c:choose>
 												<div class="cc-mask">
-													<a href="${ctx }/front/couinfo/${course.courseId}" title="开始学习" class="comm-btn c-btn-1">开始学习</a>
+													<a href="${ctx }/front/couinfo/${course.course_id}" title="开始学习" class="comm-btn c-btn-1">开始学习</a>
 												</div>
 											</section>
 											<h3 class="hLh30 txtOf mt10">
-												<a href="${ctx }/front/couinfo/${course.courseId}" title="${course.courseName }" class="course-title fsize18 c-333">${course.courseName }</a>
+												<a href="${ctx }/front/couinfo/${course.course_id}" title="${course.course_name }" class="course-title fsize18 c-333">${course.course_name }</a>
 											</h3>
 										</div>
 									</li>

@@ -14,9 +14,9 @@
 					<span class="c-333">全部讲师</span>
 				</h2>
 				<section class="c-tab-title">
-					<a id="subjectAll" title="全部" href="${ctx }/front/teacherlist">全部</a>
+					<a id="subjectAll" title="全部" href="${ctx }/front/teacher">全部</a>
 					<c:forEach var="subject" items="${subjectList }">
-						<a id="${subject.subjectId}" title="${subject.subjectName }" href="javascript:void(0)" onclick="submitForm(${subject.subjectId})">${subject.subjectName }</a>
+						<a id="subject_id" title="${subject.subject_name }" href="javascript:void(0)" onclick="submitForm(${subject.subject_id})">${subject.subject_name }</a>
 					</c:forEach>
 				</section>
 			</header>
@@ -36,10 +36,10 @@
 									<li>
 										<section class="i-teach-wrap">
 											<div class="i-teach-pic">
-												<a href="${ctx }/front/teacher/${teacher.id}" title="${teacher.name }">
+												<a href="${ctx }/front/teacher/getById/${teacher.id}" title="${teacher.name }">
 													<c:choose>
-														<c:when test="${not empty teacher.picPath }">
-															<img src="${ctx }/static/inxweb/img/default-tea-img.gif" xsrc="<%=staticImage %>${teacher.picPath}" alt="">
+														<c:when test="${not empty teacher.pic_path }">
+															<img src="${ctx }/static/inxweb/img/default-tea-img.gif" xsrc="<%=staticImage %>${teacher.pic_path}" alt="">
 														</c:when>
 														<c:otherwise>
 															<img xSrc="${ctx }/static/inxweb/img/default-tea-img.gif" src="${ctx }/static/inxweb/img/default-tea-img.gif" alt="">
@@ -48,7 +48,7 @@
 												</a>
 											</div>
 											<div class="mt10 hLh30 txtOf tac">
-												<a href="${ctx }/front/teacher/${teacher.id}" title="${teacher.name }" class="fsize18 c-666">${teacher.name }</a>
+												<a href="${ctx }/front/teacher/getById/${teacher.id}" title="${teacher.name }" class="fsize18 c-666">${teacher.name }</a>
 											</div>
 											<div class="hLh30 txtOf tac">
 												<span class="fsize14 c-999">${teacher.career }</span>
@@ -66,11 +66,11 @@
 				</div>
 				<!-- 公共分页 开始 -->
 				<div>
-					<form action="${ctx }/front/teacherlist" method="post" id="searchForm">
+					<form action="${ctx }/front/getParBySub" method="post" id="searchForm">
 						<input type="hidden" name="page.currentPage" id="pageCurrentPage" value="1">
-						<input type="hidden" name="queryTeacher.subjectId" id="" value="${subjectId }">
+						<input type="hidden" name="queryTeacher_subjectId" id="queryTeacher_subjectId" value="${subject_id }">
 					</form>
-					<jsp:include page="/WEB-INF/jsp/common/front_page.jsp"></jsp:include>
+					<jsp:include page="${ctx }/front/teacher/page"></jsp:include>
 				</div>
 				<!-- 公共分页 结束 -->
 			</section>
@@ -79,10 +79,10 @@
 	</div>
 <script type="text/javascript">
 	$(function() {
-		if ('${subjectId}' == null || '${subjectId}' == 0) {
+		if ('${subject_id}' == null || '${subject_id}' == 0) {
 			$("#subjectAll").addClass("current");
 		}else{
-			$("#${subjectId}").addClass("current");
+			$("#${subject_id}").addClass("current");
 		};
 		scrollLoad(); //响应滚动加载课程图片
 	})
@@ -91,7 +91,7 @@
 	 * 条件查询
 	 */
 	function submitForm(val){
-		$("input[name='queryTeacher.subjectId']").val(val);
+		$("#queryTeacher_subjectId").val(val);
 		$("#searchForm").submit();
 	}
 </script>
