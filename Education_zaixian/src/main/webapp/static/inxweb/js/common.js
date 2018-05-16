@@ -246,8 +246,8 @@ function addPraise(targetId,type,obj){
 		$.ajax({
 			url:baselocation + "/praise/ajax/add",
 			data:{
-				"praise.targetId":targetId,
-				"praise.type":type
+				"targetId":targetId,
+				"type":type
 			},
 			type:"post",
 			dataType:"json",

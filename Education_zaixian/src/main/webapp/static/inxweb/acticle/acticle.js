@@ -36,8 +36,8 @@ function addActiclePraise(targetId,type){
 		$.ajax({
 			url:"/praise/ajax/add",
 			data:{
-				"praise.targetId":targetId,
-				"praise.type":type
+				"targetId":targetId,
+				"type":type
 			},
 			type:"post",
 			dataType:"json",
