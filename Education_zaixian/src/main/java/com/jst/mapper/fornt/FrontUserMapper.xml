@@ -16,15 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="shows" resultType="Edu_User" parameterType="java.util.Map">
 		select date_format(create_time,'%Y-%m-%d') create_time,count(*) as num from edu_user
-		<where>
-			<if test="start!=null and start!=''">
-				and create_time &gt;#{start}
-			</if>
-			<if test="end!=null and end!=''">
-				and create_time &lt;#{end}
-			</if>
-		</where>
+		where create_time like '${create_time}%'
 		group by date_format(create_time,'%Y-%m-%d')
 	</select>
-	
 </mapper>

@@ -39,7 +39,8 @@
 		</where>
 	</select>
 	<select id="alistAll" resultMap="ArticleMap">
-		select * from edu_article where releases=0 order by sort desc
+		select * from edu_article where
+		releases=0 order by sort desc
 	</select>
 	<delete id="delete" parameterType="int">
 		delete from edu_article where
@@ -75,11 +76,7 @@
 		edu_article_content (article_id,content) values
 		(#{article_id},#{acontent.content})
 	</insert>
-	<update id="praiseEdit" parameterType="EduComment">
-		update edu_comment set
-		praise_count=praise_count+1 where
-		comment_id=#{comment_id} and type=#{type}
-	</update>
+
 	<delete id="deleteAll" parameterType="Integer">
 		delete from edu_article where
 		<foreach item="chk_value" collection="array" open="article_id in ("
@@ -88,9 +85,22 @@
 		</foreach>
 	</delete>
 	<update id="releaseEdit" parameterType="Edu_Article">
-		update edu_article set releases=#{releases},publish_time=#{publish_time} where article_id=#{article_id}
+		update edu_article set
+		releases=#{releases},publish_time=#{publish_time} where
+		article_id=#{article_id}
 	</update>
 	<update id="click_numEdit" parameterType="int">
-	update edu_article set click_num=click_num+1 where article_id=#{article_id}
+		update edu_article set
+		click_num=click_num+1 where article_id=#{article_id}
+	</update>
+	<update id="editCommentNum" parameterType="int">
+		update edu_article set
+		comment_num=comment_num+1 where
+		article_id=#{article_id}
+	</update>
+	<update id="editPraise" parameterType="int">
+		update edu_article set
+		praise_count=praise_count+1 where
+		article_id=#{article_id}
 	</update>
 </mapper>
