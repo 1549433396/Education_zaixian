@@ -1,159 +1,156 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>个人信息</title>
-<meta name="renderer" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="format-detection" content="telephone=no">
-<link rel="stylesheet" type="text/css"
-	href="/common/layui/css/layui.css" media="all">
-<link rel="stylesheet" type="text/css"
-	href="/common/bootstrap/css/bootstrap.css" media="all">
-<link rel="stylesheet" type="text/css" href="/common/global.css"
-	media="all">
-<link rel="stylesheet" type="text/css" href="/css/personal.css"
-	media="all">
-</head>
-<script type="text/javascript">
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 
-function fun(id,name){
-	opener.document.getElementById("teacherId").value= id;
-	opener.document.getElementById("courseKpoint.teacherId").value= id;
-	opener.document.getElementById("teacherName").innerText = name; 
-	window.close(); 
-}
-</script>
-<body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>教师列表</title>
+		<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+		<script src="../../../js/jquery-3.2.0.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="../../../css/bootstrap-table.min.css" />
+		<script src="../../../js/bootstrap-table.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/bootstrap-table-zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="/js/My97DatePicker/WdatePicker.js"></script>
+	</head>
 
+	<style type="text/css">
+		.container {
+			margin-top: -25px;
+		}
+		
+		a {
+			color: black;
+		}
+		
+		#pageDiv {
+			text-align: center;
+			width: 1100px;
+			font-size: 18px;
+			font-weight: bold;
+		}
+	</style>
 
-	<section class="layui-larry-box">
-		<div class="larry-personal">
-			<div class="layui-tab">
-				<div
-					class="layui-tab-content larry-personal-body clearfix mylog-info-box">
-					<!-- 操作日志 -->
-					<div class="layui-tab-item layui-field-box layui-show">
-						<table class="layui-table table-hover" lay-even="" lay-skin="nob">
-							<!--  <thead>
-                              <tr>
-                                  <th><input type="checkbox" id="selected-all"></th>
-                                  <th>ID</th>
-                                  <th>操作人</th>
-                                  <th>操作时间</th>
-                                  <th>文件</th>
-                                  <th>模块</th>
-                                  <th>控制器</th>
-                                  <th>方法</th>
-                                  <th>详细参数</th>
-                                  <th>操作IP</th>
-                              </tr>
-                          </thead> -->
-							<tbody>
-								<c:forEach items="${teachers }" var="t">
-									<tr>
-										<td><input type="hidden" name="id"></td>
-										<td><input type="radio" name="teacher"
-											onclick="fun(${t.id },'${t.name }')"></td>
-										<td>${t.name }</td>
-										<td>${t.is_star == 1?"高级讲师":"首席讲师" }</td>
-										<td>${t.education }</td>
-										<td>${t.career }</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-						<!-- <div class="larry-table-page clearfix">
-							<a href="javascript:;" class="layui-btn layui-btn-small"><i
-								class="iconfont icon-shanchu1"></i>删除</a>
-							<div id="page" class="page"></div>
-						</div> -->
-					</div>
-					<!-- 登录日志 -->
-					<div class="layui-tab-item layui-field-box">
-						<table class="layui-table table-hover" lay-even="" lay-skin="nob">
-							<thead>
-								<tr>
-									<th><input type="checkbox" id="selected-all"></th>
-									<th>ID</th>
-									<th>管理员账号</th>
-									<th>状态</th>
-									<th>最后登录时间</th>
-									<th>上次登录IP</th>
-									<th>登录IP</th>
-									<th>IP所在位置</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>110</td>
-									<td>admin</td>
-									<td>后台登录成功</td>
-									<td>2016-12-19 14:26:03</td>
-									<td>127.0.0.1</td>
-									<td>127.0.0.1</td>
-									<td>Unknown</td>
-								</tr>
-							</tbody>
-						</table>
-						<div class="larry-table-page clearfix">
-							<a href="javascript:;" class="layui-btn layui-btn-small"><i
-								class="iconfont icon-shanchu1"></i>删除</a>
-							<div id="page2" class="page"></div>
+	<body>
+
+		<div class="container">
+			<div class="col-lg-offset-1">
+				<div class="form-inline">
+					<form action="/admin/teacher/list/getById" method="post">
+						<div class="col-lg-11" align="center">
+							<span>讲师名称:</span>
+							<input type="text" class="form-control" name="qname" id="qname" placeholder="讲师名" value="${name }" style="width: 150px;" />
+							<select name="is_star" class="form-control" id="is_star" value="${is_star }">
+								<option value="0">请选择</option>
+								<option value="1">高级讲师</option>
+								<option value="2">首席讲师</option>
+							</select>
+							<span>添加时间:</span>
+							<input type="text" onClick="WdatePicker()" id="create_time" name="create_time" class="form-control" placeholder="开始添加时间" value="${create_time }" style="width: 150px;" />
+							<span>-</span>
+							<input type="text" onClick="WdatePicker()" id="create_times" name="create_times" class="form-control" placeholder="结束添加时间" value="${create_times }" style="width: 150px;" /> &nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="image" src="../../../images/search.png" class="submit_btn" style="margin-top: 40px; margin-bottom: -9px;" />
+							<input type="image" src="../../../images/null.png" onclick="nullFun()" class="btn" />
 						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>
-	</section>
-	<script type="text/javascript" src="common/layui/layui.js"></script>
+		<div class="col-lg-9">
+			<table class="table table-condensed">
+				<tr bgcolor="#272727" style="color: white;font-size: 16px;" align="center">
+					<td>ID</td>
+					<td>名称</td>
+					<td>头衔</td>
+					<td>专业</td>
+					<td width="200">资历</td>
+					<td width="400">简介</td>
+					<td>添加时间</td>
+					<td>排序</td>
+					<td width="100">操作</td>
+				</tr>
+				<c:forEach items="${teas }" var="t">
+					<tr style="color: #888888;font-size: 14px;" align="center">
+						<td>${t.id }</td>
+						<td>${t.name }</td>
+						<c:if test="${t.is_star==1 }">
+							<td>高级讲师</td>
+						</c:if>
+						<c:if test="${t.is_star==2 }">
+							<td>首席讲师</td>
+						</c:if>
+						<td>${t.subject_id.subject_name }</td>
+						<td width="200">${t.education }</td>
+						<td width="400" title="${t.career }">${t.career }</td>
+						<td>
+							<fmt:formatDate value="${t.create_time }" type="date" pattern="yyyy/MM/dd hh:mm:ss" />
+						</td>
+						<td>${t.sort }</td>
+						<td width="100">
+							<a href="/admin/teacher/getIdByTM/${t.id }"><img src="../../../images/update.png" /></a>&nbsp;&nbsp;
+							<a href="/admin/teacher/deleteTM/${t.id }"><img src="../../../images/delete.png" /></a>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+
+			<div id="pageDiv">
+				<span>
+				每页${page.pageSize }条 &nbsp;当前页${page.size }条  &nbsp;${page.pageNum }/${page.pages }页
+				 &nbsp;记录数${page.total }
+			</span> &nbsp;
+				<c:if test="${page.isFirstPage==true }">
+					<a>首页</a>
+				</c:if>
+				<c:if test="${page.isFirstPage==false }">
+					<a href="/admin/teacher/list?page=${page.firstPage}&qname=${qname}&is_star=${is_star}">首页</a>
+				</c:if>
+				&nbsp;
+				<c:if test="${page.hasPreviousPage==true }">
+					<a href="/admin/teacher/list?page=${page.prePage }&qname=${qname}&is_star=${is_star}">上一页</a>
+				</c:if>
+				<c:if test="${page.hasPreviousPage==false }">
+					<a>上一页</a>
+				</c:if>
+				&nbsp;
+				<c:if test="${page.hasNextPage==true }">
+					<a href="/admin/teacher/list?page=${page.nextPage }&qname=${qname}&is_star=${is_star}">下一页</a>
+				</c:if>
+				<c:if test="${page.hasNextPage==false }">
+					<a>下一页</a>
+				</c:if>
+				&nbsp;
+				<c:if test="${page.isLastPage==true }">
+					<a>末页</a>
+				</c:if>
+				<c:if test="${page.isLastPage==false }">
+					<a href="/admin/teacher/list?page=${page.lastPage }&qname=${qname}&is_star=${is_star}">末页</a>
+				</c:if>
+			</div>
+		</div>
+
+	</body>
+
 	<script type="text/javascript">
-	layui.use(['jquery','layer','element','laypage'],function(){
-	      window.jQuery = window.$ = layui.jquery;
-	      window.layer = layui.layer;
-          var element = layui.element(),
-              laypage = layui.laypage;
+		$("#qname").val("${qname}");
+		var is = "${is_star}";
+		if(is != null && is > 0) {
+			$("#is_star").val(is);
+		} else {
+			$("#is_star").val("0");
+		}
+		$("#create_time").val("${create_time}");
+		$("#create_times").val("${create_times}");
+		
+		function nullFun(){
+			$("#qname").val("");
+			$("#is_star").val("0");
+			$("#create_time").val("");
+			$("#create_times").val("");
+		}
+	</script>
 
-            
-          laypage({
-					cont: 'page',
-					pages: 10 //总页数
-						,
-					groups: 5 //连续显示分页数
-						,
-					jump: function(obj, first) {
-						//得到了当前页，用于向服务端请求对应数据
-						var curr = obj.curr;
-						if(!first) {
-							//layer.msg('第 '+ obj.curr +' 页');
-						}
-					}
-				});
-
-          laypage({
-					cont: 'page2',
-					pages: 10 //总页数
-						,
-					groups: 5 //连续显示分页数
-						,
-					jump: function(obj, first) {
-						//得到了当前页，用于向服务端请求对应数据
-						var curr = obj.curr;
-						if(!first) {
-							//layer.msg('第 '+ obj.curr +' 页');
-						}
-					}
-				});
-    });
-</script>
-</body>
 </html>
