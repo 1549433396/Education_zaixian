@@ -70,7 +70,7 @@
 						<input type="hidden" name="page.currentPage" id="pageCurrentPage" value="1">
 						<input type="hidden" name="queryTeacher_subjectId" id="queryTeacher_subjectId" value="${subject_id }">
 					</form>
-					<jsp:include page="${ctx }/front/teacher/page"></jsp:include>
+					<%-- <jsp:include page="${ctx }/front/teacher/page"></jsp:include> --%>
 				</div>
 				<!-- 公共分页 结束 -->
 			</section>
