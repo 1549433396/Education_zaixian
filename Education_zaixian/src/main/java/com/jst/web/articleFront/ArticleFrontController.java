@@ -22,6 +22,7 @@ import com.jst.model.Edu_Article;
 import com.jst.model.Edu_Comment;
 import com.jst.model.Edu_User;
 import com.jst.myservice.article.ArticleService;
+import com.jst.myservice.article.CommentService;
 import com.jst.utils.Result;
 
 @Controller
@@ -31,7 +32,7 @@ public class ArticleFrontController {
 	private ArticleService articleService;
 	
 	@Autowired
-	private CommentMapper commentMapper;
+	private CommentService commentService;
 	
 	@RequestMapping("/article")
 	public ModelAndView article(){
@@ -56,7 +57,7 @@ public class ArticleFrontController {
 	@RequestMapping("/web/comment/ajax/query")
 	public ModelAndView comment(int otherId) {
 		ModelAndView mView=new ModelAndView();
-		List<Edu_Comment>edu_Comment=commentMapper.getByOther(otherId);
+		List<Edu_Comment>edu_Comment=commentService.getByOther(otherId);
 		mView.setViewName("/web/comment/comment");
 		mView.addObject("commentList", edu_Comment);
 		return mView;
@@ -64,32 +65,34 @@ public class ArticleFrontController {
 	
 	@RequestMapping("/praise/ajax/add")
 	@ResponseBody
-	public Result praiseAdd(HttpSession session,HttpServletResponse response,int targetId,int type) {
-		Edu_User edu_User = (Edu_User) session.getAttribute("login_success");
+	public Result praiseAdd(Integer targetId,Integer type) {
 		EduComment eduComment=new EduComment();
 		eduComment.setComment_id(targetId);
 		eduComment.setType(type);
 		boolean b=true;
 		Result result=new Result();
 		if (b) {
-			articleService.praiseEdit(eduComment);
+			articleService.editPraise(targetId);
+			commentService.praiseEdit(eduComment);
 			b=true;
 		}
+		System.out.println(eduComment.getPraise_count());
 		result.setSuccess(b);
 		return result;
 	}
 	
 	@RequestMapping("/web/comment/ajax/addcomment")
-	public String addcomment(HttpSession session,HttpServletResponse response,int pCommentId,String content,int type,String otherId) {
+	public String addcomment(HttpSession session,HttpServletResponse response,int pCommentId,String content,int type,int otherId) {
 		Edu_User edu_User = (Edu_User) session.getAttribute("login_success");
 		Edu_Comment edu_Comment=new Edu_Comment();
 		edu_Comment.setP_comment_id(pCommentId);
 		edu_Comment.setContent(content);
-		edu_Comment.setOther_id(Integer.parseInt(otherId));
+		edu_Comment.setOther_id(otherId);
 		edu_Comment.setType(type);
 		edu_Comment.setAddtime(new Date());
 		edu_Comment.setUserId(edu_User);
-		commentMapper.save(edu_Comment);
+		articleService.editCommentNum(otherId);
+		commentService.save(edu_Comment);
 		return "redirect:/front/articleinfo/"+otherId;
 	}
 	
@@ -99,8 +102,7 @@ public class ArticleFrontController {
 		Map map=new HashMap<>();
 	    map.put("p_comment_id", pCommentId);
 	    map.put("other_id", otherId);
-	    List<Edu_Comment>listChild=commentMapper.listChildComment(map);
-	    System.out.println(listChild.size());
+	    List<Edu_Comment>listChild=commentService.listChildComment(map);
 	    mView.setViewName("/web/comment/comment_reply");
 	    mView.addObject("commentList", listChild);
 		return mView;
@@ -108,7 +110,6 @@ public class ArticleFrontController {
 	@RequestMapping("/web/comment/ajax/addChildComment")
 	public String addChildComment(HttpServletRequest request,HttpSession session,HttpServletResponse response,int pCommentId,String content,int type,int otherId) {
 		Edu_User edu_User = (Edu_User) session.getAttribute("login_success");
-		System.out.println("123456");
 		Edu_Comment edu_Comment=new Edu_Comment();
 		edu_Comment.setP_comment_id(pCommentId);
 		edu_Comment.setContent(content);
@@ -116,7 +117,8 @@ public class ArticleFrontController {
 		edu_Comment.setType(type);
 		edu_Comment.setAddtime(new Date());
 		edu_Comment.setUserId(edu_User);
-		commentMapper.addChildComment(edu_Comment);
+		commentService.replyEdit(pCommentId);
+		commentService.addChildComment(edu_Comment);
 		return "redirect:/front/articleinfo/"+otherId;
 	}
 	

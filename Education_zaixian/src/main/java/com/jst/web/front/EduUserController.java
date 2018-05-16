@@ -37,10 +37,10 @@ import com.jst.utils.redis.JedisClientPool;
 public class EduUserController {
 	@Autowired
 	private EduUserService eduUserService;
-	
+
 	@Autowired
 	private JedisClientPool jedisClientPool;
-	
+
 	@Autowired
 	private EduCourseService eduCourseService;
 	private static final String getKopintHtml = "/web/course/videocode";// 锟轿程诧拷锟斤拷
@@ -69,26 +69,26 @@ public class EduUserController {
 		Edu_User edu_User = eduUserService.getPwd(userName);
 		if (edu_User.getPassword().equals(pwd)) {
 			result.setMessage("登录成功！");
-//			String user_id = edu_User.getUser_id()+"";
-//			Set<String> set = jedisClientPool.hkeys(user_id);
+			//			String user_id = edu_User.getUser_id()+"";
+			//			Set<String> set = jedisClientPool.hkeys(user_id);
 			Map map = new HashMap<>();
-//			if (!set.isEmpty()) {
-//				for (String string : set) {
-//					System.out.println(string+","+jedisClientPool.hget(user_id,string));
-//					map.put(string, jedisClientPool.hget(user_id,string));
-//					Cookie cookie = new Cookie(string,jedisClientPool.hget(user_id,string));
-//					cookie.setMaxAge(30 * 60);// 设置为30min 
-//				}
-//			}
+			//			if (!set.isEmpty()) {
+			//				for (String string : set) {
+			//					System.out.println(string+","+jedisClientPool.hget(user_id,string));
+			//					map.put(string, jedisClientPool.hget(user_id,string));
+			//					Cookie cookie = new Cookie(string,jedisClientPool.hget(user_id,string));
+			//					cookie.setMaxAge(30 * 60);// 设置为30min 
+			//				}
+			//			}
 			result.setSuccess(true);
 			session.setAttribute("login_success", edu_User);
-//			result.setMap(map);
-//			System.out.println(map);
+			//			result.setMap(map);
+			//			System.out.println(map);
 			return result;
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @param session
 	 * 锟斤拷取锟矫伙拷锟斤拷录锟斤拷息
@@ -105,8 +105,8 @@ public class EduUserController {
 			return new Result(true, null, edu_User);
 		}
 	}
-	
-	
+
+
 	/**
 	 * 锟剿筹拷锟斤拷录
 	 * @param session
@@ -117,23 +117,23 @@ public class EduUserController {
 	public Result exitUser(HttpSession session,HttpServletRequest request) {
 		Edu_User user = (Edu_User) session.getAttribute("login_success");
 		int id = user.getUser_id();
-		 Cookie[] cookies = request.getCookies();//锟斤拷锟斤拷锟斤拷锟斤拷曰锟饺∫伙拷锟絚ookie锟斤拷锟斤拷  
-         if (null==cookies) {  
-             System.out.println("没锟斤拷cookie=========");  
-         } else {  
-             for(Cookie cookie : cookies){
-            	 jedisClientPool.hset(id+"", cookie.getName(), cookie.getValue());
-                 System.out.println("name:"+cookie.getName()+",value:"+ cookie.getValue());  
-             }  
-         }  
-		
-		
-		
-		
+		Cookie[] cookies = request.getCookies();//锟斤拷锟斤拷锟斤拷锟斤拷曰锟饺∫伙拷锟絚ookie锟斤拷锟斤拷  
+		if (null==cookies) {  
+			System.out.println("没锟斤拷cookie=========");  
+		} else {  
+			for(Cookie cookie : cookies){
+				jedisClientPool.hset(id+"", cookie.getName(), cookie.getValue());
+				System.out.println("name:"+cookie.getName()+",value:"+ cookie.getValue());  
+			}  
+		}  
+
+
+
+
 		session.removeAttribute("login_success");
 		return new Result();
 	}
-	
+
 	@RequestMapping("/uc/createuser")
 	@ResponseBody
 	public Result createUser(HttpServletRequest request) {
@@ -144,8 +144,8 @@ public class EduUserController {
 		eduUserService.addUser(user);
 		return new Result(true, null, null);
 	}
-	
-	
+
+
 	/**
 	 * 锟斤拷锟诫播锟斤拷页锟斤拷
 	 * 
@@ -163,10 +163,10 @@ public class EduUserController {
 			EduCourse course = eduCourseService.selectById(courseId);
 			if (course != null) {
 				model.addObject("course", course);
-//				int userId = SingletonLoginUtils.getLoginUserId(request);
-//				// 锟斤拷询锟角凤拷锟窖撅拷锟秸诧拷
-//				boolean isFavorites = courseFavoritesService.checkFavorites(userId, courseId);
-//				model.addObject("isFavorites", isFavorites);
+				//				int userId = SingletonLoginUtils.getLoginUserId(request);
+				//				// 锟斤拷询锟角凤拷锟窖撅拷锟秸诧拷
+				//				boolean isFavorites = courseFavoritesService.checkFavorites(userId, courseId);
+				//				model.addObject("isFavorites", isFavorites);
 
 				// 锟斤拷询锟轿筹拷目录
 				List<Edu_course_kpoint> parentKpointList = new ArrayList<Edu_course_kpoint>();
@@ -190,48 +190,48 @@ public class EduUserController {
 					model.addObject("parentKpointList", parentKpointList);
 				}
 
-//				 锟斤拷乜纬锟�
-//				List<CourseDto> courseList = courseService.queryInterfixCourseLis(course.getSubjectId(), 5,
-//						course.getCourseId());
-//				for (CourseDto tempCoursedto : courseList) {
-//					List<Map<String, Object>> teacherList = teacherService
-//							.queryCourseTeacerList(tempCoursedto.getCourseId());
-//					tempCoursedto.setTeacherList(teacherList);
-//				}
-//				model.addObject("courseList", courseList);
-//
-//				CourseStudyhistory courseStudyhistory = new CourseStudyhistory();
-//				courseStudyhistory.setUserId(Long.valueOf(userId));
-//				courseStudyhistory.setCourseId(Long.valueOf(String.valueOf(courseId)));
-//				// 锟揭的课筹拷学习锟斤拷录
-//				List<CourseStudyhistory> couStudyhistorysLearned = courseStudyhistoryService
-//						.getCourseStudyhistoryList(courseStudyhistory);
-//				int courseHistorySize = 0;
-//				if (couStudyhistorysLearned != null && couStudyhistorysLearned.size() > 0) {
-//					courseHistorySize = couStudyhistorysLearned.size();
-//				}
-//				// 锟斤拷锟斤拷锟斤拷频锟节碉拷锟� 锟斤拷锟斤拷
-//				int sonKpointCount = courseKpointService.getSecondLevelKpointCount(Long.valueOf(courseId));
-//				NumberFormat numberFormat = NumberFormat.getInstance();
-//				// 锟揭碉拷学习锟斤拷锟饺百分憋拷
-//				// 锟斤拷锟矫撅拷确锟斤拷小锟斤拷锟斤拷锟�0位
-//				numberFormat.setMaximumFractionDigits(0);
-//				String studyPercent = numberFormat.format((float) courseHistorySize / (float) sonKpointCount * 100);
-//				if (sonKpointCount == 0) {
-//					studyPercent = "0";
-//				}
-//				course.setStudyPercent(studyPercent);
+				//				 锟斤拷乜纬锟�
+				//				List<CourseDto> courseList = courseService.queryInterfixCourseLis(course.getSubjectId(), 5,
+				//						course.getCourseId());
+				//				for (CourseDto tempCoursedto : courseList) {
+				//					List<Map<String, Object>> teacherList = teacherService
+				//							.queryCourseTeacerList(tempCoursedto.getCourseId());
+				//					tempCoursedto.setTeacherList(teacherList);
+				//				}
+				//				model.addObject("courseList", courseList);
+				//
+				//				CourseStudyhistory courseStudyhistory = new CourseStudyhistory();
+				//				courseStudyhistory.setUserId(Long.valueOf(userId));
+				//				courseStudyhistory.setCourseId(Long.valueOf(String.valueOf(courseId)));
+				//				// 锟揭的课筹拷学习锟斤拷录
+				//				List<CourseStudyhistory> couStudyhistorysLearned = courseStudyhistoryService
+				//						.getCourseStudyhistoryList(courseStudyhistory);
+				//				int courseHistorySize = 0;
+				//				if (couStudyhistorysLearned != null && couStudyhistorysLearned.size() > 0) {
+				//					courseHistorySize = couStudyhistorysLearned.size();
+				//				}
+				//				// 锟斤拷锟斤拷锟斤拷频锟节碉拷锟� 锟斤拷锟斤拷
+				//				int sonKpointCount = courseKpointService.getSecondLevelKpointCount(Long.valueOf(courseId));
+				//				NumberFormat numberFormat = NumberFormat.getInstance();
+				//				// 锟揭碉拷学习锟斤拷锟饺百分憋拷
+				//				// 锟斤拷锟矫撅拷确锟斤拷小锟斤拷锟斤拷锟�0位
+				//				numberFormat.setMaximumFractionDigits(0);
+				//				String studyPercent = numberFormat.format((float) courseHistorySize / (float) sonKpointCount * 100);
+				//				if (sonKpointCount == 0) {
+				//					studyPercent = "0";
+				//				}
+				//				course.setStudyPercent(studyPercent);
 				model.addObject("isok", true);
 			}
 
 		} catch (Exception e) {
-//			model.setViewName(this.setExceptionRequest(request, e));
-//			logger.error("playVideo()--error", e);
+			//			model.setViewName(this.setExceptionRequest(request, e));
+			//			logger.error("playVideo()--error", e);
 		}
 		return model;
 	}
 
-	
+
 	/**
 	 * 锟斤拷锟斤拷锟狡碉拷锟斤拷诺锟絟tml
 	 * 
@@ -253,7 +253,7 @@ public class EduUserController {
 			// 锟斤拷取锟轿筹拷
 			EduCourse course = eduCourseService.selectById(courseKpoint.getCourse_id());
 			if (course == null) {
-//				logger.info("++isok:" + false);
+				//				logger.info("++isok:" + false);
 				return getKopintHtml;
 			}
 			model.addAttribute("courseKpoint", courseKpoint);
@@ -300,48 +300,37 @@ public class EduUserController {
 			 * return getKopintHtml;
 			 */
 		} catch (Exception e) {
-//			logger.error("CourseKpointController.getKopintHtml", e);
+			//			logger.error("CourseKpointController.getKopintHtml", e);
 			return null;
 		}
 	}
-	
+
 	@RequestMapping("/admin/statisticsPage/registered")
 	public ModelAndView initial() {
 		ModelAndView mView=new ModelAndView();
 		mView.setViewName("/manager/statisticalFigure");
 		return mView;
 	}
-	
+
 	@RequestMapping("/admin/statisticalFigure/shows")
 	public ModelAndView shows(HttpServletRequest request) throws Exception {
-		String start=request.getParameter("start");
-		System.out.println(start);
-		String end=request.getParameter("end");
-		System.err.println(end);
+		String create_time=request.getParameter("create_time");
+		System.out.println(create_time+"create_time");
 		Map map=new HashMap<>();
-		map.put("start", start);
-		map.put("end", end);
+		map.put("create_time", create_time);
 		ModelAndView mView=new ModelAndView();
 		List<Edu_User> listAll = eduUserService.shows(map);
-		request.setAttribute("start", start);
-		request.setAttribute("end", end);
 		List<String> list1 = new ArrayList<>();
 		List<String> list2 = new ArrayList<>();
 		SimpleDateFormat sdf1= new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
 		SimpleDateFormat sdf2= new SimpleDateFormat("yyyy-MM-dd");
 		for (Edu_User edu_User : listAll) {
 			list1.add(sdf2.format(sdf1.parse(edu_User.getCreate_time()+"")));
-//			list1.add(edu_User.getCreate_time()+"");
 			list2.add(edu_User.getNum()+"");
-			System.out.println(edu_User.getNum()+"edu_User.getNum()");
 		}
 		mView.addObject("create_time",JsonUtils.objectToJson(list1));
-		System.out.println("json1:"+JsonUtils.objectToJson(list1));
 		mView.addObject("num", JsonUtils.objectToJson(list2));
-		System.out.println("json2:"+JsonUtils.objectToJson(list2));
 		mView.setViewName("/manager/statisticalFigure");
 		return mView;
 	}
-
-
 }
