@@ -27,9 +27,12 @@ public interface ArticleService {
 	
 	public void deleteAll(Integer[] chk_value);
 	
-	public void praiseEdit(EduComment eduComment);
-	
 	public void releaseEdit(Edu_Article edu_Article);
 	
 	public void click_numEdit(int article_id);
+	
+	public void editCommentNum(int article_id);
+	
+	public void editPraise(int article_id);
+	
 }

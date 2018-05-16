@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jst.mapper.article.CommentMapper;
+import com.jst.model.EduComment;
 import com.jst.model.Edu_Comment;
 
 @Service
@@ -42,5 +43,20 @@ public class CommentServiceImpl implements CommentService{
 	public List<Edu_Comment> listChildComment(Map map) {
 		List<Edu_Comment> list=commentMapper.listChildComment(map);
 		return list;
+	}
+
+	@Override
+	public void praiseEdit(EduComment eduComment) {
+		commentMapper.praiseEdit(eduComment);
+	}
+
+	@Override
+	public void addChildComment(Edu_Comment edu_Comment) {
+		commentMapper.addChildComment(edu_Comment);		
+	}
+
+	@Override
+	public void replyEdit(int comment_id) {
+		commentMapper.replyEdit(comment_id);
 	}
 }

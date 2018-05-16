@@ -62,11 +62,6 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public void praiseEdit(EduComment eduComment) {
-		articleMapper.praiseEdit(eduComment);
-	}
-
-	@Override
 	public void releaseEdit(Edu_Article edu_Article) {
 		articleMapper.releaseEdit(edu_Article);
 	}
@@ -74,5 +69,15 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void click_numEdit(int article_id) {
 		articleMapper.click_numEdit(article_id);
+	}
+
+	@Override
+	public void editCommentNum(int article_id) {
+		articleMapper.editCommentNum(article_id);
+	}
+
+	@Override
+	public void editPraise(int article_id) {
+		articleMapper.editPraise(article_id);
 	}
 }
