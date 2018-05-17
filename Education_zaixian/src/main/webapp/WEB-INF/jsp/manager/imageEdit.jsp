@@ -20,7 +20,7 @@
 	type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-	<form class="form-horizontal" enctype="multipart/form-data"
+	<form class="form-horizontal" action="/admin/editImages" enctype="multipart/form-data"
 		method="post">
 		<div class="form-group">
 			<hr style="height: 1px; border: none; border-top: 1px solid #555555;" />
@@ -112,28 +112,28 @@
 		</div>
 	</form>
 </body>
-<script type="text/javascript">
-	function Fun() {
-		var s1 = document.getElementById("s1").innerHTML;
-		var s2 = document.getElementById("s2").innerHTML;
-		var s3 = document.getElementById("s3").innerHTML;
-		var s4 = document.getElementById("s4").innerHTML;
-		var s5 = document.getElementById("s5").innerHTML;
-		var title = $("#title").val();
-		var describes = $("#describes").val();
-		var link_address = $("#link_address").val();
-		var series_number = $("#series_number").val();
-		var color = $("#color").val();
-		if (s1 == "" && s2 == "" && s3 == "" && s4 == "" && s5 == ""
-				&& title != "" && describes != "" && link_address != ""
-				&& series_number != "" && color != "") {
-			document.forms[0].action = "/admin/editImages";
-			document.forms[0].submit();
-		} else {
-			alert("输入框内不能为空");
-		}
-	}
-</script>
+<!-- <script type="text/javascript"> -->
+<!-- // 	function Fun() { -->
+<!-- // 		var s1 = document.getElementById("s1").innerHTML; -->
+<!-- // 		var s2 = document.getElementById("s2").innerHTML; -->
+<!-- // 		var s3 = document.getElementById("s3").innerHTML; -->
+<!-- // 		var s4 = document.getElementById("s4").innerHTML; -->
+<!-- // 		var s5 = document.getElementById("s5").innerHTML; -->
+<!-- // 		var title = $("#title").val(); -->
+<!-- // 		var describes = $("#describes").val(); -->
+<!-- // 		var link_address = $("#link_address").val(); -->
+<!-- // 		var series_number = $("#series_number").val(); -->
+<!-- // 		var color = $("#color").val(); -->
+<!-- // 		if (s1 == "" && s2 == "" && s3 == "" && s4 == "" && s5 == "" -->
+<!-- // 				&& title != "" && describes != "" && link_address != "" -->
+<!-- // 				&& series_number != "" && color != "") { -->
+<!-- // 			document.forms[0].action = "/admin/editImages"; -->
+<!-- // 			document.forms[0].submit(); -->
+<!-- // 		} else { -->
+<!-- // 			alert("输入框内不能为空"); -->
+<!-- // 		} -->
+<!-- // 	} -->
+<!-- </script> -->
 <script type="text/javascript">
 	function readURL1(input) {
 		if (input.files && input.files[0]) {
