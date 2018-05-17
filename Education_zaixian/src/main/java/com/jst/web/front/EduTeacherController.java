@@ -1,7 +1,6 @@
 package com.jst.web.front;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -42,10 +41,16 @@ public class EduTeacherController {
 
 	@RequestMapping("/front/teacher")
 	public String teacher(@RequestParam(required=true,defaultValue="1")Integer page,Model model){
-//		PageHelper.startPage(page, 4);
+		PageHelper.startPage(page, 4);
 		List<Teacher> list = EduTeacherService.listAll();
-//		PageInfo<Teacher> p = new PageInfo<Teacher>(list);
-//		model.addAttribute("page", p);
+		PageInfo<Teacher> p = new PageInfo<Teacher>(list);
+		model.addAttribute("page", p);
+		List<Integer> is = new ArrayList<>();
+		for (int i = 1; i <= p.getPages(); i++) {
+			is.add(i);
+		}
+		model.addAttribute("totalPage", page);
+		model.addAttribute("pageNum", is);
 		model.addAttribute("teacherList", list);
 		System.out.println(list);
 		model.addAttribute("subjectList", SysSubjectService.listAllParent());

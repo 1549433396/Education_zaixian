@@ -2,6 +2,7 @@ package com.jst.web;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,11 @@ public class TeacherController {
 		p = new PageInfo<Teacher>(list);
 		System.out.println(p.getPages());
 		model.addAttribute("page", p);
+		List<Integer> is = new ArrayList<>();
+		for (int i = 1; i <= p.getPages(); i++) {
+			is.add(i);
+		}
+		model.addAttribute("totalCount", is);
 		model.addAttribute("pageNum", page);
 		model.addAttribute("teas", list);
 		return "/manager/teacherList";
