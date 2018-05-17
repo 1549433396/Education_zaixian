@@ -67,6 +67,7 @@
 				<!-- 公共分页 开始 -->
 				<div>
 					<form action="${ctx }/front/getParBySub" method="post" id="searchForm">
+						<input type="hidden" name="page" id="page" value="${totalPage }" />
 						<input type="hidden" name="page.currentPage" id="pageCurrentPage" value="1">
 						<input type="hidden" name="queryTeacher_subjectId" id="queryTeacher_subjectId" value="${subject_id }">
 					</form>
@@ -76,6 +77,20 @@
 			</section>
 		</section>
 		<!-- /课程列表 结束 -->
+		
+		<div align="center" class="scott">
+			<a href="${ctx }/front/teacher?page=${page.prePage }"><</a>&nbsp;&nbsp;
+			<c:forEach items="${pageNum }" var="p">
+				<c:if test="${p==totalPage }">
+					${p }&nbsp;&nbsp;
+				</c:if>
+				<c:if test="${p!=totalPage }">
+				<a href="${ctx }/front/teacher?page=${p }">${p }</a>&nbsp;&nbsp;
+				</c:if>
+			</c:forEach> 
+			<a href="${ctx }/front/teacher?page=${page.nextPage }">></a>
+		</div>
+		
 	</div>
 <script type="text/javascript">
 	$(function() {
@@ -95,5 +110,48 @@
 		$("#searchForm").submit();
 	}
 </script>
+	<style>
+div.scott {
+	padding: 3px;
+	margin: 3px;
+	text-align: center;
+}
+
+div.scott a {
+	border: #ddd 1px solid;
+	padding: 2px 5px;
+	color: #88af3f;
+	margin: 0 2px 0 0;
+	text-decoration: none;
+}
+
+div.scott a:hover {
+	border: #85bd1e 1px solid;
+	color: #638425;
+	background-color: #f1ffd6;
+}
+
+div.scott a:active {
+	border: #85bd1e 1px solid;
+	color: #638425;
+	background-color: #f1ffd6;
+}
+
+div.scott span.current {
+	border: #b2e05d 1px solid;
+	padding: 2px 5px;
+	font-weight: bold;
+	color: #fff;
+	margin: 0 2px 0 0;
+	background-color: #b2e05d;
+}
+
+div.scott span.disabled {
+	border: #f3f3f3 1px solid;
+	padding: 2px 5px;
+	color: #ccc;
+	margin: 0 2px 0 0;
+}
+</style>
 </body>
 </html>
