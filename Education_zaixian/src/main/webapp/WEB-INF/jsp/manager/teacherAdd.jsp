@@ -107,7 +107,7 @@
 						<label for="is_star" class="col-sm-2 control-label">讲师专业</label>
 						<div class="col-sm-5">
 							<input type="hidden" name="sid" id="sid" class="form-control" value="" />
-							<input type="text" style="font-size: 12px;height:27px;margin-top:5px" onclick="showMenu(); return false;" onblur="NotNull4(this.value)" name="subject_ids" id="subject_id" class="form-control" value="" />
+							<input type="text" style="font-size: 12px;height:27px;margin-top:5px" onclick="showMenu(); return false;" name="subject_ids" id="subject_id" class="form-control" value="" />
 							<div id="teaSub" style="width: 373px; padding-top: 2px; border: 1px #AAAAAA solid;">
 									<ul id="ztree" class="ztree"></ul>
 							</div>
@@ -216,7 +216,8 @@
 			}
 		}
 		
-		function NotNull4 (p) {
+		function NotNull4 () {
+			var p = $("#subject_id").val();
 			if (p.length == 0 || p == null) {
 				$("#tishi4").html("×");
 				$("#tishi4").css({"color":"red"});
@@ -301,6 +302,7 @@
 			function hideMenu() {
 				$("#teaSub").fadeOut("fast");
 				$("body").unbind("mousedown", onBodyDown);
+				NotNull4();
 			}
 			
 			function onBodyDown(event) {

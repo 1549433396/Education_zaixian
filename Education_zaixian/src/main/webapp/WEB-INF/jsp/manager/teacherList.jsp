@@ -46,11 +46,11 @@ a {
 			<div class="form-inline">
 				<form id="searchForm" action="/admin/teacher/list" method="post">
 					<div class="col-lg-11" align="center">
-						<input type="hidden" name="page" id="page" value="${pageNum }" /> <span>讲师名称:</span>
-						<input type="text" class="form-control" name="qname" id="qname"
-							placeholder="讲师名" value="${name }" style="width: 150px;" /> <select
-							name="is_star" class="form-control" id="is_star"
-							value="${is_star }">
+						<input type="hidden" name="page" id="page" value="${pageNum }" />
+						<span>讲师名称:</span> <input type="text" class="form-control"
+							name="qname" id="qname" placeholder="讲师名" value="${name }"
+							style="width: 150px;" /> <select name="is_star"
+							class="form-control" id="is_star" value="${is_star }">
 							<option value="0">请选择</option>
 							<option value="1">高级讲师</option>
 							<option value="2">首席讲师</option>
@@ -98,7 +98,8 @@ a {
 					<td title="${t.subject_id.subject_name }">${t.subject_id.subject_name }</td>
 					<td width="350" title="${t.education }">${t.education }</td>
 					<td width="100" title="${t.career }"><font size="4">......</font></td>
-					<td title="${t.create_time }"><fmt:formatDate value="${t.create_time }" type="date"
+					<td title="${t.create_time }"><fmt:formatDate
+							value="${t.create_time }" type="date"
 							pattern="yyyy/MM/dd hh:mm:ss" /></td>
 					<td title="${t.sort }">${t.sort }</td>
 					<td width="100"><a href="/admin/teacher/getIdByTM/${t.id }"><img
@@ -109,9 +110,17 @@ a {
 			</c:forEach>
 		</table>
 
-		<div align="center" style="font-size: 16px;color: #AAAAB4;font-family: 微软雅黑;">
-			<a href="javascript:onpage()">上一页</a>&nbsp; &nbsp;&nbsp;&nbsp;
-			<a href="javascript:nextpage()">下一页</a>
+		<div align="center" class="scott">
+			<a href="javascript:onpage()" style="font-size: 16px; color: #96AF45; font-family: 微软雅黑;"><</a>&nbsp;&nbsp;
+			<c:forEach items="${totalCount }" var="p">
+				<c:if test="${p==pageNum }">
+					${p }&nbsp;&nbsp;
+				</c:if>
+				<c:if test="${p!=pageNum }">
+					<a href="javascript:thispage(${p })">${p }</a>&nbsp;&nbsp;
+				</c:if>
+			</c:forEach> 	
+			<a href="javascript:nextpage()" style="font-size: 16px; color: #96AF45; font-family: 微软雅黑;">></a>
 		</div>
 	</div>
 
@@ -127,27 +136,73 @@ a {
 	}
 	$("#create_time").val("${create_time}");
 	$("#create_times").val("${create_times}");
-
 	function nullFun() {
 		$("#qname").val("");
 		$("#is_star").val("0");
 		$("#create_time").val("");
 		$("#create_times").val("");
 	}
-	
-	var page = ${pageNum};
+	var page = $
+	{
+		pageNum
+	};
 	function onpage() {
-		$("#page").val(page-1);
+		$("#page").val(page - 1);
 		$("#searchForm").submit();
 	}
-
 	function nextpage() {
-		$("#page").val(page+1);
-		if(page+1 > "${page.pages}"){
+		$("#page").val(page + 1);
+		if (page + 1 > "${page.pages}") {
 			$("#page").val("${page.pages}");
 		}
 		$("#searchForm").submit();
 	}
+	function thispage(p){
+		$("#page").val(p);
+		$("#searchForm").submit();
+	}
 </script>
+	<style>
+div.scott {
+	padding: 3px;
+	margin: 3px;
+	text-align: center;
+}
 
+div.scott a {
+	border: #ddd 1px solid;
+	padding: 2px 5px;
+	color: #88af3f;
+	margin: 0 2px 0 0;
+	text-decoration: none;
+}
+
+div.scott a:hover {
+	border: #85bd1e 1px solid;
+	color: #638425;
+	background-color: #f1ffd6;
+}
+
+div.scott a:active {
+	border: #85bd1e 1px solid;
+	color: #638425;
+	background-color: #f1ffd6;
+}
+
+div.scott span.current {
+	border: #b2e05d 1px solid;
+	padding: 2px 5px;
+	font-weight: bold;
+	color: #fff;
+	margin: 0 2px 0 0;
+	background-color: #b2e05d;
+}
+
+div.scott span.disabled {
+	border: #f3f3f3 1px solid;
+	padding: 2px 5px;
+	color: #ccc;
+	margin: 0 2px 0 0;
+}
+</style>
 </html>
