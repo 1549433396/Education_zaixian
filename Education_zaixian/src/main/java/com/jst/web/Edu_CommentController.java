@@ -102,24 +102,24 @@ public class Edu_CommentController {
 		return map;
     } 
     
-//    @RequestMapping("/admin/comment/all/{comment_id}")
-//    public ModelAndView All(@PathVariable("comment_id")int comment_id) {
-//    	ModelAndView mv = new ModelAndView();
-//    	Edu_Comment list = commentService.getById(comment_id);
-//        Edu_Comment comment = commentService.selectId(comment_id);
-//    	mv.setViewName("/manager/edu_commentAll");
-//    	mv.addObject("list",list);
-//    	mv.addObject("com",comment);
-//		return mv;
-//	}
+    @RequestMapping("/admin/comment/all/{comment_id}")
+    public ModelAndView All(@PathVariable("comment_id")int comment_id) {
+    	ModelAndView mv = new ModelAndView();
+    	Edu_Comment list = commentService.getById(comment_id);
+        Edu_Comment comment = commentService.selectId(comment_id);
+    	mv.setViewName("/manager/edu_commentAll");
+    	mv.addObject("list",list);
+    	mv.addObject("coment",comment);
+		return mv;
+	}
     
-    @RequestMapping("/admin/comment/all/{type}")
+    /*@RequestMapping("/admin/comment/all/{type}")
     public ModelAndView All(@PathVariable("type")int type) {
   	ModelAndView mv = new ModelAndView();
   	List<Edu_Comment> comment = commentService.selectType(type);
   	mv.setViewName("/manager/edu_commentAll");
   	mv.addObject("com",comment);
 		return mv;
-	}
+	}*/
     
 }

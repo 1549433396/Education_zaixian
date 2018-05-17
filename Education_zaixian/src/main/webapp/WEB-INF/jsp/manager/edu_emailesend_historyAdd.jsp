@@ -68,7 +68,7 @@ function fun() {
     myreg.focus();
     return false;
   }else{
-  alert("格式正确");
+ /*  alert("格式正确"); */
   }
  }
 
@@ -102,6 +102,7 @@ function fun3(){
 			document.getElementById("div").style.display="none";
 		} else if (type==2) {
 			document.getElementById("div").style.display="";
+	
 		} 
 	}
 	
@@ -170,16 +171,20 @@ height: 30px;
 border: 1px solid black;
 }
 </style>
+<script type="text/javascript">
+$(function () {
+	if(${type }!=0){
+		$("#myModal").modal("show");
+	}
+})
+</script>
 
 </head>
 <body>
-
-	
 			<form action="/admin/email/sendEmail" method="post" id="form1">
 			<div id="d1">
 			
-				
-					<table  id="tab1">
+					<table id="tab1">
 					<tr height="50px">
 						<td id="t1">添加联系人:</td>
 						<td id="t2">
@@ -187,14 +192,11 @@ border: 1px solid black;
 						</td>
 							<td>
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-导入联系人</button>
-
+                                                                         导入联系人</button>
 						</td>
 					</tr>
-			
 				</table>
 					
-
 				<table  id="tab2">
 					<tr >
 						<td>规则</td>
@@ -247,7 +249,6 @@ border: 1px solid black;
 							</tr>
 							</table></div>
 							
-							
 						</td>
 					</tr>
 					<tr height="30px">
@@ -282,16 +283,16 @@ border: 1px solid black;
       <tr>
 						<td colspan="2">一共<input type="text"
 										value="${page.pages}" style="width: 25px; text-align: center;" />页
-										<a href="/admin/email/toEmailMsg?page=${page.firstPage}"
+										<a href="/admin/email/toEmailMsg?page=${page.firstPage}&type=2"
 										class="layui-btn layui-btn-small"><i
 											class="iconfont icon-shanchu1"></i>第一页</a> <a
-										href="/admin/email/toEmailMsg?page=${page.prePage}"
+										href="/admin/email/toEmailMsg?page=${page.prePage}&type=2"
 										class="layui-btn layui-btn-small"><i
 											class="iconfont icon-shanchu1"></i>上一页</a> <a
-										href="/admin/email/toEmailMsg?page=${page.nextPage}"
+										href="/admin/email/toEmailMsg?page=${page.nextPage}&type=2"
 										class="layui-btn layui-btn-small"><i
 											class="iconfont icon-shanchu1"></i>下一页</a> <a
-										href="/admin/email/toEmailMsg?page=${page.lastPage}"
+										href="/admin/email/toEmailMsg?page=${page.lastPage}&type=2"
 										class="layui-btn layui-btn-small"><i
 											class="iconfont icon-shanchu1"></i>最后页</a></td>
 						</tr>

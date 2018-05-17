@@ -19,37 +19,37 @@ public class JavaEmailSender {
 	 public static void sendEmail(Edu_Emailesend_History e)throws Exception{
 		    Properties props = new Properties();
 		 
-		 // å¼€å¯debugè°ƒè¯•
+		 // ¿ªÆôdebugµ÷ÊÔ
 		    props.setProperty("mail.debug", "true");
-		    // å‘é€æœåŠ¡å™¨éœ€è¦èº«ä»½éªŒè¯
+		    // ·¢ËÍ·şÎñÆ÷ĞèÒªÉí·İÑéÖ¤
 		    props.setProperty("mail.smtp.auth", "true");
-		    // è®¾ç½®é‚®ä»¶æœåŠ¡å™¨ä¸»æœºå
+		    // ÉèÖÃÓÊ¼ş·şÎñÆ÷Ö÷»úÃû
 		    props.setProperty("mail.host", "smtp.qq.com");
-		    // å‘é€é‚®ä»¶åè®®åç§°
+		    // ·¢ËÍÓÊ¼şĞ­ÒéÃû³Æ
 		    props.setProperty("mail.transport.protocol", "smtp");
 		 
-		    /**SSLè®¤è¯ï¼Œæ³¨æ„è…¾è®¯é‚®ç®±æ˜¯åŸºäºSSLåŠ å¯†çš„ï¼Œæ‰€æœ‰éœ€è¦å¼€å¯æ‰å¯ä»¥ä½¿ç”¨**/
+		    /**SSLÈÏÖ¤£¬×¢ÒâÌÚÑ¶ÓÊÏäÊÇ»ùÓÚSSL¼ÓÃÜµÄ£¬ËùÓĞĞèÒª¿ªÆô²Å¿ÉÒÔÊ¹ÓÃ**/
 		    MailSSLSocketFactory sf = new MailSSLSocketFactory();
 		    sf.setTrustAllHosts(true);
 		    props.put("mail.smtp.ssl.enable", "true");
 		    props.put("mail.smtp.ssl.socketFactory", sf);
 		 
-		    //åˆ›å»ºä¼šè¯
+		    //´´½¨»á»°
 		    Session session = Session.getInstance(props);
 		 
-		    //å‘é€çš„æ¶ˆæ¯ï¼ŒåŸºäºè§‚å¯Ÿè€…æ¨¡å¼è¿›è¡Œè®¾è®¡çš„
+		    //·¢ËÍµÄÏûÏ¢£¬»ùÓÚ¹Û²ìÕßÄ£Ê½½øĞĞÉè¼ÆµÄ
 		    Message msg = new MimeMessage(session);
 		    msg.setSubject(e.getTitle());
-		    //ä½¿ç”¨StringBuilderï¼Œå› ä¸ºStringBuilderåŠ è½½é€Ÿåº¦ä¼šæ¯”Stringå¿«ï¼Œè€Œä¸”çº¿ç¨‹å®‰å…¨æ€§ä¹Ÿä¸é”™
+		    //Ê¹ÓÃStringBuilder£¬ÒòÎªStringBuilder¼ÓÔØËÙ¶È»á±ÈString¿ì£¬¶øÇÒÏß³Ì°²È«ĞÔÒ²²»´í
 		    StringBuilder builder = new StringBuilder();
 		    builder.append("\n"+e.getContent());
-		    builder.append("\næ—¶é—´ " + new Date());
+		    builder.append("\nÊ±¼ä " + new Date());
 		    msg.setText(builder.toString());
 		    msg.setFrom(new InternetAddress("523835850@qq.com"));
 		 
 		    Transport transport = session.getTransport();
 		    transport.connect("smtp.qq.com", "523835850@qq.com", "vnueimnxtcumbigi");
-		    //å‘é€æ¶ˆæ¯
+		    //·¢ËÍÏûÏ¢
 		    transport.sendMessage(msg,new Address[] { new InternetAddress(e.getEmail()) });//new Address[] { new InternetAddress(toEmailAddress) }
 		    transport.close();
 		  }

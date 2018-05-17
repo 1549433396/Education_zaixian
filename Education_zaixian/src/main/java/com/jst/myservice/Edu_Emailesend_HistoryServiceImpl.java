@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.jst.mapper.Edu_Emailesend_HistoryMapper;
 import com.jst.model.Edu_Emailesend_History;
+import com.jst.model.Edu_User;
 
 @Service
 public class Edu_Emailesend_HistoryServiceImpl implements Edu_Emailesend_HistoryService{
@@ -42,6 +43,12 @@ public class Edu_Emailesend_HistoryServiceImpl implements Edu_Emailesend_History
 	@Override
 	public Edu_Emailesend_History getById(int id) {
 		Edu_Emailesend_History list = eMapper.getById(id);
+		return list;
+	}
+
+	@Override
+	public List<Edu_User> selectLimit() {
+		List<Edu_User> list = eMapper.selectLimit();
 		return list;
 	}
 }

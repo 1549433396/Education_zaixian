@@ -26,41 +26,41 @@ public class MyJob implements Job{
        String title=map.getString("title");
        final Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-       // é‚®ä»¶ä¼ è¾“çš„åè®®
-       props.put("mail.transport.protocol", "smtp");
-       // å‘é€äºº
-       props.put("mail.user", "nanjingpaoyuan@163.com");
-       // è¿æ¥çš„é‚®ä»¶æœåŠ¡å™¨
-       props.put("mail.host", "smtp.163.com");
-       // è®¿é—®SMTPæœåŠ¡æ—¶éœ€è¦æä¾›çš„å¯†ç 
-       props.put("mail.password", "huangjie");
-    // æ„å»ºæˆæƒä¿¡æ¯ï¼Œç”¨äºè¿›è¡ŒSMTPè¿›è¡Œèº«ä»½éªŒè¯Ö¤
-		Authenticator authenticator=new Authenticator(){
-			  @Override
-	            protected PasswordAuthentication getPasswordAuthentication() {
-	                // ç”¨æˆ·åã€å¯†ç 
-	                String userName = props.getProperty("mail.user");
-	                String password = props.getProperty("mail.password");
-	                return new PasswordAuthentication(userName, password);
-	            }
-		};
-		  //ä½¿ç”¨ç¯å¢ƒå±æ€§å’Œæˆæƒä¿¡æ¯ï¼Œåˆ›å»ºé‚®ä»¶ä¼šè¯
-       Session mailSession = Session.getInstance(props, authenticator);
-       // åˆ›å»ºé‚®ä»¶æ¶ˆæ¯
-       MimeMessage message = new MimeMessage(mailSession);
-       // è®¾ç½®å‘ä»¶äºº
-       InternetAddress form = new InternetAddress(
-               props.getProperty("mail.user"));
-       message.setFrom(form);
+		// ÓÊ¼ş´«ÊäµÄĞ­Òé
+	       props.put("mail.transport.protocol", "smtp");
+	       // ·¢ËÍÈË
+	       props.put("mail.user", "nanjingpaoyuan@163.com");
+	       // Á¬½ÓµÄÓÊ¼ş·şÎñÆ÷
+	       props.put("mail.host", "smtp.163.com");
+	       // ·ÃÎÊSMTP·şÎñÊ±ĞèÒªÌá¹©µÄÃÜÂë
+	       props.put("mail.password", "huangjie");
+	    // ¹¹½¨ÊÚÈ¨ĞÅÏ¢£¬ÓÃÓÚ½øĞĞSMTP½øĞĞÉí·İÑéÖ¤
+			Authenticator authenticator=new Authenticator(){
+				  @Override
+		            protected PasswordAuthentication getPasswordAuthentication() {
+		                // ÓÃ»§Ãû¡¢ÃÜÂë
+		                String userName = props.getProperty("mail.user");
+		                String password = props.getProperty("mail.password");
+		                return new PasswordAuthentication(userName, password);
+		            }
+			};
+			  // Ê¹ÓÃ»·¾³ÊôĞÔºÍÊÚÈ¨ĞÅÏ¢£¬´´½¨ÓÊ¼ş»á»°
+	       Session mailSession = Session.getInstance(props, authenticator);
+	       // ´´½¨ÓÊ¼şÏûÏ¢
+	       MimeMessage message = new MimeMessage(mailSession);
+	       // ÉèÖÃ·¢¼şÈË
+	       InternetAddress form = new InternetAddress(
+	               props.getProperty("mail.user"));
+	       message.setFrom(form);
 
-       // è®¾ç½®æ”¶ä»¶äºº
-       InternetAddress to = new InternetAddress(email);
-       message.setRecipient(RecipientType.TO, to);
-       // è®¾ç½®é‚®ä»¶æ ‡é¢˜
-       message.setSubject(title);
-       //è®¾ç½®é‚®ä»¶çš„å†…å®¹ä½“
-       message.setContent(content,"text/html;charset=UTF-8");
-       //å‘é€é‚®ä»¶
+	       // ÉèÖÃÊÕ¼şÈË
+	       InternetAddress to = new InternetAddress(email);
+	       message.setRecipient(RecipientType.TO, to);
+	       // ÉèÖÃÓÊ¼ş±êÌâ
+	       message.setSubject(title);
+	       // ÉèÖÃÓÊ¼şµÄÄÚÈİÌå
+	       message.setContent(content,"text/html;charset=UTF-8");
+	       // ·¢ËÍÓÊ¼ş
        Transport.send(message);
        }catch(Exception e){
     	   e.printStackTrace();

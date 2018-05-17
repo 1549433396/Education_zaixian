@@ -134,8 +134,6 @@ function batchDeletes() {
 							<button onclick="batchDeletes()" class="btn btn-danger">批量删除</button>
 					</div>
 					
-					
-					
 				</blockquote>
 				<div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
 					<!-- 操作日志 -->
@@ -168,7 +166,7 @@ function batchDeletes() {
 										<td><div id="ca" title="${p.content}">${p.content}</div></td>
 										<td><%-- <a href="/admin/comment/init/${p. comment_id}"> <button type="button" class="btn btn-success">修改</button></a> --%>
 											<a onclick="javascript:return del()" href="/admin/comment/delete/${p.comment_id}" ><button type="button" class="btn btn-danger" >删除</button></a>
-										<a href="/admin/comment/all/${p.type}"> <button type="button" class="btn btn-success">回复列表</button></a>
+										<a href="/admin/comment/all/${p.comment_id}"> <button type="button" class="btn btn-success">回复列表</button></a>
 										</td>
 									</tr>
 								</c:forEach>

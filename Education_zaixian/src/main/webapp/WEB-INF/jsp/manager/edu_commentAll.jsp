@@ -35,10 +35,10 @@ $("#te").text("123");
 		<div class="larry-personal-body clearfix">
 		
 			<form class="layui-form col-lg-5" action="" method="post">
-			<%-- <input type="text"  name="comment_id" value="${list.comment_id}" hidden="hidden"/>
+			<input type="text"  name="comment_id" value="${list.comment_id}" hidden="hidden"/>
 			
 				<div class="layui-form-item">
-					<label class="layui-form-label">类型</label>
+					<label class="layui-form-label">类型:</label>
 					<div class="layui-input-block">
 						<c:if test="${list.type==1 }">
 						<input type="text" disabled="true" name="type" id="types"  class="layui-input " value="文章"  autocomplete="off" disabled="disabled" style="width:250px;">
@@ -50,19 +50,18 @@ $("#te").text("123");
 				</div>
 				
 				<div class="layui-form-item">
-					<label class="layui-form-label">评论内容</label>
+					<label class="layui-form-label">评论内容:</label>
 					<div class="layui-input-block">
 					<textarea rows="60" cols="50"  readonly="readonly">${list.content}</textarea>
 					</div>
 				</div>
 				
 				<div class="layui-form-item">
-					<label class="layui-form-label">父级评论内容</label>
+					<label class="layui-form-label">父级评论内容:</label>
 					<div class="layui-input-block">
-					<textarea rows="60" cols="50"  readonly="readonly">${com.content}</textarea>
-					<c:forEach items="${com }" var="m">
-					<textarea rows="60" cols="50"  readonly="readonly">${m.content}</textarea>
-					</c:forEach>
+					
+					<textarea rows="60" cols="50" readonly="readonly">${coment.content}</textarea>
+					
 					</div>
 				</div>
 				
@@ -72,8 +71,8 @@ $("#te").text("123");
 						<button type="button" class="layui-btn" lay-filter="demo1">返回</button>
 					</a>
 					</div>
-				</div> --%>
-					<%-- <div class="layui-form-item">
+				<%-- </div>
+					<div class="layui-form-item">
 					<label class="layui-form-label">父级评论内容</label>
 					<div class="layui-input-block">
 					<c:forEach items="${com }" var="m">
@@ -82,21 +81,21 @@ $("#te").text("123");
 					</div>
 				</div> --%>
 				
-				<table border="1">
-				<%-- <tr>
+				<%-- <table border="1">
+				<tr>
 				<c:if test="${com.type==1 }">
 				<td>文章</td>
 						</c:if>
 						<c:if test="${com.type==2 }">
 						<td>课程</td>
 					</c:if>
-				</tr> --%>
+				</tr>
 				<c:forEach items="${com }" var="m">
 				<tr>
 				<td>${m.content}</td>
 				</tr>
 				</c:forEach>
-				</table>
+				</table> --%>
 				
 			</form>
 		</div>

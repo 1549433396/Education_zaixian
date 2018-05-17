@@ -12,4 +12,5 @@ public interface Edu_CommentService {
 	public void delete(int comment_id);
 	public void update(Edu_Comment edu_Comment);
 	public List<Edu_Comment> selectType(int type);
+	public Edu_Comment selectId(int comment_id);
 }

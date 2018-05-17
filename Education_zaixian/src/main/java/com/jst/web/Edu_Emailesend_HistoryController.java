@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.jst.model.Edu_Comment;
 import com.jst.model.Edu_Emailesend_History;
 import com.jst.model.Edu_User;
-import com.jst.myservice.Edu_Emailesend_HistoryService;
+import com.jst.model.Sys_user;
 import com.jst.myservice.Edu_Emailesend_HistoryServiceImpl;
-import com.jst.myservice.front.EduUserService;
 import com.jst.myservice.user.Edu_UserService;
 import com.jst.realm.JavaEmailSender;
 import com.jst.utils.MyJob;
@@ -35,7 +33,7 @@ import com.jst.utils.QuartzManager;
 
 @Controller
 public class Edu_Emailesend_HistoryController {
-	public static String JOB_NAME = "动态任务调度";  
+	  public static String JOB_NAME = "动态任务调度";  
 	  public static String TRIGGER_NAME = "动态任务触发器";  
 	  public static String JOB_GROUP_NAME = "XLXXCC_JOB_GROUP";  
 	  public static String TRIGGER_GROUP_NAME = "XLXXCC_JOB_GROUP";
@@ -43,6 +41,8 @@ public class Edu_Emailesend_HistoryController {
 	private Edu_Emailesend_HistoryServiceImpl eService;
 	@Autowired
 	private Edu_UserService uService;
+	
+
 
 	
 	@RequestMapping("/admin/email/sendEmaillist")
@@ -95,9 +95,13 @@ public class Edu_Emailesend_HistoryController {
 	 */
 	@RequestMapping("/admin/email/toEmailMsg")
 	public ModelAndView add(HttpServletRequest request,@RequestParam(required=true,defaultValue="1")Integer page)throws Exception {
-		Map map=new HashMap();
-		PageHelper.startPage(page,5);
 		ModelAndView mv = new ModelAndView();
+		Map map=new HashMap();
+		String parameter = request.getParameter("type");
+		if (parameter!=null && parameter.trim().length()>0) {
+			request.setAttribute("type", Integer.parseInt(parameter));
+		}
+		PageHelper.startPage(page,5);
 		List<Edu_User> list = uService.listAll(map);
 		PageInfo<Edu_User> p = new PageInfo<Edu_User>(list);
 		mv.setViewName("/manager/edu_emailesend_historyAdd");
@@ -106,7 +110,6 @@ public class Edu_Emailesend_HistoryController {
 		return mv;
 	}
 
-
 	/**
 	 * 发送邮件
 	 * @throws Exception 
@@ -114,6 +117,8 @@ public class Edu_Emailesend_HistoryController {
 	@RequestMapping(value="/admin/email/sendEmail",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String sendEmail(Model model,HttpServletRequest request,Edu_Emailesend_History e) throws Exception {
+		//获取后台登录值
+		Sys_user users = (Sys_user)SecurityUtils.getSubject().getPrincipal();
 		int type = Integer.parseInt(request.getParameter("type"));
 		String toEmail = request.getParameter("email");
 		String emailArray[] = toEmail.split(";");
@@ -122,6 +127,7 @@ public class Edu_Emailesend_HistoryController {
 			if (type==1) {
 				JavaEmailSender.sendEmail(e);
 			    e.setSend_time(new Date());
+			    e.setUser(users);
 			}else if (type==2) {
 		      	String date=e.getStartTime();
 				date = date.replace("T","");
@@ -139,6 +145,7 @@ public class Edu_Emailesend_HistoryController {
 				String cons="0 "+date_time[1]+" "+date_time[0]+" "+date_year[2]+" "+date_year[1]+" ?"+" "+date_year[0];
 				QuartzManager.addJob(JOB_NAME, JOB_GROUP_NAME, TRIGGER_NAME, TRIGGER_GROUP_NAME, job,cons);
 			}
+			e.setUser(users);
 			e.setCreate_time(new Date());
 			e.setSend_time(new Date());
 			eService.save(e);

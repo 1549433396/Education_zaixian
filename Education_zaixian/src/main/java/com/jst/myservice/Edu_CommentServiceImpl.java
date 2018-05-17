@@ -43,4 +43,10 @@ public class Edu_CommentServiceImpl implements Edu_CommentService{
 		return list;
 	}
 
+	@Override
+	public Edu_Comment selectId(int comment_id) {
+		Edu_Comment list = commentMapper.selectId(comment_id);
+		return list;
+	}
+
 }

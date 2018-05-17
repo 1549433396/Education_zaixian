@@ -37,7 +37,11 @@ select * from edu_emailsend_history where id = #{id}
 
 <insert id="save" parameterType="Edu_Emailesend_History">
 insert into edu_emailsend_history(email,user_id,title,content,create_time,send_time,type)
-values(#{email},1,#{title},#{content},#{create_time},#{send_time},#{type})
+values(#{email},#{user.user_id},#{title},#{content},#{create_time},#{send_time},#{type})
 </insert>
+
+<select id="selectLimit" resultType="Edu_User">
+select*from edu_user 
+</select>
 
 </mapper>
