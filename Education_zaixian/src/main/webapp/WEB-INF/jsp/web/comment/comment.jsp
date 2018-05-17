@@ -79,9 +79,9 @@
 										class="icon18">&nbsp;</em>(<span
 										class="replyCount${ac.comment_id}">${ac.reply_count}</span>)
 								</a> <tt title="赞一下" class="noter-zan vam ml10"
-										onclick="addPraise('${ac.comment_id}',4)">
+										onclick="addPraise('${ac.comment_id}',1)">
 										<em class="icon18">&nbsp;</em>(<span
-											class="addPraise${ac.comment_id}_4 praiseCount">${ac.praise_count }</span>)
+											class="addPraise${ac.comment_id}_1 praise_count">${ac.praise_count }</span>)
 									</tt>
 								</span>
 							</div>

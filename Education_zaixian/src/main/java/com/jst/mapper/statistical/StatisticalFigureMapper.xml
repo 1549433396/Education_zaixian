@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jst.mapper.statistical.StatisticalFigureMapper">
+	<select id="shows" resultType="Edu_User" parameterType="java.util.Map">
+		select
+		date_format(create_time,'%Y-%m-%d') create_time,count(*) as num from
+		edu_user
+		where create_time like '${create_time}%'
+		group by
+		date_format(create_time,'%Y-%m-%d')
+	</select>
+	<select id="LoginShows" resultType="LoginLog" parameterType="java.util.Map">
+		select
+		date_format(login_time,'%Y-%m-%d') login_time,count(*) as num
+		from
+		edu_user_login_log
+		where login_time like '${login_time}%'
+		group by
+		date_format(login_time,'%Y-%m-%d')
+	</select>
+</mapper>

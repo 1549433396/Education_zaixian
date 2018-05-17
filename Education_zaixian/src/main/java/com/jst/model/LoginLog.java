@@ -1,22 +1,33 @@
 package com.jst.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class LoginLog {
 	private int log_id; //id
-	private Timestamp  login_time;  //登录时间
+	private Date  login_time;  //登录时间
 	private String  ip;  //登录IP
 	private int  user_id;  //用户ID
 	private String  os_name;  //操作系统
 	private String user_agent; //浏览器
+	private int num;
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	public int getLog_id() {
 		return log_id;
 	}
 	public void setLog_id(int log_id) {
 		this.log_id = log_id;
 	}
-	public Timestamp getLogin_time() {
+	public Date getLogin_time() {
 		return login_time;
+	}
+	public void setLogin_time(Date login_time) {
+		this.login_time = login_time;
 	}
 	public void setLogin_time(Timestamp login_time) {
 		this.login_time = login_time;

@@ -14,6 +14,4 @@ public interface FrontUserMapper {
 	
 	public Edu_User getById(int user_id);
 	
-	public List<Edu_User> shows(Map map);
-	
 }

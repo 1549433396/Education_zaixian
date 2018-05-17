@@ -87,13 +87,13 @@ h3 {
 </head>
 <body>
 	<section class="layui-larry-box">
-	<form method="post" action="/admin/statisticsPage/registered">
+	<form method="post" action="/admin/statisticsPage/login">
 		<div class="larry-personal">
 			<div class="layui-tab">
 				<blockquote class="layui-elem-quote news_search">
 					<div class="layui-inline">
 						<div class="layui-input-inline">
-							<input placeholder="请输入查询月份" value="" name="create_time"
+							<input placeholder="请输入查询月份" value="" name="login_time"
 								class="laydate-icon"
 								onClick="laydate({istime: true, format: 'YYYY-MM'})">
 						</div>
@@ -117,18 +117,18 @@ h3 {
 		// 显示标题，图例和空的坐标轴
 		myChart.setOption({
 			title : {
-				text : '注册人数统计图'
+				text : '登录人数统计图'
 			},
 			tooltip : {},
 			legend : {
 				data : [ '销量' ]
 			},
 			xAxis : {
-				name : '注册时间',
-				data : ${create_time}
+				name : '登录时间',
+				data : ${loginLog}
 			},
 			yAxis : {
-				name : '注册人数',
+				name : '登录人数',
 				type:'value'
 			},
 			series : [ {

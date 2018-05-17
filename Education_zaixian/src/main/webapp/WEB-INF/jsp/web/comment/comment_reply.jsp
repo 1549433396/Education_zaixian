@@ -27,8 +27,8 @@
 				</div>
 				<div class="of mt5">
 					<span class="fr"><font class="fsize12 c-999 ml5"><fmt:formatDate value="${ac.addtime}" pattern="yyyy/MM/dd HH:mm" /></font></span> <span class="fl"> 
-					<tt class="noter-zan vam" title="赞一下" onclick="addPraise('${ac.comment_id}',4)">
-							<em class="icon18">&nbsp;</em><span class="addPraise${ac.comment_id}_4 praiseCount">${ac.praise_count }</span>
+					<tt class="noter-zan vam" title="赞一下" onclick="addPraise('${ac.comment_id}',1)">
+							<em class="icon18">&nbsp;</em><span class="addPraise${ac.comment_id}_1 praiseCount">${ac.praise_count }</span>
 						</tt>
 					</span>
 				</div>

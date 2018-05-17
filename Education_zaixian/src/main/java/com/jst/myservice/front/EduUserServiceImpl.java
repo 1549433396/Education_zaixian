@@ -24,13 +24,4 @@ public class EduUserServiceImpl implements EduUserService {
 		frontUserMapper.addUser(user);
 		
 	}
-
-	@Override
-	public List<Edu_User> shows(Map map) {
-		List<Edu_User> list=frontUserMapper.shows(map);
-		return list;
-	}
-
-	
-	
 }

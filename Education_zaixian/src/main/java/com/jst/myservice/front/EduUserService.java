@@ -11,8 +11,4 @@ public interface EduUserService {
 	public Edu_User getPwd(String userName);
 	//ע���û�
 	public void addUser(Edu_User user);
-	
-	public List<Edu_User> shows(Map map);
-
-	
 }

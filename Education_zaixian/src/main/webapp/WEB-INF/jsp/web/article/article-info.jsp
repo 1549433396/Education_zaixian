@@ -42,11 +42,10 @@
 									<span> <a class="noter-dy vam" title="评论"
 										href="#i-art-comment"> <em class="icon18">&nbsp;</em>(<span
 											class="totalResultComment">${article.comment_num}</span>)
-									</a> <tt title="赞一下"
-											onclick="addPraise('${article.praise_count}',3)"
-											class="noter-zan vam ml5 f-fM">
+									</a> <tt title="赞一下" class="noter-zan vam ml10"
+											onclick="addPraise('${article.article_id}',1)">
 											<em class="icon18">&nbsp;</em>(<span
-												class="addPraise${article.praise_count}_3 praiseCount">0</span>)
+												class="addPraise${article.article_id}_1 praise_count">${article.praise_count }</span>)
 										</tt>
 									</span>
 								</div>
@@ -66,7 +65,7 @@
 									</tt>
 									<tt class="c-999 f-fM ml20">
 										点赞：<span
-											class="addPraise${article.praise_count}_3 praiseCount">0</span>
+											class="addPraise${article.praise_count}_1 praiseCount">${article.praise_count}</span>
 									</tt>
 									<tt class="c-999 f-fM ml20">
 										阅读：<span class="clickNum">${article.click_num}</span>
