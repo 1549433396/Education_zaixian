@@ -17,6 +17,28 @@ public class Questions {
 	private List<QuestionsTag> listtag; //问答标签 表 集合
 	private String start;
 	private String end;
+	
+	public Questions() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Questions(int id, Edu_User eduUser, String title, String content, int type, int status, int reply_count,
+			int browse_count, int praise_count, Date add_time, List<QuestionsTag> listtag, String start, String end) {
+		super();
+		this.id = id;
+		this.eduUser = eduUser;
+		this.title = title;
+		this.content = content;
+		this.type = type;
+		this.status = status;
+		this.reply_count = reply_count;
+		this.browse_count = browse_count;
+		this.praise_count = praise_count;
+		this.add_time = add_time;
+		this.listtag = listtag;
+		this.start = start;
+		this.end = end;
+	}
 	public int getId() {
 		return id;
 	}

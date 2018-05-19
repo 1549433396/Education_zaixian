@@ -25,4 +25,9 @@ public interface QuestionsService {
 	 public List<Questions> list();
 	 //点赞
 	 public void updatePraise(int id);
+	 public int getMaxId();
+	 public void saveRelation(Map map);
+//		回复数量修改
+		public void updateReplyCount(int qcid);
+	
 }

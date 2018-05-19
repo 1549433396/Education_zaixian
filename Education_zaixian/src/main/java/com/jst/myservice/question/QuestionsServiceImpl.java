@@ -15,7 +15,7 @@ import com.jst.ztree.ZtreeNode;
 
 @Service
 public class QuestionsServiceImpl implements QuestionsService{
-	
+
 	@Autowired
 	private QuestionsMapper questionsMapper;
 	
@@ -71,6 +71,24 @@ public class QuestionsServiceImpl implements QuestionsService{
 	@Override
 	public void updatePraise(int id) {
 		questionsMapper.updatePraise(id);
+		
+	}
+
+	@Override
+	public int getMaxId() {
+		int maxId=questionsMapper.getMaxId();
+		return maxId;
+	}
+
+	@Override
+	public void saveRelation(Map map) {
+		questionsMapper.saveRelation(map);
+		
+	}
+
+	@Override
+	public void updateReplyCount(int qcid) {
+		questionsMapper.updateReplyCount(qcid);
 		
 	}
 

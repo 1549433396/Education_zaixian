@@ -3,15 +3,18 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.jst.mapper.user.LoginLogMapper">
-     <resultMap type="LoginLog" id="LoginLogMap">
+    <!--  <resultMap type="LoginLog" id="LoginLogMap">
        <result column="log_id" property="log_id"/>
        <result column="login_time" property="login_time"/>
        <result column="ip" property="ip"/>
        <result column="user_id" property="user_id"/>
        <result column="os_name" property="os_name"/>
        <result column="user_agent" property="user_agent"/>
-     </resultMap>
-     <select id="listAll" resultMap="LoginLogMap" parameterType="LoginLog">
+     </resultMap> -->
+     <select id="listAll" parameterType="int" resultType="LoginLog">
        select * from edu_user_login_log where user_id=#{user_id}
      </select>
+     <delete id="delete" parameterType="int">
+       delete from edu_user_login_log where log_id=#{value}
+     </delete>
   </mapper>

@@ -44,4 +44,30 @@
     <update id="updatepraise" parameterType="int">
 	  update edu_questions_comment set praise_count=praise_count+1 where id=#{id}
 	</update>
+	
+	<select id="getById2" resultMap="QuestionsCommentMap"
+		parameterType="int">
+		select * from edu_questions_comment where question_id =
+		#{value} and is_best=0
+	</select>
+	<select id="getById3" resultMap="QuestionsCommentMap"
+		parameterType="int">
+		select * from edu_questions_comment where question_id =
+		#{value} and is_best=1
+	</select>
+	<select id="getListById" resultMap="QuestionsCommentMap" parameterType="int">
+		select * from edu_questions_comment where comment_id=#{value}
+	</select>
+	
+	<select id="getListById2" resultMap="QuestionsCommentMap" parameterType="int">
+		select * from edu_questions_comment where comment_id=#{value} and is_best=1
+	</select>
+	<insert id="save" parameterType="questionsComment">
+	  insert into edu_questions_comment(cus_id,question_id,content,is_best,reply_count,praise_count,add_time,comment_id)
+		values(#{eduUser.user_id},#{questions.id},#{content},#{is_best},#{reply_count},#{praise_count},#{add_time},#{comment_id})
+	</insert>
+	<!--回复数量修改  -->
+	 <update id="updateReplyCount" parameterType="int">
+      update edu_questions_comment set reply_count=reply_count+1  where id=#{value}
+    </update>
 </mapper>

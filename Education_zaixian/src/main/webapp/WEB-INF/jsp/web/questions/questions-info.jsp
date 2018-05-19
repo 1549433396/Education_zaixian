@@ -76,13 +76,13 @@
 											<span class="c-ccc fl vam">
 											<fmt:formatDate value="${questions.add_time }" type="date" pattern="yyyy-MM-dd HH:mm:ss"/>
 											</span>
-											<%-- <section class="fl ml20 pt10">
+											<section class="fl ml20 pt10">
 												<div class="taglist clearfix">
-													<c:forEach items="${questions.questionsTagRelationList }" var="questionsTag">
-														<a title="${questionsTag.tagName }" data-id="${questionsTag.questionsTagId }" onclick="submitForm('${questionsTag.questionsTagId }','questionsTagId')" class="list-tag" href="javascript:;">${questionsTag.tagName }</a>
+													<c:forEach items="${question.listtag }" var="questionsTag">
+																	<a title="${questionsTag.questions_tag_name }" data-id="${questionsTag.questions_tag_id }" onclick="submitForm('${questionsTag.questions_tag_id }','questionsTagId')" class="list-tag" href="javascript:;">${questionsTag.questions_tag_name }</a>
 													</c:forEach>
 												</div>
-											</section> --%>
+											</section>
 											<div class="clear"></div>
 										</div>
 									</section>
@@ -100,16 +100,17 @@
 						</section>
 						<section class="pt20">
 							<div class="taglist clearfix">
-								<%-- <form action="${ctx}/questions/list" id="searchForm" method="post">
+								<form action="${ctx}/front/questions/list/0" id="searchForm" method="post">
 									<input type="hidden" id="pageCurrentPage" name="page.currentPage" value="1" />
-									<input type="hidden" name="questions.orderFalg" value="${questions.orderFalg}" />
+									<%-- <input type="hidden" name="questions.orderFalg" value="${questions.orderFalg}" /> --%>
 									<input type="hidden" name="questions.type" value="${questions.type}" />
 									<input type="hidden" name="questions.status" value="${questions.status}" />
-									<input type="hidden" name="questions.questionsTagId" value="${questions.questionsTagId}" />
-								</form> --%>
-								<%-- <c:forEach items="${questionsTagList }" var="questionsTag">
-									<a title="${questionsTag.questionsTagName }" data-id="${questionsTag.questionsTagId }" class="list-tag" href="javascript:;" onclick="submitForm('${questionsTag.questionsTagId }','questionsTagId')">${questionsTag.questionsTagName }</a>
-								</c:forEach> --%>
+									<input type="hidden" name="questions.questionsTagId" value="${questions.listtag}" />
+								</form> 
+								<a onclick="submitForm('0','questionsTagId')" href="javascript:;" class="list-tag <c:if test='${questionsTag.questions_tag_id==0 }' >onactive</c:if>" data-id="0" title="JAVA">全部</a>
+								<c:forEach items="${listTag }" var="questionsTag">
+									<a title="${questionsTag.questions_tag_name }" data-id="${questionsTag.questions_tag_id }" class="list-tag <c:if test='${questionsTag.questions_tag_id==questionsTag.questions_tag_id }' >onactive</c:if>" href="javascript:;" onclick="submitForm('${questionsTag.questions_tag_id }','questionsTagId')">${questionsTag.questions_tag_name }</a>
+								</c:forEach>
 							</div>
 						</section>
 						<!-- /标签云 -->

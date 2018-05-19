@@ -20,23 +20,23 @@
 		<association column="cus_id" property="eduUser"
 			select="com.jst.mapper.user.EduUserMapper.getById"></association>
 			<!--根据问答id查询标签集合  -->
-     <association column="questions_id" property="listtag" select="com.jst.mapper.question.QuestionsTagMapper.getlistById"></association> 
+     <association column="id" property="listtag" select="com.jst.mapper.question.QuestionsTagMapper.getlistById"></association> 
 	</resultMap>
 	<!-- id是mapper接口的名字 必须一样 resultMap跟resultMap里id的名字一样 就是再查一遍 -->
 	<select id="listAll" resultMap="QuestionsMap" parameterType="java.util.Map">
 		select * from edu_questions 
 		<where>
 		  <if test="title!=null">
-		    and title like '%${title}%'
+		    and title like '%${title}%'+
 		  </if>
 		  <if test="type>0">
 		    and type=#{type}
 		  </if>
 		  
-		  <if test="start!=null and start!=''">
+		  <if test="start!=null">
 		   and add_time &gt; #{start}
 		  </if>
-		  <if test="end!=null and end!=''">
+		  <if test="end!=null">
 		   and add_time &lt; #{end}
 		  </if> 
 		  
@@ -82,6 +82,8 @@
 	</delete>
 	<!-- id是mapper接口的名字 必须一样 parameterType 传的对象 questions -->
 	<update id="update" parameterType="Questions">
+		<!-- update edu_questions set title=#{title},type=#{type},status=#{status},
+		content=#{content} where id=#{id} -->
 		update edu_questions set cus_id=#{eduUser.email},
 		title=#{title},content=#{content},type=#{type},status=#{status},reply_count=#{reply_count},
 		browse_count=#{browse_count},praise_count=#{praise_count},add_time=#{add_time}
@@ -89,7 +91,9 @@
 	</update>
 	
 	<insert id="save" parameterType="Questions">
-	  insert into edu_questions(title,content,type) values(#{title},#{content},#{type})
+	  insert into
+		edu_questions(cus_id,title,content,type,status,reply_count,praise_count,add_time)
+		values(#{eduUser.user_id},#{title},#{content},#{type},#{status},#{reply_count},#{praise_count},#{add_time})
 	</insert> 
 	
 	<select id="getlistById" resultMap="QuestionsMap" parameterType="int">
@@ -102,4 +106,21 @@
 	<update id="updatePraise" parameterType="int">
 	  update edu_questions set praise_count=praise_count+1 where id=#{value}
 	</update>
+	<insert id="saveRelation" parameterType="java.util.Map">
+		insert into
+		edu_questions_tag_relation(questions_id,questions_tag_id)
+		values(#{qid},#{tid})
+	</insert>
+	<select id="getMaxId" resultType="int">
+		select max(id) from
+		edu_questions
+	</select>
+	<!-- <update id="addBrowse_count" parameterType="int">
+		update edu_questions
+		set browse_count=browse_count+1 where ID=#{id}
+	</update> -->
+	<!--回复数量修改  -->
+	 <update id="updateReplyCount" parameterType="int">
+      update edu_questions set reply_count=reply_count+1  where id=#{value}
+    </update>
 </mapper>

@@ -67,9 +67,9 @@
 								<dd>
 									<div class="taglist clearfix" id="js-tags">
 										<input type="hidden" name="questionsTag" id="questionsTag" value="">
-										<c:forEach items="${questionsTagList }" var="questionsTag">
-											<a title="${questionsTag.questionsTagName }" data-id="${questionsTag.questionsTagId }" class="list-tag" href="javascript:;">${questionsTag.questionsTagName }</a>
-										</c:forEach>
+										<c:forEach items="${listTag }" var="questionsTag">
+									<a title="${questionsTag.questions_tag_name }" data-id="${questionsTag.questions_tag_id }" class="list-tag <c:if test='${questionsTag.questions_tag_id==questions.questionsTagId }' >onactive</c:if>" href="javascript:;" onclick="submitForm('${questionsTag.questions_tag_id }','questionsTagId')">${questionsTag.questions_tag_name }</a>
+								</c:forEach>
 									</div>
 									<!-- /标签集 -->
 								</dd>

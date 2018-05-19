@@ -25,16 +25,21 @@
 	media="all">
 <link rel="stylesheet" type="text/css" href="/css/personal.css"
 	media="all">
+<link href="/js/utf8-jsp/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" charset="utf-8" src="/js/utf8-jsp/umeditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/utf8-jsp/umeditor.min.js"></script>
 <script src="/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="/js/My97DatePicker/WdatePicker.js"></script>
 <style type="text/css">
 #h5 {
 	color: black;
 }
+select{width:400px;}
 </style>
 <script type="text/javascript">
 	/*修改  */
 	 function updateQue() {
-		document.forms[0].action = "/admin/Questions/updQuestions";
+		document.forms[0].action = "/admin/questions/updQuestions";
 		document.forms[0].submit();
 	} 
 
@@ -47,35 +52,43 @@
 	<section class="layui-larry-box">
 	<div class="larry-personal">
 		<header class="larry-personal-tit"> 
-		<span><h4 id="h5" align="center">问答列表编辑</h4></span> 
+		<span><h4 id="h4">问答列表编辑</h4></span> 
 		</header>
 		<div class="larry-personal-body clearfix">
 			<form class="layui-form col-lg-5" action="" method="post"
 				enctype="multipart/form-data">
 				<input type="hidden" class="form-control" name="qid" id="qid"
 					value="${questions.id }">
-
 				<div class="layui-form-item">
-					<label class="layui-form-label">发表人昵称:</label>
+					<label class="layui-form-label">发表人昵称  </label>
 					<div class="layui-input-block">
 						<input type="text" name="show_name" id="show_name"
-							autocomplete="off" class="layui-input"
-							value="${questions.eduUser.show_name }" placeholder="请输入发表人昵称">
+							style="width:400px;" class="layui-input"
+							value="${questions.eduUser.show_name }" placeholder="请输入发表人昵称" disabled="disabled">
 					</div>
 				</div>
-
+				
 				<div class="layui-form-item">
-					<label class="layui-form-label">发表人邮箱:</label>
+					<label class="layui-form-label">发表人邮箱 </label>
 					<div class="layui-input-block">
 						<input type="text" name="email" id="email"
-							autocomplete="off" class="layui-input"
-							value="${questions.eduUser.email }" placeholder="请输入发表人邮箱">
+							style="width:400px;" class="layui-input"
+							value="${questions.eduUser.email }" placeholder="请输入发表人邮箱" disabled="disabled">
 					</div>
 				</div>
-
-				<div class="layui-form-item">
-					<label class="layui-form-label">问答分类:</label>
+                
+                <div class="layui-form-item">
+					<label class="layui-form-label">问答标题  </label>
 					<div class="layui-input-block">
+						<input type="text" name="title" id="title"
+							style="width:400px;" class="layui-input"
+							value="${questions.title }" placeholder="请输入问答标题">
+					</div>
+				</div>
+                
+				<div class="layui-form-item">
+					<label class="layui-form-label">问答分类 </label>
+					<!-- <div class="layui-input-block">
 						<input type="radio" name="type" id="type"
 							value="1" title="课程问答" checked="">
 						<div class="layui-unselect layui-form-radio layui-form-radioed">
@@ -86,12 +99,19 @@
 						<div class="layui-unselect layui-form-radio">
 							<i class="layui-anim layui-icon"></i><span>学习分享</span>
 						</div>
-					</div>
+					</div> --> 
+							<div class="layui-input-inline">
+								<select class="layui-input" name="type" id="type" style="width: 400px">
+									<option value="-1">--请选择--</option>
+									<option value="1">课程问答</option>
+									<option value="2">学校分享</option>
+								</select>
+							</div>
 				</div>
 
 
 				 <div class="layui-form-item">
-					<label class="layui-form-label">是否采纳:</label>
+					<label class="layui-form-label">是否采纳 </label>
 					<div class="layui-input-block">
 						<input type="radio" name="status" id="status"
 							value="0" title="是" checked="">
@@ -107,49 +127,51 @@
 				</div> 
                 
                 <div class="layui-form-item">
-					<label class="layui-form-label">回复数:</label>
+					<label class="layui-form-label">回复数 </label>
 					<div class="layui-input-block">
 						<input type="text" name="reply_count" id="reply_count"
-							autocomplete="off" class="layui-input"
-							value="${questions.reply_count }" placeholder="请输入回复数">
+							style="width:400px;" class="layui-input"
+							value="${questions.reply_count }" placeholder="请输入回复数" disabled="disabled">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">点赞数:</label>
+					<label class="layui-form-label">点赞数 </label>
 					<div class="layui-input-block">
 						<input type="text" name="praise_count" id="praise_count"
-							autocomplete="off" class="layui-input"
-							value="${questions.praise_count }" placeholder="请输入点赞数">
+							style="width:400px;" class="layui-input"
+							value="${questions.praise_count }" placeholder="请输入点赞数" disabled="disabled">
 					</div>
 				</div>
                  
                  <div class="layui-form-item">
-					<label class="layui-form-label">浏览数:</label>
+					<label class="layui-form-label">浏览数 </label>
 					<div class="layui-input-block">
 						<input type="text" name="browse_count" id="browse_count"
-							autocomplete="off" class="layui-input"
+							style="width:400px;" class="layui-input"  disabled="disabled"
 							value="${questions.browse_count }" placeholder="请输入浏览数">
 					</div>
 				</div>
 
 				<div class="layui-form-item">
-					<label class="layui-form-label">问答内容:</label>
-					<div class="layui-input-block">
-						<textarea rows="60" cols="80" name="content"
-							id="content">${questions.content }</textarea>
+					<label class="layui-form-label">问答内容 </label>
+					<div class="">
+					<script type="text/plain" id="content" name="content"
+					style="width:800px;height:400px;">
+                      ${questions.content }
+                    </script>
+						<%-- <textarea rows="" cols="65" name="content"
+							id="content">${questions.content }</textarea> --%>
 					</div>
 				</div>
 
-				<div class="layui-form-item">
+				<%-- <div class="layui-form-item">
 					<label class="layui-form-label">添加时间:</label>
 					<div class="layui-input-block">
-						<input type="date" name="add_time" id="add_time"
-							autocomplete="off" class="layui-input"
-							value="${questions.add_time }" placeholder="请输入添加时间">
+						<input type="text" name="add_time" id="add_time"
+							style="width:400px;" class="layui-input"
+							value="${questions.add_time }" placeholder="请输入添加时间" onclick="WdatePicker({dateFmt:'yyyy年MM月dd日 HH时mm分ss秒'})">
 					</div>
-				</div>
-
-			
+				</div> --%> 
 
 				<div class="layui-form-item">
 					<div class="layui-input-block">
@@ -205,6 +227,9 @@
 			});
 
 		});
+	</script>
+	<script type="text/javascript">
+	  $("#type").val("${questions.type}");
 	</script>
 </body>
 </html>

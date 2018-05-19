@@ -1,6 +1,6 @@
 $(function() {
 	ganswerFun();
-	ajaxPage("/questionscomment/ajax/list","&questionsComment.questionId="+questionsId,1,commentCallBack);//ajax获得评论
+	ajaxPage("/front/questionscomment/ajax/list","&questionsComment.questionId="+questionsId,1,commentCallBack);//ajax获得评论
 })
 var ganswerFun = function() {
 	$(".good-answer .noter-dy").bind("click", function() {
@@ -20,6 +20,7 @@ function commentCallBack(result){
 }
 /* 添加回答评论 */
 function addComment(obj){
+	alert(obj);
 	if(isLogin()){
 		$(".n-reply-wrap .c-red").html("");
 		var questionsCommentContent=$("textarea[name='questionsComment.content']").val();
@@ -28,7 +29,7 @@ function addComment(obj){
 			return;
 		}
 		$.ajax({
-			url:baselocation + "/questionscomment/ajax/add",
+			url:baselocation + "/front/questionscomment/ajax/add",
 			data:{
 				"questionsComment.questionId":questionsId,
 				"questionsComment.content":questionsCommentContent
@@ -39,8 +40,10 @@ function addComment(obj){
 			success:function(result){
 				if(result.success==true){
 					$("textarea[name='questionsComment.content']").val("");
-					ajaxPage("/questionscomment/ajax/list","&questionsComment.questionId="+questionsId,1,commentCallBack);//ajax获得评论
+					ajaxPage("/front/questionscomment/ajax/list","&questionsComment.questionId="+questionsId,1,commentCallBack);//ajax获得评论
 					//修改评论数
+					/*var questionsReplyCount = $(".addComment"+questionsId).html();
+					$(".addComment"+questionsId).html(questionsReplyCount*1+1);*/
 					var questionsReplyCount=parseInt($("#questionsReplyCount").html());
 					$("#questionsReplyCount").html(questionsReplyCount+1);
 					$(obj).parent().find("tt").html("发表成功");
@@ -57,6 +60,7 @@ function addComment(obj){
 
 /* 添加回答评论的评论(子评论) */
 function addReply(obj){
+	alert(obj);
 	if(isLogin()){
 		var replyCotent=$(obj).parent().prev().children("textarea").val();
 		var commentId=$(obj).parent().parent().next().val();
@@ -66,7 +70,7 @@ function addReply(obj){
 			return;
 		}
 		$.ajax({
-			url:baselocation + "/questionscomment/ajax/addReply",
+			url:baselocation + "/front/questionscomment/ajax/addReply",
 			data:{
 				"questionsComment.commentId":commentId,
 				"questionsComment.content":replyCotent
@@ -98,7 +102,7 @@ function addReply(obj){
 /**采纳为最佳答案**/
 function acceptComment(commentId){
 	$.ajax({
-		url:baselocation + "/questionscomment/ajax/acceptComment",
+		url:baselocation + "/front/questionscomment/ajax/acceptComment/",
 		data:{
 			"questionsComment.commentId":commentId,
 			"questionsComment.questionId":questionsId
@@ -109,7 +113,7 @@ function acceptComment(commentId){
 		success:function(result){
 			if(result.success==true){
 				$(obj).parent().prev().find("textarea").val("");
-				ajaxPage("/questionscomment/ajax/list","&questionsComment.questionId="+questionsId,1,commentCallBack);//ajax获得评论
+				ajaxPage("/front/questionscomment/ajax/list","&questionsComment.questionId="+questionsId,1,commentCallBack);//ajax获得评论
 			}else{
 				dialog('提示',result.message,1);
 			}
@@ -122,7 +126,7 @@ function acceptComment(commentId){
 */
 function getCommentById(obj,commentId){
 	$.ajax({
-		url:baselocation + "/questionscomment/ajax/getCommentById/"+commentId,
+		url:baselocation + "/front/questionscomment/ajax/getCommentById/"+commentId,
 		data:{
 		},
 		type:"post",
@@ -140,7 +144,7 @@ function getCommentById(obj,commentId){
 function getAllCommentById(pCommentId) {
 	//ajaxPage("/questionscommentall/ajax/getCommentById/"+pCommentId, "" , 1, dialog("评论列表",result,5));
 	$.ajax({
-		url : baselocation + '/questionscommentall/ajax/getCommentById/'+pCommentId,
+		url : baselocation + '/front/questionscommentall/ajax/getCommentById/'+pCommentId,
 		data : {
 		},
 		type : 'post',

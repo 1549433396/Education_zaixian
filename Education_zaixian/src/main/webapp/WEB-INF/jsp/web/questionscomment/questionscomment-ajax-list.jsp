@@ -13,9 +13,9 @@
 						<li>
 							<aside class="noter-pic">
 								<c:choose>
-									<c:when test="${not empty questionsComment.edu_user.pic_img}">
+									<c:when test="${not empty questionsComment.eduUser.pic_img}">
 										<img
-											src="<%=staticImage %>${questionsComment.edu_user.pic_img}"
+											src="<%=staticImage %>${questionsComment.eduUser.pic_img}"
 											alt="" width="50" height="50">
 									</c:when>
 									<c:otherwise>
@@ -26,8 +26,8 @@
 							</aside>
 							<div class="of hLh20">
 								<span class="fl"> <font class="fsize12 c-blue"> <c:if
-											test="${not empty questionsComment.edu_user.show_name}">${questionsComment.edu_user.show_name}</c:if>
-										<c:if test="${empty questionsComment.edu_user.show_name}">${questionsComment.edu_user.email }</c:if>
+											test="${not empty questionsComment.eduUser.show_name}">${questionsComment.eduUser.show_name}</c:if>
+										<c:if test="${empty questionsComment.eduUser.show_name}">${questionsComment.eduUser.email }</c:if>
 								</font> <font class="fsize12 c-999 ml5">回复：</font></span>
 							</div>
 							<div class="noter-txt mt5">
@@ -54,10 +54,10 @@
 										<textarea name="" placeholder="输入您要评论的文字" id="commentContent"></textarea>
 									</fieldset>
 									<p class="of mt5 tar pl10 pr10">
-										<span class="fl "><tt class="c-red commentContentmeg"
-												style="display: none;"></tt></span> <a
-											href="javascript:addComment();" title="回复"
-											class="lh-reply-btn">回复</a>
+										<span class="fl"><tt class="c-red commentContentmeg"
+												style="display:none;"></tt></span> <a
+											href="javascript:0;" title="回复"
+											class="lh-reply-btn" onclick="addReply(this)">回复</a>
 									</p>
 								</section>
 								<input type="hidden" id="" name=""
@@ -82,20 +82,20 @@
 		<h6 class="c-c-content c-infor-title">
 			<span>问答列表</span>
 		</h6>
-		<%-- <c:if test="${questionsCommentList.status==0 }">
-			<section class="lh-bj-list pr mt20">
-				<ul>--%>
+	<%-- 	<c:if test="${questions.status==0 }"> --%>
+		<section class="lh-bj-list pr mt20">
+		<ul>
 		<li class="unBr">
-			<%--<aside class="noter-pic">
+			<aside class="noter-pic">
 							<c:choose>
-								<c:when test="${not empty questionsCommentList.edu_user}">
-									<img src="<%=staticImage %>${questionsCommentList.edu_user.pic_img} }" alt="" width="50" height="50">
+								<c:when test="${not empty questionsComment.eduUser}">
+									<img src="<%=staticImage %>${questionsComment.eduUser.pic_img} }" alt="" width="50" height="50">
 								</c:when>
 								<c:otherwise>
 									<img src="${ctx }/static/inxweb/img/avatar-boy.gif" alt="" width="50" height="50">
 								</c:otherwise>
 							</c:choose>
-						</aside> --%>
+						</aside>
 			<div class="of">
 				<section class="n-reply-wrap">
 					<fieldset>
@@ -132,9 +132,9 @@
 						<li>
 							<aside class="noter-pic">
 								<c:choose>
-									<c:when test="${not empty questionsComment.edu_user.pic_img }">
+									<c:when test="${not empty questionsComment.eduUser.pic_img }">
 										<img
-											src="<%=staticImage %>${questionsComment.edu_user.pic_img  }"
+											src="<%=staticImage %>${questionsComment.eduUser.pic_img  }"
 											alt="" width="50" height="50">
 									</c:when>
 									<c:otherwise>
@@ -145,14 +145,14 @@
 							</aside>
 							<div class="of hLh20">
 								<c:if
-									test="${questionsCommentList.status==0 and  questionsCommentList.cus_id==edu_user.user_id and questionsComment.cus_id != questions.cus_id}">
+									test="${questions.status==0 and  questions.cus_id==eduUser.user_id and questionsComment.cus_id != questions.cus_id}">
 									<span class="fr"><a href="javascript:void(0)"
 										onclick="acceptComment(${questionsComment.id})" title=""
 										class="comm-btn c-btn-6">采纳为最佳答案</a></span>
 								</c:if>
 								<span class="fl"> <font class="fsize12 c-blue"> <c:if
-											test="${not empty questionsComment.edu_user.show_name}">${questionsComment.edu_user.show_name}</c:if>
-										<c:if test="${empty questionsComment.edu_user.show_name}">${questionsComment.edu_user.email}</c:if>
+											test="${not empty questionsComment.eduUser.show_name}">${questionsComment.eduUser.show_name}</c:if>
+										<c:if test="${empty questionsComment.eduUser.show_name}">${questionsComment.eduUser.email}</c:if>
 								</font> <font class="fsize12 c-999 ml5">回复：</font></span>
 							</div>
 							<div class="noter-txt mt5">
@@ -191,7 +191,7 @@
 										</p>
 									</section>
 									<input type="hidden" id="" name=""
-										value="${questionsComment.id}" /> <input type="text" id=""
+										value="${questionsComment.id}" /> <input type="hidden" id=""
 										name="questionsComment.questionId"
 										value="${questionsComment.questions.id}" />
 								</div>

@@ -95,13 +95,13 @@ function addQuestions(){
 	}
 	
 	var randomCode=$("input[name='randomCode']").val();
-	if(randomCode.trim()==""){
-		$("input[name='randomCode']").parent().next().next().html('<img width="16" height="16" alt="错误" src="/static/inxweb/img/c-icon.png">');
-		dialog('提示信息',"请输入验证码",1);
-		return;
-	}else{
-		$("input[name='randomCode']").parent().next().next().html('<img width="16" height="16" alt="正确" src="/static/inxweb/img/d-icon.png">');
-	}
+//	if(randomCode.trim()==""){
+//		$("input[name='randomCode']").parent().next().next().html('<img width="16" height="16" alt="错误" src="/static/inxweb/img/c-icon.png">');
+//		dialog('提示信息',"请输入验证码",1);
+//		return;
+//	}else{
+//		$("input[name='randomCode']").parent().next().next().html('<img width="16" height="16" alt="正确" src="/static/inxweb/img/d-icon.png">');
+//	}
 	
 	
 	$.ajax({
@@ -118,7 +118,7 @@ function addQuestions(){
 		async:true,
 		success:function(result){
 			if(result.success==true){
-				window.location.href="/questions/info/"+result.entity;
+				window.location.href="/front/questions/info/"+result.entity;
 			}else{
 				dialog('提示信息',result.message,1);
 			}

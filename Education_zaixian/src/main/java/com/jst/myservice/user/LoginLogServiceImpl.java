@@ -19,4 +19,10 @@ public class LoginLogServiceImpl implements LoginLogService{
 		List<LoginLog> list=loginLogMapper.listAll(user_id);
 		return list;
 	}
+
+	@Override
+	public void delete(int lid) {
+		loginLogMapper.delete(lid);
+		
+	}
 }

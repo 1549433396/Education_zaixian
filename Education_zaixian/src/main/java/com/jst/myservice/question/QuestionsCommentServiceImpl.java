@@ -62,6 +62,32 @@ public class QuestionsCommentServiceImpl implements QuestionsCommentService{
 		
 	}
 
-	
+	@Override
+	public List<QuestionsComment> getById2(int qid) {
+		List<QuestionsComment> list=questionsCommentMapper.getById2(qid);
+		return list;
+	}
 
+	@Override
+	public List<QuestionsComment> getById3(int qid) {
+		List<QuestionsComment> list=questionsCommentMapper.getById3(qid);
+		return list;
+	}
+
+	@Override
+	public List<QuestionsComment> getListById(int commentId) {
+		List<QuestionsComment> list=questionsCommentMapper.getListById(commentId);
+		return list;
+	}
+
+	@Override
+	public void updateReplyCount(int qcid) {
+		questionsCommentMapper.updateReplyCount(qcid);
+	}
+
+	@Override
+	public List<QuestionsComment> getListById2(int commentId) {
+		List<QuestionsComment> list=questionsCommentMapper.getListById2(commentId);
+		return list;
+	}
 }

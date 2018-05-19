@@ -23,6 +23,8 @@ import com.jst.model.Edu_Comment;
 import com.jst.model.Edu_User;
 import com.jst.myservice.article.ArticleService;
 import com.jst.myservice.article.CommentService;
+import com.jst.myservice.question.QuestionsCommentService;
+import com.jst.myservice.question.QuestionsService;
 import com.jst.utils.Result;
 
 @Controller
@@ -33,7 +35,10 @@ public class ArticleFrontController {
 	
 	@Autowired
 	private CommentService commentService;
-	
+	@Autowired
+	private QuestionsService questionsService;
+	@Autowired
+	private QuestionsCommentService questionsCommentService;
 	@RequestMapping("/article")
 	public ModelAndView article(){
 		ModelAndView mView=new ModelAndView();
@@ -74,6 +79,8 @@ public class ArticleFrontController {
 		if (b) {
 			articleService.editPraise(targetId);
 			commentService.praiseEdit(eduComment);
+			questionsService.updatePraise(targetId);
+			questionsCommentService.updatepraise(targetId);
 			b=true;
 		}
 		System.out.println(eduComment.getPraise_count());

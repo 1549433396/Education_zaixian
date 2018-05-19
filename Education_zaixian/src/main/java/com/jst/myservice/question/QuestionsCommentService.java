@@ -22,4 +22,10 @@ public interface QuestionsCommentService {
 	void updateIsBest(int qcid);
 	 //点赞
 	 public void updatepraise(int id);
+	List<QuestionsComment> getById2(int qid);
+	List<QuestionsComment> getById3(int qid);
+	List<QuestionsComment> getListById(int commentId);
+//	回复数量修改
+	public void updateReplyCount(int qcid);
+	List<QuestionsComment> getListById2(int commentId);
 }

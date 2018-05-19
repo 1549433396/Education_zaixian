@@ -103,6 +103,7 @@ public class QuestionsController {
 	 */
 	@RequestMapping("/updQuestions")
 	public String updateQuestions(Questions questions) {
+		System.out.println(questions);
 		questionsService.update(questions);
 		return "redirect:/admin/questions/list";
 	}

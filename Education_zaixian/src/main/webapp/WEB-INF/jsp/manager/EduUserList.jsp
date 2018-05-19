@@ -132,6 +132,49 @@ img {
     		})
     	}
 	} 
+	
+	
+ //全选反选
+	function fun1() {
+		var checklist = document.getElementsByName("subcheck");
+		if (document.getElementById("checkbox").checked) {
+			for (var i = 0; i < checklist.length; i++) {
+				checklist[i].checked = 1;
+			}
+		} else {
+			for (var j = 0; j < checklist.length; j++) {
+				checklist[j].checked = 0;
+			}
+		}
+	}
+	//批量删除
+	function batchDeletes() {
+		//判断至少写了一项
+		var num = $("input[name='subcheck']:checked").length;
+		if (num==0) {
+			alert("请至少选择一项");
+			return false;
+		}
+		if (confirm("确认删除所选项?")) {
+			var checkdList = new Array();
+			$("input[name='subcheck']:checked").each(function() {
+				checkdList.push($(this).val());
+			});
+			$.ajax({
+				type:"post",
+				url:"/admin/comment/del",
+				data:{"delitems":checkdList.toString()},
+				datetype:"html",
+				success:function(date){
+				$("[name='checkbox2']:checked").attr("checked",false);
+				location.reload();//刷新页面
+				},
+				error:function(date) {
+					art.dialog.tips("删除失败!");
+				}
+			});
+		}
+	}
 </script>
 
 </head>
@@ -160,39 +203,28 @@ img {
 						
 						<label class="layui-inline">注册时间:</label>
 						<div class="layui-inline">
-							<input type="text" class="layui-input" name="satrt"  placeholder="yyyy-MM-dd HH:mm:ss" onclick="WdatePicker()">
+							<input type="text" class="layui-input" name="satrt"  placeholder="请选择" onclick="WdatePicker()">
 						</div>
 						-
 						<div class="layui-inline">
-							<input type="text" class="layui-input" name="end" placeholder="yyyy-MM-dd HH:mm:ss" onclick="WdatePicker()">
+							<input type="text" class="layui-input" name="end" placeholder="请选择" onclick="WdatePicker()">
 						</div>
 						<a class="layui-btn" href="javascript:void(0)" onclick="funzp()"><i class="layui-icon">&#xe615;</i>查询</a>
 					    <div class="layui-inline">
-						<a class="layui-btn layui-btn-danger batchDel"><i class="layui-icon">&#xe640;</i>批量删除</a>
+						<a class="layui-btn layui-btn-danger batchDel" onclick="batchDeletes()"><i class="layui-icon">&#xe640;</i>批量删除</a>
 					    </div>
 					</div>
 					</form>
-					<div class="layui-inline">
-						<div class="layui-form-mid layui-word-aux">本页面刷新后除新添加的文章外所有操作无效，关闭页面所有数据重置</div>
-					</div>
 				</blockquote>
 
 				<!-- 操作日志 -->
 				<div class="layui-form news_list">
 					<table class="layui-table">
-						<colgroup>
-							<col width="50">
-							<col width="20%">
-							<col width="9%">
-							<col width="15%">
-							<col width="9%">
-							<col width="15%">
-							<col width="15%">
-							<col width="5%">
-						</colgroup>
 						<thead>
 							<tr>
-								<th>ID</th>
+							   <!--  <th><input type="checkbox" id="checkbox" name="checkbox"
+									onclick="fun1()"></th> -->
+								<th>编号</th>
 								<th>邮箱</th>
 								<th>手机号</th>
 								<th>用户名</th>
@@ -207,6 +239,8 @@ img {
 						<tbody class="news_content">
 							<c:forEach items="${listEduUser }" var="eu" varStatus="stat">
 								<tr>
+								    <%-- <th><input type="checkbox" id="subcheck" name="subcheck"
+										value="${eu.user_id }"></th> --%>
 									<td>${eu.user_id }</td>
 									<td>${eu.email }</td>
 									<td>${eu.mobile }</td>
@@ -229,23 +263,32 @@ img {
 									<td>冻结</td>
 									</c:if>
 									<td> 
-									    <a class="layui-btn layui-btn-mini" onclick="updatepwd(${eu.user_id })"><i class="iconfont icon-edit"></i> 修改密码</a> 
-									<!--     <a class="layui-btn layui-btn-mini" href="#"><i class="layui-icon">&#xe621;</i> </a> -->
-									    <a class="layui-btn layui-btn-danger layui-btn-mini" onclick="frozen(${eu.user_id },${eu.is_avalible })"><i class="layui-icon"><!-- &#x1007; --></i> 冻结/解冻</a>
-									    <a class="layui-btn layui-btn-normal layui-btn-mini" href="/addmin/LoginLog/ListJournal?user_id=${eu.user_id }"><i class="layui-icon">&#xe60a;</i> 查看日志</a> 
+									    <a class="layui-btn layui-btn-small" onclick="updatepwd(${eu.user_id })"><i class="iconfont icon-edit"></i> 修改密码</a> 
+									<!--<a class="layui-btn layui-btn-mini" href="#"><i class="layui-icon">&#xe621;</i> </a> -->
+									    <a class="layui-btn layui-btn-danger layui-btn-small" onclick="frozen(${eu.user_id },${eu.is_avalible })"><i class="layui-icon"><!-- &#x1007; --></i> 冻结/解冻</a>
+									    <a class="layui-btn layui-btn-normal layui-btn-small" href="/admin/LoginLog/ListJournal?user_id=${eu.user_id }"><i class="layui-icon">&#xe60a;</i> 查看日志</a> 
 									</td>
 								</tr>
 							</c:forEach>
 							<tr>
-								<td align="center" colspan="10">一共${page.pages}页 <a
-									href="/coupons/listcoupons?page=${page.firstPage}"
-									class="layui-btn layui-btn-mini">第一页</a> <a
-									href="/coupons/listcoupons?page=${page.prePage}"
-									class="layui-btn layui-btn-normal layui-btn-mini">上一页</a> <a
-									href="/coupons/listcoupons?page=${page.nextPage}"
-									class="layui-btn layui-btn-danger layui-btn-mini">下一页</a> <a
-									href="/coupons/listcoupons?page=${page.lastPage}"
-									class="layui-btn layui-btn-danger layui-btn-mini">最后页</a></td>
+								<td align="center" colspan="11">一共<input type="text"
+									value="${page.pages}" style="width: 25px; text-align: center;" />
+									页 <%-- 一共${page.pages}页 --%> <a
+									href="/admin/user/getuserList?page=${page.firstPage}"
+									class="layui-btn layui-btn-small"><i
+										class="iconfont icon-shanchu1"></i>第一页</a>&nbsp;&nbsp;<a
+									href="/admin/user/getuserList?page=${page.prePage}"
+									class="layui-btn layui-btn-normal layui-btn-small"><i
+										class="iconfont icon-shanchu1"></i>上一页</a>&nbsp;&nbsp;<a
+									href="/admin/user/getuserList?page=${page.nextPage}"
+									class="layui-btn layui-btn-normal layui-btn-small"><i
+										class="iconfont icon-shanchu1"></i>下一页</a>&nbsp;&nbsp;<a
+									href="/admin/user/getuserList?page=${page.lastPage}"
+									class="layui-btn layui-btn-small"><i
+										class="iconfont icon-shanchu1"></i>最后页</a> 每页共<input type="text"
+									value="${page.pageSize }"
+									style="width: 25px; text-align: center;" /> 条 <%-- 每页${page.pageSize }条 --%>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -278,15 +321,9 @@ img {
 							</tr>
 						</tbody>
 					</table>
-					<!-- <div class="larry-table-page clearfix">
-						<a href="javascript:;" class="layui-btn layui-btn-small"><i
-							class="iconfont icon-shanchu1"></i>删除</a>
-						<div id="page2" class="page"></div>
-					</div> -->
 				</div>
 			</div>
 		</div>
-
 	</section>
 </body>
 </html>

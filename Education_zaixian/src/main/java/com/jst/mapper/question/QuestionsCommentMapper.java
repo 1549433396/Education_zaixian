@@ -22,5 +22,11 @@ public interface QuestionsCommentMapper {
 //	采纳为最佳
 	public void updateIsBest(int qcid);
 	 //点赞
-	 public void updatepraise(int id);
+	public void updatepraise(int id);
+	public List<QuestionsComment> getById2(int qid);
+	public List<QuestionsComment> getById3(int qid);
+	public List<QuestionsComment> getListById(int commentId);
+//	回复数量修改
+	public void updateReplyCount(int qcid);
+	public List<QuestionsComment> getListById2(int commentId);
 }
